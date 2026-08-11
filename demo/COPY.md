@@ -35,14 +35,16 @@
 **Eyebrow (small label above headline):**
 `Premium ANC headphones, built for deep focus`
 
-**Headline (H1):**
+**Headline (H1, one sentence — passes the one-line test alone):**
 > ## The ANC Headphone Built to Last a Decade, Not a Year.
-> ## Noise Cancelling That Learns What Actually Distracts You.
+
+**Subheadline (display-styled, secondary color — the mechanism claim):**
+> Noise cancelling that learns what actually distracts you.
 
 *(One-line test: names the category — ANC deep-focus headphone — states the durability edge no flagship or $150 pair credibly claims, and states the adaptive-ANC mechanism. Not pasteable onto a competitor's page unchanged.)*
 
 **Subheadline (max 2 sentences: what it is + why the headline is credible):**
-> AURI A1 pairs adaptive noise cancelling with 60 hours of battery and studio-tuned titanium drivers — then backs it with swappable parts and 10 years of support, so it's the last pair you buy for a decade, not the third $150 pair you replace this year.
+> AURI A1 pairs adaptive noise cancelling with 60 hours of battery and studio-tuned titanium drivers — then backs it with swappable parts and 10 years of support.
 
 **Primary CTA button:**
 **`Add to Cart — $349`**

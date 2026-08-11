@@ -91,11 +91,9 @@
     <div class="container hero-grid">
       <div class="hero-copy">
         <p class="eyebrow">Premium ANC headphones, built for deep focus</p>
-        <h1 id="hero-heading" class="hero-heading">
-          <span class="hero-line">The ANC Headphone Built to Last a Decade, Not a Year.</span>
-          <span class="hero-line hero-line-accent">Noise Cancelling That Learns What Actually Distracts You.</span>
-        </h1>
-        <p class="lead">AURI A1 pairs adaptive noise cancelling with 60 hours of battery and studio-tuned titanium drivers — then backs it with swappable parts and 10 years of support, so it's the last pair you buy for a decade, not the third $150 pair you replace this year.</p>
+        <h1 id="hero-heading" class="hero-heading">The ANC Headphone Built to Last a Decade, Not a Year.</h1>
+        <p class="hero-subhead">Noise cancelling that learns what actually distracts you.</p>
+        <p class="lead">AURI A1 pairs adaptive noise cancelling with 60 hours of battery and studio-tuned titanium drivers — then backs it with swappable parts and 10 years of support.</p>
 
         <div class="hero-cta-group">
           <button type="button" class="btn btn-primary btn-lg js-add-to-cart">Add to Cart — $349</button>
@@ -107,11 +105,16 @@
 
       <div class="hero-visual-wrap">
         <figure class="hero-visual photo-frame">
-          <img src="img/hero-1x.webp"
-               srcset="img/hero-1x.webp 800w, img/hero-2x.webp 1600w"
-               sizes="(min-width: 1024px) 448px, 90vw"
-               width="800" height="534"
-               alt="AURI A1 over-ear headphones resting on dark textile, the leather ear cushions catching low studio light">
+          <picture>
+            <source media="(min-width: 1024px)"
+                    srcset="img/hero-portrait-1x.webp 600w, img/hero-portrait-2x.webp 1200w"
+                    sizes="40vw">
+            <img src="img/hero-1x.webp"
+                 srcset="img/hero-1x.webp 800w, img/hero-2x.webp 1600w"
+                 sizes="90vw"
+                 width="800" height="534"
+                 alt="AURI A1 over-ear headphones resting on dark textile, the leather ear cushions catching low studio light">
+          </picture>
         </figure>
       </div>
     </div>

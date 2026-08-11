@@ -416,7 +416,10 @@ p { color: var(--color-text-primary); }
   align-items: center;
 }
 @media (min-width: 1024px) {
-  .hero-grid { grid-template-columns: 1.55fr 0.45fr; gap: var(--space-6); }
+  /* 7/5 split: the photo column must carry enough visual mass to counter-
+     balance the text block (composition-grids balance check) — a 78/22 split
+     read as a floating thumbnail, not a hero. */
+  .hero-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-7); align-items: stretch; }
 }
 
 .hero-visual-wrap {
@@ -452,10 +455,11 @@ p { color: var(--color-text-primary); }
   .hero-visual { max-width: 28rem; }
 }
 @media (min-width: 1024px) {
-  .hero-visual { max-width: 26rem; }
-}
-@media (min-width: 1280px) {
-  .hero-visual { max-width: 28rem; }
+  /* Structural, not decorative: the portrait crop fills the entire 5fr
+     column height, matching the text block edge-to-edge. */
+  .hero-visual { max-width: none; height: 100%; }
+  .hero-visual picture,
+  .hero-visual img { width: 100%; height: 100%; object-fit: cover; }
 }
 
 /* Photographic assets (demo-assets skill): local WebP, explicit dimensions,
@@ -500,9 +504,16 @@ p { color: var(--color-text-primary); }
   line-height: var(--leading-display);
   margin-block-end: var(--space-3);
 }
-.hero-line { display: block; }
+.hero-subhead {
+  font-family: var(--font-family-display);
+  font-optical-sizing: auto;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--text-xl);
+  line-height: var(--leading-heading);
+  color: var(--color-text-secondary);
+  margin-block-end: var(--space-4);
+}
 .hero-compare-link { align-self: flex-start; }
-.hero-line-accent { color: var(--color-text-secondary); }
 
 .lead {
   font-size: var(--type-body-size);

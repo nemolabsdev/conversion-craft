@@ -12,6 +12,12 @@ description: Adversarial design review rubric - hierarchy, spacing rhythm, typog
 - Any time a page or component "looks done" and needs an adversarial pass before it ships or hands off.
 - Re-run after every fix round — a single BLOCKER or MAJOR finding sends the build back; there is no partial credit for "mostly there."
 
+**Stale-approval rule (process):** an approval is tied to the rulebook version it was issued
+under. Whenever any skill gains or changes rules (a supplement wave, a research refresh), every
+previously approved surface re-enters this review against the NEW rubric before it ships again —
+"it passed last month" is not a defense if the rulebook moved since. The AURI demo hero shipping
+a 78/22 split that predated the balance check is the canonical example of why.
+
 ## Rules
 
 **Severity taxonomy & exit criteria**
