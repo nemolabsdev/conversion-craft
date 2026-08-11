@@ -1,6 +1,6 @@
 # Conversion Craft
 
-> A complete conversion-design team for Claude Code: **9 agents**, **12 skills**, **2 mechanical QA gates** — research-backed rules distilled from 2024–2026 design-award winners and Baymard / Nielsen Norman Group / CXL conversion research, enforced down to the pixel by lint tooling.
+> A complete conversion-design team for Claude Code: **9 agents**, **12 skills**, **3 mechanical QA gates** — research-backed rules distilled from 2024–2026 design-award winners and Baymard / Nielsen Norman Group / CXL conversion research, enforced down to the **rendered pixel** by tooling that fails the build.
 
 Conversion Craft turns Claude Code into a team that researches, designs, writes, builds, critiques and QA-checks high-converting sales pages. Every rule in every skill is operational and checkable ("body line length 45–75ch", never "comfortable line length"), carries its source, and is confidence-tagged `[LAW]` / `[FRAMEWORK]` / `[TREND-2026]`.
 
@@ -8,7 +8,7 @@ Conversion Craft turns Claude Code into a team that researches, designs, writes,
 
 - **Research-backed, not vibes-backed** — the knowledge base was distilled from award-circuit analysis (Awwwards, FWA, CSSDA, Webby, D&AD) and conversion research (Baymard Institute, NN/g, CXL), with fabricated-statistic traps explicitly flagged and excluded.
 - **Adversarial by design** — an opus-powered Art Director whose only job is to find what's wrong, a CRO specialist auditing the path to purchase, and a QA Inspector who measures instead of opining.
-- **Mechanically enforced** — two lint tools gate every build: `spacing-lint.mjs` (design-token discipline, 4px grid — zero raw px/hex/ms values) and `contrast-check.mjs` (WCAG contrast assertions declared next to the tokens themselves). Both must exit 0 or the build goes back.
+- **Mechanically enforced** — three gates fail the build, not the vibe check: `spacing-lint.mjs` (design-token discipline, 4px grid — zero raw px/hex/ms values), `contrast-check.mjs` (WCAG contrast assertions declared next to the tokens themselves), and `geometry-audit.mjs` (headless Chrome measures the **rendered page** at 375/768/1280 — form-row alignment within 1px, no horizontal overflow, 44px touch targets, consistent button heights, no squished images). Source checks catch what you wrote; the geometry audit catches what the browser actually drew.
 
 ## Installation
 
@@ -71,13 +71,20 @@ page at 375px and 1280px, qa-inspector runs the lint gates last.
 ```bash
 node tools/spacing-lint.mjs tokens.css styles.css   # token discipline + 4px grid
 node tools/contrast-check.mjs tokens.css            # WCAG assertions: /* @contrast --fg on --bg >= 4.5 */
+node tools/geometry-audit.mjs http://localhost:4173 # rendered pixels at 375/768/1280 (system Chrome, zero deps)
 ```
 
-Both exit non-zero on any violation. A tokens file with no contrast assertions is itself a failure — contrast must be declared, not assumed.
+All three exit non-zero on any violation. A tokens file with no contrast assertions is itself a failure — contrast must be declared, not assumed. The geometry audit exists because source checks aren't enough: an 18px form-row misalignment and 40px nav links both passed source lint before this gate caught them.
 
 ## Demo
 
-[`demo/`](demo/) contains a complete sales page for **AURI A1** — a fictional premium headphone — built end-to-end by the team as proof of concept: strategy doc → copy doc → tokens → page. Serve it locally:
+[`demo/`](demo/) contains a complete sales page for **AURI A1** — a fictional premium headphone — built end-to-end by the team as proof of concept: strategy doc → copy doc → tokens → page.
+
+| Desktop (1280) | Mobile (375) |
+|---|---|
+| ![AURI A1 demo, desktop hero](docs/img/demo-desktop.png) | ![AURI A1 demo, mobile hero](docs/img/demo-mobile.png) |
+
+Serve it locally:
 
 ```bash
 python3 -m http.server 4173 --directory demo

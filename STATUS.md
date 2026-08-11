@@ -17,7 +17,7 @@
 | Team (9 agents) | `agents/` | proven on the demo build |
 | Knowledge (12 skills) | `skills/` | every rule measurable, sourced, confidence-tagged |
 | Research corpus | `curriculum/research/` (11 files) | sources + rules + anti-patterns + open questions |
-| QA gates | `tools/` | both PASS on demo (spacing clean, 14/14 contrast assertions) |
+| QA gates | `tools/` | all three PASS on demo: spacing clean, 14/14 contrast assertions, zero rendered-geometry findings at 375/768/1280 (`geometry-audit.mjs`, headless Chrome, zero deps) |
 | Proof of concept | `demo/` | full page: strategy → copy → tokens → build |
 
 ## Known limitations / next candidates

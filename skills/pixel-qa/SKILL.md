@@ -32,6 +32,13 @@ no partial credit — a check either passes a number or it doesn't.
    `var(--…)` token, never a raw px/rem/em/ms literal. Inside `:root`, spacing/gap tokens must
    sit on the 4px grid. `/* lint-allow */` is an escape hatch, not a default — every use needs a
    written justification in the QA report. [LAW] — tools/spacing-lint.mjs; layout-spacing.md R1-3
+4. Run `node tools/geometry-audit.mjs <served url>` (requires system Chrome; serve the page
+   first, e.g. `python3 -m http.server 4173 --directory demo`). This measures RENDERED pixels
+   at 375/768/1280 and fails on: horizontal page overflow, input-vs-button row misalignment
+   >1px, touch targets under 44px, mixed rendered heights within one button class, and
+   squished images. Source lint passing does NOT imply this passes — an 18px form
+   misalignment and 40px nav links have both shipped through source-only checks. [LAW] —
+   tools/geometry-audit.mjs; layout-spacing.md R6-7
 
 **Accessibility checklist — unified across keyboard, structure, and content**
 
@@ -113,6 +120,7 @@ PIXEL QA REPORT — <page/component>
 
 [spacing-lint]  PASS|FAIL  (paste raw output)
 [contrast-check] PASS|FAIL  (paste raw output)
+[geometry-audit] PASS|FAIL  (paste raw output, all viewports)
 
 R4  landmarks            PASS|FAIL  file:line — note
 R5  heading order         PASS|FAIL  file:line — note

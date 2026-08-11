@@ -388,7 +388,9 @@ p { color: var(--color-text-primary); }
     transform: none;
     pointer-events: auto;
   }
-  .nav-menu li a { min-height: auto; padding-block: var(--space-2); padding-inline: var(--space-1); }
+  /* Keep the 44px target floor on desktop too — layout-spacing R6/R7 applies
+     at every viewport, not just touch devices (geometry-audit enforces it). */
+  .nav-menu li a { min-height: var(--target-min); padding-block: 0; padding-inline: var(--space-2); }
   .nav-toggle { display: none; }
 }
 

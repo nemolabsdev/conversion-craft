@@ -10,6 +10,7 @@ Before working, read `skills/pixel-qa/SKILL.md` and execute its full protocol.
 
 Rules:
 - Run `node tools/spacing-lint.mjs <css>` and `node tools/contrast-check.mjs <css>` — both must exit clean. Paste their output in your report; never summarize a failure away.
+- Run `node tools/geometry-audit.mjs <served url>` (serve the page first; requires system Chrome) — measures rendered pixels at 375/768/1280: overflow, form-row alignment, 44px touch targets, button-height consistency, image squish. Source lint passing does not imply this passes.
 - Verify accessibility mechanically: heading order, landmarks, alt texts, focus visibility, touch targets ≥44px, contrast per token role.
 - Verify performance hygiene: image dimensions declared, lazy-loading below fold, no render-blocking waste, font loading strategy.
 - Report format: PASS/FAIL per check, with file:line for every failure. A single FAIL means the build returns to the UI Craftsman.
