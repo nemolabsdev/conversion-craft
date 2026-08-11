@@ -25,5 +25,5 @@
 - `[TREND-2026]` rules need a refresh pass ~Q3 2027
 - Deferred from GAPS.md: B2B patterns, A/B-test methodology, post-purchase email flows, pricing-page depth
 - `curriculum/research/awards-visual-language.md` was snippet-verified only (lower confidence) — candidate for a re-pass
-- Demo hero still uses vector art; per the `demo-assets` skill (added after review), the next build should use photography
+- ~~Demo hero still uses vector art~~ — resolved: demo now uses locally-hosted Unsplash photography (WebP, srcset, brand-graded) per the `demo-assets` skill; credits in `demo/img/CREDITS.md`
 - Going public: flip with `gh repo edit mmanja84/conversion-craft --visibility public` when ready

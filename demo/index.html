@@ -19,7 +19,7 @@
   },
   "sku": "AURI-A1",
   "category": "Headphones",
-  "image": "https://www.auri-audio.example/images/auri-a1.jpg",
+  "image": "img/hero-2x.webp",
   "offers": {
     "@type": "Offer",
     "url": "https://www.auri-audio.example/",
@@ -106,31 +106,13 @@
       </div>
 
       <div class="hero-visual-wrap">
-        <svg class="hero-visual" viewBox="0 0 560 560" width="560" height="560" role="img" aria-labelledby="hero-img-title" xmlns="http://www.w3.org/2000/svg">
-          <title id="hero-img-title">AURI A1 titanium over-ear headphones, side profile, on a dark studio desk</title>
-          <defs>
-            <radialGradient id="heroGlow" cx="50%" cy="36%" r="68%">
-              <stop offset="0%" style="stop-color:var(--color-graphic-surface-soft)"/>
-              <stop offset="55%" style="stop-color:var(--color-graphic-surface-mid)"/>
-              <stop offset="100%" style="stop-color:var(--color-graphic-surface-deep)"/>
-            </radialGradient>
-            <linearGradient id="cupGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:var(--color-graphic-outline)"/>
-              <stop offset="100%" style="stop-color:var(--color-graphic-surface-deep)"/>
-            </linearGradient>
-          </defs>
-          <rect width="560" height="560" rx="32" fill="url(#heroGlow)"/>
-          <path d="M120 262 C120 142 198 72 280 72 C362 72 440 142 440 262" fill="none" style="stroke:var(--color-graphic-mark)" stroke-width="14" stroke-linecap="round" opacity="0.92"/>
-          <!-- Adaptive-contour motif: the brand's recurring waveform device, echoed in
-               the FAQ marker, list bullets and section dividers (see styles.css). -->
-          <path d="M60 430 C 90 400 110 400 140 430 C 170 460 190 460 220 430 C 250 400 270 400 300 430 C 330 460 350 460 380 430 C 410 400 430 400 460 430 C 480 450 495 452 500 448" fill="none" style="stroke:var(--color-graphic-outline)" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
-          <ellipse cx="130" cy="322" rx="58" ry="80" fill="url(#cupGradient)" style="stroke:var(--color-graphic-mark)" stroke-width="2" stroke-opacity="0.4"/>
-          <ellipse cx="130" cy="322" rx="26" ry="42" style="fill:var(--color-graphic-surface-soft)" opacity="0.32"/>
-          <ellipse cx="430" cy="322" rx="58" ry="80" fill="url(#cupGradient)" style="stroke:var(--color-graphic-mark)" stroke-width="2" stroke-opacity="0.4"/>
-          <ellipse cx="430" cy="322" rx="26" ry="42" style="fill:var(--color-graphic-surface-soft)" opacity="0.32"/>
-          <circle cx="430" cy="322" r="9" style="fill:var(--color-graphic-accent)"/>
-          <circle cx="130" cy="322" r="9" style="fill:var(--color-graphic-accent)"/>
-        </svg>
+        <figure class="hero-visual photo-frame">
+          <img src="img/hero-1x.webp"
+               srcset="img/hero-1x.webp 800w, img/hero-2x.webp 1600w"
+               sizes="(min-width: 1024px) 448px, 90vw"
+               width="800" height="534"
+               alt="AURI A1 over-ear headphones resting on dark textile, the leather ear cushions catching low studio light">
+        </figure>
       </div>
     </div>
   </section>
@@ -206,27 +188,12 @@
           <h3>Silence Tuned to Your Environment, Not a Generic Mode You Have to Hunt For</h3>
           <p>AURI A1's adaptive ANC learns your specific distraction profile over your first days of wear — the hum of your building's HVAC, the pitch of your coworker's voice through a wall, the exact frequency of your dog barking two rooms over. Typical flagships ship with preset ANC modes you switch between manually and hope one fits. AURI A1 adjusts itself to what's actually breaking your focus, without you touching a setting. The result: fewer manual mode-switches, fewer moments where the &ldquo;wrong&rdquo; preset lets a distraction through mid-call or mid-deep-work-block.</p>
         </div>
-        <div class="feature-visual">
-          <svg viewBox="0 0 400 400" role="img" aria-labelledby="mech-img-1-title" xmlns="http://www.w3.org/2000/svg">
-            <title id="mech-img-1-title">Close-up of the AURI A1 earcup showing the adaptive ANC microphone array</title>
-            <defs>
-              <radialGradient id="mechGlow1" cx="50%" cy="50%" r="70%">
-                <stop offset="0%" style="stop-color:var(--color-graphic-accent-soft)"/>
-                <stop offset="55%" style="stop-color:var(--color-graphic-accent-mid)"/>
-                <stop offset="100%" style="stop-color:var(--color-graphic-surface-deep)"/>
-              </radialGradient>
-            </defs>
-            <rect width="400" height="400" rx="24" style="fill:var(--color-graphic-surface-deep)"/>
-            <circle cx="200" cy="200" r="150" fill="url(#mechGlow1)"/>
-            <circle cx="200" cy="200" r="96" style="fill:var(--color-graphic-surface-deep)" opacity="0.55"/>
-            <circle cx="200" cy="200" r="60" fill="none" style="stroke:var(--color-graphic-mark)" stroke-width="2" opacity="0.5"/>
-            <circle cx="200" cy="130" r="7" style="fill:var(--color-graphic-mark)"/>
-            <circle cx="255" cy="165" r="7" style="fill:var(--color-graphic-mark)"/>
-            <circle cx="255" cy="235" r="7" style="fill:var(--color-graphic-mark)"/>
-            <circle cx="200" cy="270" r="7" style="fill:var(--color-graphic-mark)"/>
-            <circle cx="145" cy="235" r="7" style="fill:var(--color-graphic-mark)"/>
-            <circle cx="145" cy="165" r="7" style="fill:var(--color-graphic-mark)"/>
-          </svg>
+        <div class="feature-visual photo-frame">
+          <img src="img/silence-1x.webp"
+               srcset="img/silence-1x.webp 600w, img/silence-2x.webp 1200w"
+               sizes="(min-width: 768px) 440px, 90vw"
+               width="600" height="600" loading="lazy"
+               alt="A man wearing over-ear headphones with his eyes closed, undisturbed against a dark background">
         </div>
       </article>
 
@@ -235,22 +202,12 @@
           <h3>Sound Accurate Enough for Critical Listening, Without the Fatigue</h3>
           <p>Each earcup houses a titanium driver tuned to a studio frequency response — not the bass-boosted, consumer V-shaped EQ curve most headphones ship with out of the box. That means what you hear is closer to what was actually recorded or said, instead of an artificially punched-up version of it. On a 6-hour call day, that accuracy is the difference between headphones that still feel fine at hour six and ones that leave your ears fatigued by lunch.</p>
         </div>
-        <div class="feature-visual">
-          <svg viewBox="0 0 400 400" role="img" aria-labelledby="mech-img-2-title" xmlns="http://www.w3.org/2000/svg">
-            <title id="mech-img-2-title">AURI A1 titanium driver cross-section next to the assembled headphone</title>
-            <defs>
-              <linearGradient id="mechGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:var(--color-graphic-outline)"/>
-                <stop offset="100%" style="stop-color:var(--color-graphic-surface-mid)"/>
-              </linearGradient>
-            </defs>
-            <rect width="400" height="400" rx="24" style="fill:var(--color-bg-alt)"/>
-            <circle cx="200" cy="200" r="150" fill="url(#mechGradient2)"/>
-            <circle cx="200" cy="200" r="112" style="fill:var(--color-graphic-surface-deep)"/>
-            <circle cx="200" cy="200" r="78" style="fill:var(--color-graphic-accent)"/>
-            <circle cx="200" cy="200" r="46" style="fill:var(--color-graphic-accent-soft)"/>
-            <circle cx="200" cy="200" r="18" style="fill:var(--color-graphic-mark)"/>
-          </svg>
+        <div class="feature-visual photo-frame">
+          <img src="img/driver-1x.webp"
+               srcset="img/driver-1x.webp 600w, img/driver-2x.webp 1200w"
+               sizes="(min-width: 768px) 440px, 90vw"
+               width="600" height="600" loading="lazy"
+               alt="Tight crop of the AURI A1 earcup: stitched leather cushion and the driver housing behind it">
         </div>
       </article>
     </div>

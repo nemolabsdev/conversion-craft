@@ -201,6 +201,10 @@
   --color-text-primary:        var(--neutral-12);
   --color-text-secondary:      var(--neutral-11);
   --color-text-inverse-muted: var(--neutral-7); /* de-emphasized text on inverse surfaces (payment row, legal) */
+  /* Photo grade overlay (demo-assets R5) — decorative only, never behind text,
+     so no @contrast assertion applies. 8-digit hex: RRGGBBAA. */
+  --color-photo-tint-warm: #C9742926; /* accent-7 @ 15% */
+  --color-photo-tint-deep: #1B1D2440; /* neutral-12 @ 25% */
   --color-text-inverse:        var(--neutral-1);   /* text on --color-bg-inverse */
   --color-text-on-accent:      var(--white);        /* text on the CTA fill */
 
@@ -239,14 +243,6 @@
      illustration art can never be mistaken for, or dilute, the one CTA
      color (R6/R18).
      -------------------------------------------------------------------- */
-  --color-graphic-accent:       var(--accent-9);   /* small decorative copper marks only — capped at the CTA's own fill so no illustration mass out-saturates the button */
-  --color-graphic-accent-soft:  var(--accent-3);   /* light copper gradient stop */
-  --color-graphic-accent-mid:   var(--accent-6);   /* mid copper gradient stop */
-  --color-graphic-surface-deep: var(--neutral-12); /* dark illustration ground */
-  --color-graphic-surface-mid:  var(--neutral-9);  /* mid-tone illustration ground */
-  --color-graphic-surface-soft: var(--neutral-3);  /* light illustration ground */
-  --color-graphic-outline:      var(--neutral-8);  /* illustration linework/stroke */
-  --color-graphic-mark:         var(--neutral-1);  /* light marks on a dark illustration ground */
 
   /* --------------------------------------------------------------------
      9c. SEMANTIC — Brand motif (design-tokens R29 / logo-swap test)
