@@ -1,0 +1,434 @@
+/* ==========================================================================
+   AURI A1 — Design Tokens
+   Premium ANC headphone sales page. Single conversion goal (Add to Cart).
+   Palette strategy: quiet neutral base + one saturated accent reserved for
+   the single primary CTA (current research: neutral base + saturated-accent
+   pop reads calm/premium and isolates the one thing to click).
+   Ramps generated in OKLCH (equal-perceived-lightness steps, fixed
+   hue/chroma per ramp), committed here as hex per design-tokens R4/R8 —
+   contrast-check.mjs cannot parse oklch()/color-mix().
+   Structure: PRIMITIVE → SEMANTIC → COMPONENT (design-tokens R2).
+   Product/page CSS must consume SEMANTIC or COMPONENT tokens only — never
+   a primitive directly.
+   ========================================================================== */
+
+:root {
+
+  /* --------------------------------------------------------------------
+     1. PRIMITIVE — Neutral ramp (12 steps, cool "quiet" slate)
+     OKLCH generation target: hue ≈ 255° (cool, calm, focus-coded),
+     chroma held low (≈0.005–0.02) throughout — a genuinely quiet neutral,
+     lightness stepped 99% → 12% in perceptually-equal increments.
+     Role mapping fixed per design-tokens R9:
+       1–2 page/canvas bg · 3–5 component bg (rest/hover/active)
+       6–8 borders (subtle → interactive → focus) · 9–10 solid fills
+       11–12 text (secondary, primary)
+     -------------------------------------------------------------------- */
+  --neutral-1:  #FCFCFD; /* oklch(99.3% 0.002 255) — page bg */
+  --neutral-2:  #F7F8FA; /* oklch(97.4% 0.004 255) — alt section bg */
+  --neutral-3:  #EFF0F3; /* oklch(94.6% 0.005 255) — component bg rest */
+  --neutral-4:  #E5E7EB; /* oklch(91.5% 0.006 255) — component bg hover */
+  --neutral-5:  #D8DBE0; /* oklch(87.5% 0.008 255) — component bg active */
+  --neutral-6:  #C6C9D1; /* oklch(81.9% 0.010 255) — border subtle */
+  --neutral-7:  #AFB3BE; /* oklch(75.0% 0.013 255) — border stronger */
+  --neutral-8:  #888C99; /* oklch(63.0% 0.016 255) — border interactive/focus */
+  --neutral-9:  #6C7080; /* oklch(53.5% 0.018 255) — solid fill */
+  --neutral-10: #565A69; /* oklch(45.0% 0.018 255) — solid fill hover */
+  --neutral-11: #454856; /* oklch(38.0% 0.017 255) — secondary text */
+  --neutral-12: #1B1D24; /* oklch(19.5% 0.015 255) — primary text */
+
+  /* --------------------------------------------------------------------
+     2. PRIMITIVE — Accent ramp (12 steps, copper/amber — the one
+     saturated hue on the page, reserved for the primary CTA per
+     design-tokens R12/R13). Hue ≈ 45° (warm copper — echoes the
+     titanium/studio-tuned driver material story), chroma peaks around
+     step 8–9, lightness stepped 97% → 15%.
+     -------------------------------------------------------------------- */
+  --accent-1:  #FDF6F0; /* oklch(97.2% 0.020  45) — accent-tinted bg */
+  --accent-2:  #FCEBDC; /* oklch(94.0% 0.040  45) */
+  --accent-3:  #F8D6B7; /* oklch(87.9% 0.075  45) */
+  --accent-4:  #F2BF8E; /* oklch(81.3% 0.105  45) */
+  --accent-5:  #E9A465; /* oklch(74.0% 0.130  45) */
+  --accent-6:  #DC8A42; /* oklch(66.5% 0.145  45) — border/hover-adjacent */
+  --accent-7:  #C97429; /* oklch(59.5% 0.155  45) */
+  --accent-8:  #B85F17; /* oklch(52.5% 0.155  45) */
+  --accent-9:  #AA500E; /* oklch(46.5% 0.150  45) — solid CTA fill (most saturated element on the page) */
+  --accent-10: #8F4310; /* oklch(40.5% 0.135  45) — CTA hover */
+  --accent-11: #723509; /* oklch(33.5% 0.115  45) — CTA active */
+  --accent-12: #4A2306; /* oklch(23.0% 0.085  45) — darkest, reserve */
+
+  /* Base primitives */
+  --white: #FFFFFF;
+  --black: #0E0F13;
+
+  /* --------------------------------------------------------------------
+     2b. PRIMITIVE — Feedback ramp (single step, genuine red hue ≈ 22°).
+     Kept deliberately separate from --accent (copper ≈ 45°) so error
+     state can never be confused with — or borrow — the CTA-reserved hue.
+     -------------------------------------------------------------------- */
+  --red-9: #B3241D; /* ≥6:1 on --neutral-1 and --neutral-2 — verified via contrast-check.mjs */
+
+  /* --------------------------------------------------------------------
+     3. PRIMITIVE — Spacing (4/8px grid, design-tokens R18/R20)
+     -------------------------------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+
+  /* --------------------------------------------------------------------
+     4. PRIMITIVE — Type scale
+     Ratio: Perfect Fourth (1.333) — chosen per typography-craft R1 for a
+     content-dense marketing/landing page with many hierarchy sections
+     (nav, hero, trust bar, mechanism ×2, comparison, testimonials,
+     pricing, final CTA, FAQ) rather than a hero-only editorial page —
+     that context calls for 1.25–1.333, not the more extreme 1.5–1.618
+     reserved for few-level hero pages. See Rationale.
+     8 steps generated from integer powers of the ratio (R24) — no
+     hand-picked in-between sizes.
+     Fluid clamp() built per-step (R27/R28), anchors x1=400px→x2=1280px,
+     v = 100×(y2−y1)/(x2−x1), r = (x1·y2−x2·y1)/(x1−x2), bounds in rem.
+     -------------------------------------------------------------------- */
+  --type-ratio: 1.333;
+
+  --text-xs:   clamp(0.75rem, 0.75rem, 0.75rem);                    /* 12px static — caption/eyebrow/label, not body copy */
+  --text-base: clamp(1rem, 0.9432rem + 0.2273vw, 1.125rem);         /* 16px → 18px, body floor never below 16px (R25) */
+  --text-lg:   clamp(1.125rem, 1.0306rem + 0.3784vw, 1.333rem);     /* 18px → 21.3px */
+  --text-xl:   clamp(1.375rem, 1.1925rem + 0.7307vw, 1.777rem);     /* 22px → 28.4px */
+  --text-2xl:  clamp(1.625rem, 1.2875rem + 1.35vw, 2.3675rem);      /* 26px → 37.9px */
+  --text-3xl:  clamp(2rem, 1.475rem + 2.1011vw, 3.1556rem);         /* 32px → 50.5px */
+  --text-4xl:  clamp(2.5rem, 1.7238rem + 3.1045vw, 4.2075rem);      /* 40px → 67.3px */
+  --text-5xl:  clamp(3rem, 1.8138rem + 4.7443vw, 5.6094rem);        /* 48px → 89.8px — hero headline ceiling */
+
+  /* Leading — multiples of 4px (design-tokens R21), inverse to size
+     (typography-craft R8/R26): ~1.5 body-range, tightening to ~1.1 at
+     the largest display step. */
+  --leading-xs:   1rem;      /* 16px on 12px text — tight, single-line UI label */
+  --leading-base: 1.5rem;    /* 24px on 16px text — 150%, WCAG floor + craft sweet spot */
+  --leading-lg:   1.75rem;   /* 28px on 18–21.3px text */
+  --leading-xl:   2.25rem;   /* 36px on 22–28.4px text */
+  --leading-2xl:  2.75rem;   /* 44px on 26–37.9px text — ~1.16 */
+  --leading-3xl:  3.5rem;    /* 56px on 32–50.5px text — ~1.11–1.75 range, tightening */
+  --leading-4xl:  4.75rem;   /* 76px on 40–67.3px text — ~1.13 */
+  --leading-5xl:  6.25rem;   /* 100px on 48–89.8px text — ~1.11 */
+
+  /* Fluid unitless leading — for anything paired with a clamp() font
+     size. A px leading token steps at media-query breakpoints while a
+     clamp() size grows continuously; between steps the type can outgrow
+     its line box (negative leading — typography-craft R8/R26 failure).
+     A unitless ratio scales exactly with the font size at every
+     viewport, so the box/ink ratio is constant and never goes negative.
+     Px leading tokens above stay reserved for statically-sized type
+     only (--text-xs). */
+  --leading-display: 1.1;   /* hero/H1-scale display type */
+  --leading-heading: 1.15;  /* H2/H3-scale display type */
+  --leading-body:    1.5;   /* body/lead-scale fluid type */
+
+  /* Font families — capped at 2 (typography-craft R21). One high-contrast
+     editorial display serif reserved for ≥48px headline moments only
+     (R35/anti-patterns — never body copy), one neo-grotesque for
+     everything else, deliberately weight/tracking-customized to avoid
+     the "unmodified default Inter" generic-SaaS signal (R37). */
+  --font-family-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --tracking-tight: -0.02em;  /* display headlines ≥48px (typography-craft R25) */
+  --tracking-normal: 0em;
+  --tracking-wide: 0.08em;    /* all-caps labels/eyebrows (R26) */
+
+  /* --------------------------------------------------------------------
+     5. PRIMITIVE — Radius (design-tokens R29)
+     -------------------------------------------------------------------- */
+  --radius-sm: 4px;    /* inputs, chips */
+  --radius-md: 8px;    /* buttons, cards */
+  --radius-lg: 16px;   /* modals, panels */
+  --radius-full: 9999px; /* pills, avatars */
+
+  /* --------------------------------------------------------------------
+     6. PRIMITIVE — Shadow elevation tiers (design-tokens R30)
+     Built once from --neutral-12 (rgb(27,29,36)), never per-component.
+     -------------------------------------------------------------------- */
+  --shadow-1: 0 1px 2px rgba(27,29,36,0.06), 0 1px 1px rgba(27,29,36,0.04);   /* resting card */
+  --shadow-2: 0 4px 8px rgba(27,29,36,0.08), 0 2px 4px rgba(27,29,36,0.06);   /* hover/raised */
+  --shadow-3: 0 12px 24px rgba(27,29,36,0.12), 0 4px 8px rgba(27,29,36,0.08); /* dropdown/popover */
+  --shadow-4: 0 24px 48px rgba(27,29,36,0.18), 0 8px 16px rgba(27,29,36,0.10);/* modal */
+
+  /* --------------------------------------------------------------------
+     7. PRIMITIVE — Duration & easing (design-tokens R31/R32, M3 scale)
+     -------------------------------------------------------------------- */
+  --duration-instant: 100ms; /* hover/press feedback — NN/g response-time ceiling (R22, [LAW]) */
+  --duration-short: 150ms;   /* toggles, open/close state changes (not pointer feedback) */
+  --duration-medium: 300ms;  /* cards, sheets, dropdowns */
+  --duration-long: 480ms;    /* large-surface transitions */
+
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);   /* on-screen morphs */
+  --ease-decelerate: cubic-bezier(0, 0, 0, 1);      /* entering */
+  --ease-accelerate: cubic-bezier(0.3, 0, 1, 1);    /* exiting */
+
+  /* --------------------------------------------------------------------
+     8. PRIMITIVE — Touch target floor (design-tokens R22)
+     -------------------------------------------------------------------- */
+  --target-min: 44px; /* Apple HIG / Material floor; WCAG 2.2 AA legal min is 24px — noted, not shipped */
+
+  /* --------------------------------------------------------------------
+     9. SEMANTIC — Color roles
+     Named by function, never appearance (design-tokens R3).
+     -------------------------------------------------------------------- */
+  --color-bg-page:            var(--neutral-1);
+  --color-bg-alt:              var(--neutral-2);  /* section-alt background */
+  --color-bg-surface:          var(--neutral-1);  /* cards on page bg */
+  --color-bg-surface-on-alt:   var(--white);       /* cards sitting on an alt section */
+  --color-bg-component:        var(--neutral-3);
+  --color-bg-component-hover:  var(--neutral-4);
+  --color-bg-component-active: var(--neutral-5);
+  --color-bg-inverse:          var(--neutral-12);  /* dark surfaces, e.g. footer */
+
+  --color-border-subtle:       var(--neutral-6);
+  --color-border-interactive:  var(--neutral-8);
+  --color-border-focus:        var(--accent-7);    /* visible focus ring — interaction state, not a competing button */
+
+  --color-text-primary:        var(--neutral-12);
+  --color-text-secondary:      var(--neutral-11);
+  --color-text-inverse-muted: var(--neutral-7); /* de-emphasized text on inverse surfaces (payment row, legal) */
+  --color-text-inverse:        var(--neutral-1);   /* text on --color-bg-inverse */
+  --color-text-on-accent:      var(--white);        /* text on the CTA fill */
+
+  /* The one saturated accent — reserved for the single primary CTA
+     (design-tokens R12/R13: exactly one button per screen gets this). */
+  --color-action-primary-bg:        var(--accent-9);
+  --color-action-primary-bg-hover:  var(--accent-10);
+  --color-action-primary-bg-active: var(--accent-11);
+  --color-action-primary-text:      var(--color-text-on-accent);
+
+  --color-action-secondary-border:   var(--color-border-interactive);
+  --color-action-secondary-text:     var(--color-text-primary);
+  --color-action-secondary-bg-hover: var(--color-bg-component);
+
+  /* Feedback — genuinely separate from the action role. An error is not
+     an action; it must never borrow --color-action-primary-bg (design-
+     tokens R18/R19 — every color traces to a role named by function). */
+  --color-feedback-error: var(--red-9);
+
+  /* Decorative copper — stars, checkmarks, bullets, the pull-quote rule.
+     Deliberately NOT --color-action-primary-bg: reusing the CTA-reserved
+     token for decoration is exactly what R18 forbids, and it's also how
+     a page ends up with multiple "copper masses" competing with the one
+     button that should win the squint test (R6). */
+  --color-accent-decorative: var(--accent-7);
+
+  /* Border sitting on an inverse (dark) surface — e.g. the footer.
+     Named so component CSS never reaches for a raw --neutral-9 again. */
+  --color-border-on-inverse: var(--neutral-9);
+
+  /* --------------------------------------------------------------------
+     9b. SEMANTIC — Decorative graphic roles
+     For inline illustration SVGs only (hero + mechanism visuals) — never
+     for UI chrome. Named by function ("illustration ground/mark"), not
+     appearance, per R19. Kept distinct from the action and text roles so
+     illustration art can never be mistaken for, or dilute, the one CTA
+     color (R6/R18).
+     -------------------------------------------------------------------- */
+  --color-graphic-accent:       var(--accent-9);   /* small decorative copper marks only — capped at the CTA's own fill so no illustration mass out-saturates the button */
+  --color-graphic-accent-soft:  var(--accent-3);   /* light copper gradient stop */
+  --color-graphic-accent-mid:   var(--accent-6);   /* mid copper gradient stop */
+  --color-graphic-surface-deep: var(--neutral-12); /* dark illustration ground */
+  --color-graphic-surface-mid:  var(--neutral-9);  /* mid-tone illustration ground */
+  --color-graphic-surface-soft: var(--neutral-3);  /* light illustration ground */
+  --color-graphic-outline:      var(--neutral-8);  /* illustration linework/stroke */
+  --color-graphic-mark:         var(--neutral-1);  /* light marks on a dark illustration ground */
+
+  /* --------------------------------------------------------------------
+     9c. SEMANTIC — Brand motif (design-tokens R29 / logo-swap test)
+     One recurring graphic device — a waveform/frequency contour, echoing
+     the adaptive-ANC mechanism story (STRATEGY.md §1.2-1.3) — reused
+     systemically rather than decoratively: the FAQ marker, the price/risk
+     list bullets, the section dividers, and the hero backdrop (see the
+     hero SVG in index.html) all draw from this one shape family. Shipped
+     as shape-only data URIs (no baked-in fill/stroke color) so every
+     placement recolors through mask-image + background-color, tracing
+     back to a semantic/component color token per R18 — never a second,
+     untraceable color system living only in an asset.
+     -------------------------------------------------------------------- */
+  --motif-wave-mark:      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2' y='9' width='4' height='6' rx='1.5'/%3E%3Crect x='10' y='4' width='4' height='16' rx='1.5'/%3E%3Crect x='18' y='7' width='4' height='10' rx='1.5'/%3E%3C/svg%3E");
+  --motif-wave-mark-flat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2' y='10' width='4' height='4' rx='1.5'/%3E%3Crect x='10' y='10' width='4' height='4' rx='1.5'/%3E%3Crect x='18' y='10' width='4' height='4' rx='1.5'/%3E%3C/svg%3E");
+  --motif-wave-divider:   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 16'%3E%3Cpath d='M0 8 C 5 0 10 0 15 8 C 20 16 25 16 30 8 C 35 0 40 0 45 8 C 50 16 55 16 60 8' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+
+  /* --------------------------------------------------------------------
+     @contrast assertions — every fg/bg pair the page uses.
+     Thresholds per design-tokens R15: normal text ≥4.5, non-text UI ≥3.
+     -------------------------------------------------------------------- */
+  /* @contrast --color-text-primary on --color-bg-page >= 4.5 */
+  /* @contrast --color-text-secondary on --color-bg-page >= 4.5 */
+  /* @contrast --color-text-primary on --color-bg-alt >= 4.5 */
+  /* @contrast --color-text-secondary on --color-bg-alt >= 4.5 */
+  /* @contrast --color-text-primary on --color-bg-surface >= 4.5 */
+  /* @contrast --color-action-primary-text on --color-action-primary-bg >= 4.5 */
+  /* @contrast --color-action-primary-bg on --color-bg-page >= 3 */
+  /* @contrast --color-action-primary-bg on --color-bg-alt >= 3 */
+  /* @contrast --color-action-secondary-border on --color-bg-page >= 3 */
+  /* @contrast --color-action-secondary-border on --color-bg-alt >= 3 */
+  /* @contrast --color-text-inverse on --color-bg-inverse >= 4.5 */
+  /* @contrast --color-text-inverse-muted on --color-bg-inverse >= 4.5 */
+  /* @contrast --color-feedback-error on --color-bg-page >= 4.5 */
+  /* @contrast --color-feedback-error on --color-bg-alt >= 4.5 */
+
+  /* --------------------------------------------------------------------
+     10. SEMANTIC — Layout spacing (8px grid; 4px sub-grid reserved for
+     internal component spacing per design-tokens R19)
+     -------------------------------------------------------------------- */
+  --layout-gutter-mobile: var(--space-4);   /* 16px */
+  --layout-gutter-desktop: var(--space-6);  /* 32px */
+  --layout-section-padding-mobile: var(--space-7);  /* 48px */
+  --layout-section-padding-desktop: var(--space-9); /* 96px */
+  --layout-container-max-width: 75rem; /* 1200px */
+
+  /* --------------------------------------------------------------------
+     11. SEMANTIC — Type roles
+     -------------------------------------------------------------------- */
+  --type-eyebrow-size: var(--text-xs);
+  --type-eyebrow-tracking: var(--tracking-wide);
+  --type-body-size: var(--text-base);
+  --type-body-leading: var(--leading-base);
+  --type-lead-size: var(--text-lg);
+  --type-h3-size: var(--text-2xl);
+  --type-h2-size: var(--text-3xl);
+  --type-h1-size: var(--text-4xl); /* remapped to --text-3xl below 480px so the two-sentence hero holds 4-5 lines on a phone */
+  --type-hero-size: var(--text-5xl);
+
+  /* --------------------------------------------------------------------
+     12. COMPONENT — Button (primary = the one CTA; secondary = ghost)
+     -------------------------------------------------------------------- */
+  --button-primary-bg: var(--color-action-primary-bg);
+  --button-primary-bg-hover: var(--color-action-primary-bg-hover);
+  --button-primary-bg-active: var(--color-action-primary-bg-active);
+  --button-primary-text: var(--color-action-primary-text);
+  --button-primary-radius: var(--radius-md);
+  --button-primary-padding-y: var(--space-3);
+  --button-primary-padding-x: var(--space-6);
+  --button-primary-min-height: var(--target-min);
+  --button-primary-shadow: var(--shadow-2);
+
+  --button-secondary-border: var(--color-action-secondary-border);
+  --button-secondary-text: var(--color-action-secondary-text);
+  --button-secondary-bg-hover: var(--color-action-secondary-bg-hover);
+  --button-secondary-radius: var(--radius-md);
+  --button-secondary-padding-y: var(--space-3);
+  --button-secondary-padding-x: var(--space-6);
+  --button-secondary-min-height: var(--target-min);
+
+  /* --------------------------------------------------------------------
+     13. COMPONENT — Card / Input / Nav
+     -------------------------------------------------------------------- */
+  --card-bg: var(--color-bg-surface);
+  --card-border: var(--color-border-subtle);
+  --card-radius: var(--radius-lg);
+  --card-shadow: var(--shadow-1);
+  --card-padding: var(--space-6);
+
+  --input-border: var(--color-border-interactive);
+  --input-radius: var(--radius-sm);
+  --input-height: var(--target-min);
+  --input-padding-x: var(--space-4);
+
+  --nav-height: var(--space-9); /* 96px */
+  --nav-bg: var(--color-bg-page);
+  --nav-border: var(--color-border-subtle);
+}
+
+/* ==========================================================================
+   Rationale
+   ==========================================================================
+
+   RATIO — 1.333 (Perfect Fourth). AURI A1 is a long, section-heavy sales
+   page (nav, hero, trust bar, relevance, mechanism ×2, comparison table,
+   testimonials, pricing, final CTA, FAQ, footer) — closer to "marketing
+   page with several hierarchy levels" than to a hero-only editorial
+   layout, so typography-craft R1 places it in the 1.25–1.333 band rather
+   than the more dramatic 1.5–1.618 band reserved for few-level hero
+   pages. 1.333 was chosen over 1.25 for slightly more separation between
+   the hero headline and the H1/H2 steps beneath it — this is a premium,
+   confident product with one big claim to carry (Section 3 of
+   STRATEGY.md), and it can support a bit more scale contrast than a
+   dense dashboard-adjacent 1.25 would give it, without tipping into
+   editorial-hero territory the page's information density doesn't match.
+
+   PALETTE — quiet cool neutral + single copper/amber accent. Per current
+   research on premium-page color strategy, a quiet, low-chroma neutral
+   base paired with exactly one saturated accent reserved for the single
+   conversion action reads calmer and more premium than a branded-hue
+   background, and it isolates the "one thing to click" far more
+   effectively than a second competing brand color would (design-tokens
+   R12/R13 — exactly one button gets the saturated treatment).
+   - Neutral hue (~255°, cool slate) was picked over a warm/beige neutral
+     because the audience (STRATEGY.md §1.4: deep-focus professionals,
+     28–45, remote/hybrid) is buying calm and concentration — a cool,
+     quiet gray reads more "studio/engineering precision" than a warm
+     neutral would, reinforcing the titanium-driver/studio-tuning story
+     without competing with it for attention.
+   - Accent hue (~45°, copper/amber) was chosen for three reasons: (1) it
+     sits far from the neutral's blue-gray hue, so it reads as a genuine
+     "pop" rather than a tint of the same family; (2) it visually echoes
+     the titanium/copper driver material narrative that is the product's
+     core mechanism claim (STRATEGY.md §1.2–1.3), so the one saturated
+     color on the page is doing brand work, not arbitrary decoration;
+     (3) it's a deliberate departure from the cool blues Sony/Bose both
+     use in their own branding (STRATEGY.md §1.1 — the two competitive
+     alternatives) — the CTA reads as unmistakably "not the flagship
+     you're comparing it to."
+   - --accent-9 (#AA500E) was tuned, not picked by eye: it clears ≥3:1
+     non-text contrast against both --neutral-1 and --neutral-2 (the two
+     backgrounds it can sit against per R12), and white CTA text on it
+     clears 4.5:1 with comfortable margin (verified via
+     tools/contrast-check.mjs, not by eye — typography-craft
+     anti-patterns explicitly warn against eyeballing hero/CTA contrast).
+   - --neutral-8 was deliberately tuned darker than a "default" step-8
+     guess so the ghost-button border independently clears the 3:1
+     non-text threshold against the page background — the fixed
+     6-8-borders role mapping (design-tokens R9) is a naming/role
+     convention, not a contrast guarantee, so the actual step values were
+     solved against the real backgrounds they sit on rather than
+     inherited from a generic ramp.
+
+   TYPEFACES — Fraunces (display) + Inter (body/UI, deliberately
+   weight/tracking-customized). Both are self-hosted as woff2 via
+   @font-face in styles.css (font-display: swap, latin subset) — see
+   demo/fonts/. A high-contrast editorial serif at hero size gives the
+   "premium/sophistication" signal current research associates with
+   2025–2026 premium/DTC product pages (typography-craft R35), while
+   Inter carries every smaller size — customized via the weight and
+   tracking tokens above, AND Fraunces is shipped as its full variable
+   instance with explicit font-variation-settings (SOFT/WONK axes, see
+   styles.css) rather than the default instance, so neither family reads
+   as an unmodified default (typography-craft R37/anti-patterns). Two
+   families total, within the 2–3 cap (R21). The 'Iowan Old
+   Style'/Georgia and system-ui fallback chains remain declared as the
+   pre-load/no-JS safety net, not as the shipped face.
+
+   DARK MODE — out of scope for this build. STRATEGY.md and BRIEF.md
+   define a single-conversion, single-theme sales page with no dark-mode
+   requirement; per design-tokens' own scope discipline (STRATEGY.md §6
+   applies the same "don't invent scope" logic used for pricing tiers),
+   a rebuilt dark theme was not fabricated to satisfy an unrequested
+   feature. If dark mode is added later, every semantic token above must
+   be re-authored per design-tokens R34 (never inverted) and every
+   @contrast assertion re-run against the new values (R35).
+   ========================================================================== */
+
+/* Mobile display-type remap: the two-sentence hero H1 must hold 4-5 lines on a
+   phone so price + CTA stay within one thumb-scroll of the fold. */
+@media (max-width: 479px) {
+  :root {
+    --type-h1-size: var(--text-3xl);
+  }
+}
