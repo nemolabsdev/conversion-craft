@@ -23,6 +23,13 @@
        1–2 page/canvas bg · 3–5 component bg (rest/hover/active)
        6–8 borders (subtle → interactive → focus) · 9–10 solid fills
        11–12 text (secondary, primary)
+     This page's semantic layer currently maps every step except 10
+     (--neutral-9 covers the one "solid fill" role this page needs, via
+     --color-border-on-inverse). Step 10 stays declared, unconsumed here:
+     the ramp is generated once as a complete 12-step system-level
+     resource (design-tokens R8), not re-derived per page, so a future
+     page/component reaching for a "solid fill hover" role has it without
+     re-generating the ramp. Not a stray value — an intentional reserve.
      -------------------------------------------------------------------- */
   --neutral-1:  #FCFCFD; /* oklch(99.3% 0.002 255) — page bg */
   --neutral-2:  #F7F8FA; /* oklch(97.4% 0.004 255) — alt section bg */
@@ -33,7 +40,7 @@
   --neutral-7:  #AFB3BE; /* oklch(75.0% 0.013 255) — border stronger */
   --neutral-8:  #888C99; /* oklch(63.0% 0.016 255) — border interactive/focus */
   --neutral-9:  #6C7080; /* oklch(53.5% 0.018 255) — solid fill */
-  --neutral-10: #565A69; /* oklch(45.0% 0.018 255) — solid fill hover */
+  --neutral-10: #565A69; /* oklch(45.0% 0.018 255) — solid fill hover — reserved, unconsumed on this page */
   --neutral-11: #454856; /* oklch(38.0% 0.017 255) — secondary text */
   --neutral-12: #1B1D24; /* oklch(19.5% 0.015 255) — primary text */
 
@@ -43,21 +50,29 @@
      design-tokens R12/R13). Hue ≈ 45° (warm copper — echoes the
      titanium/studio-tuned driver material story), chroma peaks around
      step 8–9, lightness stepped 97% → 15%.
+     This page's semantic layer consumes 7, 9, 10 and 11 (decorative,
+     CTA rest/hover/active). Steps 1–6, 8 and 12 stay declared,
+     unconsumed here: same reasoning as the neutral ramp above — a
+     complete 12-step ramp is generated once as system-level
+     infrastructure, not trimmed to one page's current needs.
      -------------------------------------------------------------------- */
-  --accent-1:  #FDF6F0; /* oklch(97.2% 0.020  45) — accent-tinted bg */
-  --accent-2:  #FCEBDC; /* oklch(94.0% 0.040  45) */
-  --accent-3:  #F8D6B7; /* oklch(87.9% 0.075  45) */
-  --accent-4:  #F2BF8E; /* oklch(81.3% 0.105  45) */
-  --accent-5:  #E9A465; /* oklch(74.0% 0.130  45) */
-  --accent-6:  #DC8A42; /* oklch(66.5% 0.145  45) — border/hover-adjacent */
+  --accent-1:  #FDF6F0; /* oklch(97.2% 0.020  45) — accent-tinted bg — reserved */
+  --accent-2:  #FCEBDC; /* oklch(94.0% 0.040  45) — reserved */
+  --accent-3:  #F8D6B7; /* oklch(87.9% 0.075  45) — reserved */
+  --accent-4:  #F2BF8E; /* oklch(81.3% 0.105  45) — reserved */
+  --accent-5:  #E9A465; /* oklch(74.0% 0.130  45) — reserved */
+  --accent-6:  #DC8A42; /* oklch(66.5% 0.145  45) — border/hover-adjacent — reserved */
   --accent-7:  #C97429; /* oklch(59.5% 0.155  45) */
-  --accent-8:  #B85F17; /* oklch(52.5% 0.155  45) */
+  --accent-8:  #B85F17; /* oklch(52.5% 0.155  45) — reserved */
   --accent-9:  #AA500E; /* oklch(46.5% 0.150  45) — solid CTA fill (most saturated element on the page) */
   --accent-10: #8F4310; /* oklch(40.5% 0.135  45) — CTA hover */
   --accent-11: #723509; /* oklch(33.5% 0.115  45) — CTA active */
-  --accent-12: #4A2306; /* oklch(23.0% 0.085  45) — darkest, reserve */
+  --accent-12: #4A2306; /* oklch(23.0% 0.085  45) — darkest, reserve — unconsumed here */
 
-  /* Base primitives */
+  /* Base primitives. --black is reserved system infrastructure — no
+     surface on this single-theme page reaches for it (all dark surfaces
+     trace to --neutral-12); see the DARK MODE note in Rationale for
+     where it would come into play. */
   --white: #FFFFFF;
   --black: #0E0F13;
 
@@ -90,33 +105,52 @@
      pricing, final CTA, FAQ) rather than a hero-only editorial page —
      that context calls for 1.25–1.333, not the more extreme 1.5–1.618
      reserved for few-level hero pages. See Rationale.
-     8 steps generated from integer powers of the ratio (R24) — no
-     hand-picked in-between sizes.
+     7 steps generated from integer powers of the ratio, base 12px (R24)
+     — no hand-picked in-between sizes. xs (12px, n=0) is the static
+     caption/eyebrow floor, never fluid, never body copy. base (16px→
+     18px, n=1) is deliberately its own short, independent fluid range —
+     the R25 body-copy floor, not a telescoping step, since body text
+     doesn't get to run at a 21px ceiling just because the ratio would
+     allow it. From lg upward the ladder IS a continuous telescope of
+     12 × 1.333ⁿ (lg min 21.3px, lg max = xl min 28.4px, xl max = 2xl
+     min 37.9px, 2xl max = 3xl min 50.5px, 3xl max = 4xl min 67.3px,
+     4xl max 89.8px) — so from lg to 4xl, one step's max IS the next
+     step's min, with no gap and no ad-hoc in-between value.
      Fluid clamp() built per-step (R27/R28), anchors x1=400px→x2=1280px,
      v = 100×(y2−y1)/(x2−x1), r = (x1·y2−x2·y1)/(x1−x2), bounds in rem.
+     The ratio (12 × 1.333ⁿ) is a generation-time constant, not a runtime
+     token — CSS custom properties can't feed clamp() bounds through
+     exponentiation, so there is nothing for a --type-ratio token to do
+     at the cascade layer; it lived here only as unconsumed documentation
+     and was removed as dead weight. The 1.333 figure itself stays
+     documented above and in Rationale.
      -------------------------------------------------------------------- */
-  --type-ratio: 1.333;
 
   --text-xs:   clamp(0.75rem, 0.75rem, 0.75rem);                    /* 12px static — caption/eyebrow/label, not body copy */
   --text-base: clamp(1rem, 0.9432rem + 0.2273vw, 1.125rem);         /* 16px → 18px, body floor never below 16px (R25) */
-  --text-lg:   clamp(1.125rem, 1.0306rem + 0.3784vw, 1.333rem);     /* 18px → 21.3px */
-  --text-xl:   clamp(1.375rem, 1.1925rem + 0.7307vw, 1.777rem);     /* 22px → 28.4px */
-  --text-2xl:  clamp(1.625rem, 1.2875rem + 1.35vw, 2.3675rem);      /* 26px → 37.9px */
-  --text-3xl:  clamp(2rem, 1.475rem + 2.1011vw, 3.1556rem);         /* 32px → 50.5px */
-  --text-4xl:  clamp(2.5rem, 1.7238rem + 3.1045vw, 4.2075rem);      /* 40px → 67.3px */
-  --text-5xl:  clamp(3rem, 1.8138rem + 4.7443vw, 5.6094rem);        /* 48px → 89.8px — hero headline ceiling */
+  --text-lg:   clamp(1.333rem, 1.1312rem + 0.8073vw, 1.777rem);     /* 21.3px → 28.4px */
+  --text-xl:   clamp(1.777rem, 1.5086rem + 1.0736vw, 2.3675rem);    /* 28.4px → 37.9px */
+  --text-2xl:  clamp(2.3675rem, 2.0093rem + 1.4329vw, 3.1556rem);   /* 37.9px → 50.5px */
+  --text-3xl:  clamp(3.1556rem, 2.6775rem + 1.9125vw, 4.2075rem);   /* 50.5px → 67.3px */
+  --text-4xl:  clamp(4.2075rem, 3.5703rem + 2.5489vw, 5.6094rem);   /* 67.3px → 89.8px — H1 ceiling */
 
-  /* Leading — multiples of 4px (design-tokens R21), inverse to size
-     (typography-craft R8/R26): ~1.5 body-range, tightening to ~1.1 at
-     the largest display step. */
+  /* Leading — multiples of 4px (design-tokens R21). Static px steps stay
+     reserved for STATICALLY-sized type only (--text-xs, plus one
+     display-size static exception below) — anything paired with a
+     clamp() font size takes its leading from the unitless fluid block
+     instead (see below), never from here, or the line box can outgrow
+     the font mid-viewport (negative leading — typography-craft
+     R8/R26 failure). --leading-lg/2xl/3xl/4xl/5xl were declared for a
+     since-abandoned static reading of this scale and were never
+     consumed once every fluid step below --text-xs paired with the
+     unitless block instead — deleted rather than kept as unreachable
+     alternates. */
   --leading-xs:   1rem;      /* 16px on 12px text — tight, single-line UI label */
   --leading-base: 1.5rem;    /* 24px on 16px text — 150%, WCAG floor + craft sweet spot */
-  --leading-lg:   1.75rem;   /* 28px on 18–21.3px text */
-  --leading-xl:   2.25rem;   /* 36px on 22–28.4px text */
-  --leading-2xl:  2.75rem;   /* 44px on 26–37.9px text — ~1.16 */
-  --leading-3xl:  3.5rem;    /* 56px on 32–50.5px text — ~1.11–1.75 range, tightening */
-  --leading-4xl:  4.75rem;   /* 76px on 40–67.3px text — ~1.13 */
-  --leading-5xl:  6.25rem;   /* 100px on 48–89.8px text — ~1.11 */
+  --leading-xl:   2.25rem;   /* 36px, static — the one display-size exception: nav-logo pairs
+                                 this against --type-h3-size for a fixed single-line wordmark,
+                                 not a running paragraph, so a static value is correct there
+                                 even though --type-h3-size itself is fluid. */
 
   /* Fluid unitless leading — for anything paired with a clamp() font
      size. A px leading token steps at media-query breakpoints while a
@@ -125,10 +159,13 @@
      A unitless ratio scales exactly with the font size at every
      viewport, so the box/ink ratio is constant and never goes negative.
      Px leading tokens above stay reserved for statically-sized type
-     only (--text-xs). */
+     only (--text-xs, plus the nav-logo exception noted above). */
   --leading-display: 1.1;   /* hero/H1-scale display type */
   --leading-heading: 1.15;  /* H2/H3-scale display type */
-  --leading-body:    1.5;   /* body/lead-scale fluid type */
+  --leading-body:    1.5;   /* body/lead-scale fluid type — paired with --type-lead-size
+                                (a clamp()) wherever the page runs lead-sized prose, so the
+                                line box scales with the font instead of the fixed
+                                --leading-lg step that used to sit here (deleted, see above) */
 
   /* Font families — capped at 2 (typography-craft R21). One high-contrast
      editorial display serif reserved for ≥48px headline moments only
@@ -138,14 +175,19 @@
   --font-family-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
   --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
+  /* --font-weight-bold (700) was declared and never reached for — every
+     heading/CTA weight need on this page resolves at semibold; deleted
+     rather than kept unreachable. */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
-  --font-weight-bold: 700;
 
   --tracking-tight: -0.02em;  /* display headlines ≥48px (typography-craft R25) */
-  --tracking-normal: 0em;
   --tracking-wide: 0.08em;    /* all-caps labels/eyebrows (R26) */
+  /* --tracking-normal (0em) was declared as the implied default, but
+     "normal tracking" is what letter-spacing already does when the
+     property is simply omitted — no rule on the page needed to assert
+     0em explicitly, so this stayed a token with no consumer. Deleted. */
 
   /* --------------------------------------------------------------------
      5. PRIMITIVE — Radius (design-tokens R29)
@@ -158,23 +200,65 @@
   /* --------------------------------------------------------------------
      6. PRIMITIVE — Shadow elevation tiers (design-tokens R30)
      Built once from --neutral-12 (rgb(27,29,36)), never per-component.
+     Stops at tier 3 (dropdown/popover) — this page has no modal, so a
+     4th "modal" tier was declared and never reachable; deleted rather
+     than kept as speculative depth for a component that doesn't exist
+     here.
      -------------------------------------------------------------------- */
   --shadow-1: 0 1px 2px rgba(27,29,36,0.06), 0 1px 1px rgba(27,29,36,0.04);   /* resting card */
   --shadow-2: 0 4px 8px rgba(27,29,36,0.08), 0 2px 4px rgba(27,29,36,0.06);   /* hover/raised */
   --shadow-3: 0 12px 24px rgba(27,29,36,0.12), 0 4px 8px rgba(27,29,36,0.08); /* dropdown/popover */
-  --shadow-4: 0 24px 48px rgba(27,29,36,0.18), 0 8px 16px rgba(27,29,36,0.10);/* modal */
 
   /* --------------------------------------------------------------------
-     7. PRIMITIVE — Duration & easing (design-tokens R31/R32, M3 scale)
+     7. PRIMITIVE — Duration & easing (design-tokens R31/R32, motion-
+     performance bands, visual-identity R24-28 named-motion-signature)
+     Archetype decision: snappy-confident. AURI A1's whole visual identity
+     (Section "PALETTE" in Rationale below) is precision/durability —
+     titanium drivers, studio tuning, a 10-year repair promise. Stock M3
+     curves (the old --ease-standard, literally Material's standard
+     bezier(0.4,0,0.2,1)) carry no brand signature; a page whose entire
+     pitch is "engineered to last, not generically nice" shouldn't move
+     like every other Material page on the internet. Two named curves,
+     not one, because the brand has exactly one moment that gets to show
+     confidence (the primary CTA press) and everything else should stay
+     out of its way:
+       --ease-workhorse — every ordinary hover/toggle/press morph on the
+         page (nav, links, form fields, FAQ, cards). Fast start, hard
+         flat landing, no coast and no overshoot: "durable, precise
+         positioning," not playful. This is the page's one systemic
+         non-hero curve — it replaces the old --ease-standard everywhere
+         that token used to appear.
+       --ease-hero — reserved exclusively for the single primary CTA's
+         press/release (.btn-primary transform, see styles.css). A
+         slight confident overshoot (1.3 mid-control past 1.0) — the one
+         place the brand is allowed to editorialize, on the one control
+         that matters most.
+     Durations: --duration-instant (100ms) stays untouched — it is
+     load-bearing for the NN/g pointer-feedback ceiling [LAW] on hover/
+     press color changes and must never absorb the new brand curve's
+     timing, only its shape. --duration-medium (300ms, cards/sheets/
+     toast) is unchanged for the same reason — a different interaction
+     class, not part of this identity decision. The old --duration-short
+     (150ms, toggles/open-close: nav menu, FAQ chevron, nav-toggle bars)
+     is retired and folded into --duration-workhorse (200ms) — one named,
+     intentional "toggle" duration instead of an arbitrary 150ms nobody
+     could explain, still comfortably inside the sub-300ms micro-
+     interaction band motion-performance requires. --duration-hero
+     (250ms) is scoped the same as --ease-hero: .btn-primary press/
+     release only, long enough for the overshoot to actually read.
+     Decelerate/accelerate: still not reintroduced. Every transition on
+     the page remains a symmetric hover/press/toggle, never a one-
+     directional enter/exit — the prior audit's "two easings declared-
+     unused" applied to that pair; they were deleted before this pass and
+     stay deleted, not reached for again just because the curve list grew.
      -------------------------------------------------------------------- */
-  --duration-instant: 100ms; /* hover/press feedback — NN/g response-time ceiling (R22, [LAW]) */
-  --duration-short: 150ms;   /* toggles, open/close state changes (not pointer feedback) */
-  --duration-medium: 300ms;  /* cards, sheets, dropdowns */
-  --duration-long: 480ms;    /* large-surface transitions */
+  --duration-instant: 100ms;   /* hover/press feedback — NN/g response-time ceiling (R22, [LAW]) */
+  --duration-workhorse: 200ms; /* toggles, open/close state changes — the systemic non-hero duration */
+  --duration-medium: 300ms;    /* cards, sheets, dropdowns */
+  --duration-hero: 250ms;      /* .btn-primary press/release ONLY — long enough for the overshoot to read */
 
-  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);   /* on-screen morphs */
-  --ease-decelerate: cubic-bezier(0, 0, 0, 1);      /* entering */
-  --ease-accelerate: cubic-bezier(0.3, 0, 1, 1);    /* exiting */
+  --ease-workhorse: cubic-bezier(0.2, 0, 0, 1);      /* snappy-confident: fast start, flat landing, no coast — every standard transition on the page */
+  --ease-hero: cubic-bezier(0.34, 1.3, 0.64, 1);     /* snappy-confident + slight overshoot — .btn-primary press/release ONLY */
 
   /* --------------------------------------------------------------------
      8. PRIMITIVE — Touch target floor (design-tokens R22)
@@ -217,7 +301,7 @@
 
   --color-action-secondary-border:   var(--color-border-interactive);
   --color-action-secondary-text:     var(--color-text-primary);
-  --color-action-secondary-bg-hover: var(--color-bg-component);
+  --color-action-secondary-bg-hover: var(--color-bg-component-hover);
 
   /* Feedback — genuinely separate from the action role. An error is not
      an action; it must never borrow --color-action-primary-bg (design-
@@ -231,38 +315,90 @@
      button that should win the squint test (R6). */
   --color-accent-decorative: var(--accent-7);
 
+  /* Unfilled/empty state of a decorative mark — e.g. the unfilled 30%
+     of the partial 5th rating star (--rating-star-fill-5 below). Never
+     used for text; purely the "not yet filled" half of a two-tone
+     decorative glyph, so it gets its own named role rather than
+     borrowing --color-border-subtle for a job that isn't a border. */
+  --color-decorative-muted: var(--neutral-6);
+
   /* Border sitting on an inverse (dark) surface — e.g. the footer.
      Named so component CSS never reaches for a raw --neutral-9 again. */
   --color-border-on-inverse: var(--neutral-9);
 
   /* --------------------------------------------------------------------
-     9b. SEMANTIC — Decorative graphic roles
-     For inline illustration SVGs only (hero + mechanism visuals) — never
-     for UI chrome. Named by function ("illustration ground/mark"), not
-     appearance, per R19. Kept distinct from the action and text roles so
-     illustration art can never be mistaken for, or dilute, the one CTA
-     color (R6/R18).
-     -------------------------------------------------------------------- */
-
-  /* --------------------------------------------------------------------
-     9c. SEMANTIC — Brand motif (design-tokens R29 / logo-swap test)
+     9b. SEMANTIC — Brand motif (design-tokens R29 / logo-swap test)
      One recurring graphic device — a waveform/frequency contour, echoing
-     the adaptive-ANC mechanism story (STRATEGY.md §1.2-1.3) — reused
-     systemically rather than decoratively: the FAQ marker, the price/risk
-     list bullets, the section dividers, and the hero backdrop (see the
-     hero SVG in index.html) all draw from this one shape family. Shipped
-     as shape-only data URIs (no baked-in fill/stroke color) so every
-     placement recolors through mask-image + background-color, tracing
-     back to a semantic/component color token per R18 — never a second,
-     untraceable color system living only in an asset.
+     the adaptive-ANC mechanism story (STRATEGY.md §1.2-1.3) — with
+     exactly ONE job: brand divider (mechanism/final-cta section breaks)
+     and hero accent (the .hero-visual.photo-frame bottom-edge treatment
+     and the .btn-primary press-state overlay — see styles.css). It
+     previously also stood in for the FAQ +/- indicator, the rating
+     marks, and the price/risk list bullets — four unrelated jobs on one
+     shape family, which is exactly what let the FAQ's collapsed state
+     read as a generic "more options" kebab and made five identical marks
+     read as a false 5.0 rating instead of the actual 4.7. Those three
+     roles now draw from the dedicated icon system below (chevron, star,
+     check) instead. Shipped as shape-only data URIs (no baked-in fill/
+     stroke color) so every placement recolors through mask-image +
+     background-color, tracing back to a semantic/component color token
+     per R18 — never a second, untraceable color system living only in
+     an asset. The hero DOES carry this motif now (a repeating strip
+     along the bottom edge of the hero photo, see .hero-visual.photo-
+     frame::before in styles.css) — this replaces the earlier claim
+     below that no hero SVG exists; that claim was true for one build,
+     then went stale once the hero-accent placement shipped, which is
+     exactly the kind of drift this comment exists to prevent.
      -------------------------------------------------------------------- */
-  --motif-wave-mark:      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2' y='9' width='4' height='6' rx='1.5'/%3E%3Crect x='10' y='4' width='4' height='16' rx='1.5'/%3E%3Crect x='18' y='7' width='4' height='10' rx='1.5'/%3E%3C/svg%3E");
-  --motif-wave-mark-flat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2' y='10' width='4' height='4' rx='1.5'/%3E%3Crect x='10' y='10' width='4' height='4' rx='1.5'/%3E%3Crect x='18' y='10' width='4' height='4' rx='1.5'/%3E%3C/svg%3E");
   --motif-wave-divider:   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 16'%3E%3Cpath d='M0 8 C 5 0 10 0 15 8 C 20 16 25 16 30 8 C 35 0 40 0 45 8 C 50 16 55 16 60 8' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
 
   /* --------------------------------------------------------------------
+     9b-ii. SEMANTIC — Icon system (design-tokens R29, visual-identity
+     icon-set rule: one grid, one stroke weight, one style — never mix).
+     Every icon below shares a 24x24 viewBox and a 2px stroke weight
+     (matching the redrawn social icons in index.html, M4). Shipped as
+     shape-only data URIs, same recolor-through-mask-image pattern as the
+     brand motif above — never a baked-in fill/stroke color.
+       --icon-chevron        FAQ disclosure marker. Reads as "expand/
+                              collapse," not a kebab "more options" —
+                              rotates 180deg on [open] via CSS transform,
+                              no second asset needed for the open state.
+       --icon-check           Price-inclusion and risk-reversal list
+                              bullets. Reads as "included/covered," not a
+                              decorative tick mark from the divider shape.
+       --icon-star             Trust-bar rating marks. Five of these, the
+                              fifth painted with a partial gradient fill
+                              (see --rating-star-fill-5 below and
+                              .trust-star--partial in styles.css) so five
+                              identical glyphs stop silently claiming a
+                              5.0 the product doesn't have — the real
+                              number (4.7) reads visually, not just in
+                              the adjacent sr-only text.
+       --icon-alert-triangle  Replaces the bare content:"⚠" system glyph
+                              on invalid form fields (M4): that character
+                              rendered as a full-color emoji on Windows
+                              and, as literal text content, was exposed
+                              to assistive tech redundantly alongside the
+                              hint text it decorates. A masked SVG is
+                              never text — inherently decorative/aria-
+                              silent, recolors through the same feedback-
+                              error token as the message it sits next to.
+       --icon-arrow-right     Replaces the literal "↓"/"→" characters on
+                              .text-link (M4) — the down variant is this
+                              same asset rotated 90deg via CSS, so the
+                              icon system stays on one shape instead of
+                              shipping two near-duplicate arrow assets.
+     -------------------------------------------------------------------- */
+  --icon-chevron:        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9 L12 15 L18 9' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --icon-check:          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 12.5 L9.5 18 L20 6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --icon-star:           url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2 L14.35 8.76 L21.51 8.91 L15.8 13.24 L17.88 20.09 L12 16 L6.12 20.09 L8.2 13.24 L2.49 8.91 L9.65 8.76 Z'/%3E%3C/svg%3E");
+  --icon-alert-triangle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3.5 L22 20.5 L2 20.5 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'/%3E%3Cline x1='12' y1='9.5' x2='12' y2='14.5' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='17.5' r='1' fill='black'/%3E%3C/svg%3E");
+  --icon-arrow-right:    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 12 L20 12 M14 6 L20 12 L14 18' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+
+  /* --------------------------------------------------------------------
      @contrast assertions — every fg/bg pair the page uses.
-     Thresholds per design-tokens R15: normal text ≥4.5, non-text UI ≥3.
+     Thresholds per design-tokens R15: normal text ≥4.5, non-text UI/
+     large-text ≥3.
      -------------------------------------------------------------------- */
   /* @contrast --color-text-primary on --color-bg-page >= 4.5 */
   /* @contrast --color-text-secondary on --color-bg-page >= 4.5 */
@@ -278,14 +414,39 @@
   /* @contrast --color-text-inverse-muted on --color-bg-inverse >= 4.5 */
   /* @contrast --color-feedback-error on --color-bg-page >= 4.5 */
   /* @contrast --color-feedback-error on --color-bg-alt >= 4.5 */
+  /* @contrast --color-text-secondary on --color-bg-component >= 4.5 */
+  /* @contrast --color-text-secondary on --color-bg-surface-on-alt >= 4.5 */
+  /* @contrast --color-text-primary on --color-bg-surface-on-alt >= 4.5 */
+  /* @contrast --color-feedback-error on --color-bg-surface-on-alt >= 4.5 */
+  /* --color-accent-decorative fails 4.5 as running text (3.41:1 on
+     --color-bg-page) — it is never used for body-weight text. Its two
+     text-sized placements are both large/bold-adjacent, non-text, or a
+     hover state on large display type, so the non-text/large-text floor
+     (≥3) is what actually applies: */
+  /* @contrast --color-accent-decorative on --color-bg-page >= 3 */
+  /* @contrast --color-accent-decorative on --color-bg-alt >= 3 */
 
   /* --------------------------------------------------------------------
      10. SEMANTIC — Layout spacing (8px grid; 4px sub-grid reserved for
      internal component spacing per design-tokens R19)
      -------------------------------------------------------------------- */
-  --layout-gutter-mobile: var(--space-4);   /* 16px */
-  --layout-gutter-desktop: var(--space-6);  /* 32px */
-  --layout-section-padding-mobile: var(--space-7);  /* 48px */
+  --layout-gutter-mobile: var(--space-4);   /* 16px — page edge, mobile */
+  --layout-gutter-desktop: var(--space-6);  /* 32px — page edge, desktop */
+  /* Column gutter INSIDE the container — one value for every grid on the
+     page (hero, feature blocks, testimonials, footer columns/capture).
+     Four different gutters (48/64/32/16) were reading as four unrelated
+     grids; composition-grids mandates a single 24px gutter at >=768px.
+     Below 768 the grids are single-column stacks, so their column gap
+     falls back to --space-4 at the call site. This is the column axis
+     only — row rhythm stays a per-section decision. */
+  --grid-gutter: var(--space-5);            /* 24px */
+  /* These two used to say 48/96 while every section actually shipped
+     64/96 (the tokens were declared, then bypassed at every call site in
+     favor of hardcoded --space-8/--space-9). Re-anchored to what ships —
+     64px below 1024px, 96px at 1024px+ — and every section below now
+     reads its padding-block from these two tokens instead of reaching
+     around them. */
+  --layout-section-padding-mobile: var(--space-8);  /* 64px */
   --layout-section-padding-desktop: var(--space-9); /* 96px */
   --layout-container-max-width: 75rem; /* 1200px */
 
@@ -299,8 +460,12 @@
   --type-lead-size: var(--text-lg);
   --type-h3-size: var(--text-2xl);
   --type-h2-size: var(--text-3xl);
-  --type-h1-size: var(--text-4xl); /* remapped to --text-3xl below 480px so the two-sentence hero holds 4-5 lines on a phone */
-  --type-hero-size: var(--text-5xl);
+  --type-h1-size: var(--text-4xl); /* remapped to --text-2xl below 480px — see the media query at the
+                                       bottom of this file for why, and for the fold math */
+  /* --type-hero-size (--text-5xl) was declared for a hero-scale display
+     step above H1 and never reached for anywhere — the hero headline
+     has always used --type-h1-size. Deleted along with --text-5xl
+     rather than kept as an unconsumed ceiling above the real one. */
 
   /* --------------------------------------------------------------------
      12. COMPONENT — Button (primary = the one CTA; secondary = ghost)
@@ -340,6 +505,19 @@
   --nav-height: var(--space-9); /* 96px */
   --nav-bg: var(--color-bg-page);
   --nav-border: var(--color-border-subtle);
+
+  /* --------------------------------------------------------------------
+     14. COMPONENT — Trust-bar rating marks
+     Five --icon-star glyphs stand in for the 4.7/5 aggregate rating
+     (see the JSON-LD aggregateRating in index.html — this token is the
+     one place that 0.7 fraction is expressed visually). The 5th mark
+     renders at 70% fill via a hard-stop gradient rather than five
+     identical full marks, so the icon itself doesn't overclaim a 5.0
+     the product doesn't have (M3). If the published rating changes,
+     this is the only value that needs updating to keep the glyph
+     honest — recompute as (rating mod 1) × 100%.
+     -------------------------------------------------------------------- */
+  --rating-star-fill-5: 70%; /* 4.7 / 5 → 0.7 of the 5th star filled */
 }
 
 /* ==========================================================================
@@ -422,9 +600,15 @@
    ========================================================================== */
 
 /* Mobile display-type remap: the two-sentence hero H1 must hold 4-5 lines on a
-   phone so price + CTA stay within one thumb-scroll of the fold. */
+   phone so price + CTA stay within one thumb-scroll of the fold (see the
+   above-the-fold budget comment on .hero in styles.css for the measured
+   stack). Was --text-3xl; after the M14 re-anchor (--text-3xl's floor moved
+   from 32px to 50.5px — see the type-scale comment above) that size alone
+   blew the fold budget, so the remap steps down one rung to --text-2xl
+   (floor now 37.9px, up from the old 26px) and the hero stack was
+   re-tightened again to buy back the difference — see styles.css. */
 @media (max-width: 479px) {
   :root {
-    --type-h1-size: var(--text-3xl);
+    --type-h1-size: var(--text-2xl);
   }
 }

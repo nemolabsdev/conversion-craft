@@ -64,12 +64,23 @@ h1, h2, h3 {
   color: var(--color-text-primary);
 }
 
+/* Section headings run 4-9 words at display size — balanced wrapping keeps
+   the last line from dropping a single orphan word (typography-craft). */
+h2 { text-wrap: balance; }
+
 p { color: var(--color-text-primary); }
 
+/* No border-radius here: a global radius-sm forced onto every focused
+   element fought the shape of anything with a different radius of its
+   own (the pill-shaped .price-chip, the fully-round .social-icons a),
+   producing a square-cornered ring flashed over a round control.
+   Elements that want a rounded ring declare their own border-radius
+   already (buttons, inputs, nav items, the price chip, social icons) —
+   the outline follows it natively. Plain text links have no radius and
+   render a square ring by default, which is correct for them too. */
 :focus-visible {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
 }
 
 /* ---------------------------------------------------------------------- */
@@ -99,8 +110,8 @@ p { color: var(--color-text-primary); }
   border-radius: var(--radius-sm);
   font-weight: var(--font-weight-semibold);
   transform: translateY(-8rem);
-  transition: transform var(--duration-short) var(--ease-standard),
-              background-color var(--duration-instant) var(--ease-standard);
+  transition: transform var(--duration-workhorse) var(--ease-workhorse),
+              background-color var(--duration-instant) var(--ease-workhorse);
 }
 .skip-link:focus {
   transform: translateY(0);
@@ -118,31 +129,80 @@ p { color: var(--color-text-primary); }
   .container { padding-inline: var(--layout-gutter-desktop); }
 }
 
+/* Measure cap, always LEFT-ANCHORED. A centered narrow column inside a
+   centered container puts its first text edge at x=320 while full-width
+   sections start at x=72 — five sections doing that made the page's left
+   alignment line zig-zag. The cap now only limits line length; it never
+   moves the text off the container's own content edge. */
+/* Body-copy measure inside narrow sections: the 45.5rem section cap serves
+   the grid (M1), but Inter at 18px runs ~87 real CPL at that width — cap
+   running paragraphs separately to stay under the 80-CPL body ceiling. */
+.narrow-measure p:not(.pull-quote) { max-width: 56ch; }
+
 .narrow-measure {
-  max-width: 44rem;
+  max-width: 45.5rem;
+  margin-inline-start: 0;
+  margin-inline-end: auto;
 }
+/* When the cap sits ON the container element itself, the container keeps its
+   own max-width, centering and gutters — the measure cap moves to the
+   children, so the first text edge is x=72 at 1280 exactly like every other
+   section. One class, one behaviour. */
 .container.narrow-measure {
-  max-width: 44rem;
+  max-width: var(--layout-container-max-width);
+  margin-inline: auto;
+}
+.container.narrow-measure > * {
+  max-width: 45.5rem;
 }
 
 .text-link {
   display: inline-flex;
   align-items: center;
+  gap: var(--space-1);
   min-height: var(--target-min);
   color: var(--color-text-secondary);
   font-weight: var(--font-weight-medium);
   text-decoration: underline;
   text-underline-offset: 0.15em;
-  transition: color var(--duration-instant) var(--ease-standard),
-              text-decoration-thickness var(--duration-instant) var(--ease-standard),
-              text-underline-offset var(--duration-instant) var(--ease-standard);
+  transition: color var(--duration-instant) var(--ease-workhorse),
+              text-decoration-thickness var(--duration-instant) var(--ease-workhorse),
+              text-underline-offset var(--duration-instant) var(--ease-workhorse);
 }
 .text-link:hover {
   color: var(--color-text-primary);
   text-decoration-thickness: 2px;
   text-underline-offset: 0.25em;
 }
-.text-link:active { color: var(--color-accent-decorative); }
+/* Not --color-accent-decorative: at 3.41:1 on --color-bg-page it fails
+   the 4.5:1 text floor for a normal-weight :active color (design-tokens
+   R15). --color-action-primary-bg clears 5.30:1 on the same background —
+   see the @contrast assertions in tokens.css. */
+.text-link:active { color: var(--color-action-primary-bg); }
+
+/* --icon-arrow-right (M4), not a literal "↓"/"→" character: text arrows
+   render at whatever weight/size the surrounding font happens to give
+   them (inconsistent across the two link instances that used them) and
+   aren't part of the 24-grid icon system. currentColor keeps the icon
+   following the link's own color through hover/active without a second
+   color token to wire up. The down variant is this same asset rotated —
+   one shape, not two near-duplicate arrow assets. */
+.icon-arrow-right {
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--space-4);
+  height: var(--space-4);
+  background-color: currentColor;
+  mask-image: var(--icon-arrow-right);
+  -webkit-mask-image: var(--icon-arrow-right);
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+  mask-size: contain;
+  -webkit-mask-size: contain;
+}
+.icon-arrow-right--down { transform: rotate(90deg); }
 
 .fictional-tag {
   display: inline-block;
@@ -155,24 +215,26 @@ p { color: var(--color-text-primary); }
 /* ---------------------------------------------------------------------- */
 /* Buttons                                                                 */
 /* ---------------------------------------------------------------------- */
+/* Shared layout/behavior only — geometry (padding, radius, min-height)
+   comes from each variant below via its own --button-primary-*/
+   --button-secondary-* component tokens, not a shared primitive here,
+   so the two variants can independently retune their footprint without
+   touching the other (design-tokens R2: product CSS reads the
+   COMPONENT tier, never a primitive, for a component that has one). */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  min-height: var(--target-min);
-  padding-block: var(--space-3);
-  padding-inline: var(--space-6);
-  border-radius: var(--radius-md);
   border: 1px solid transparent;
   font-weight: var(--font-weight-semibold);
   font-size: var(--type-body-size);
   line-height: var(--leading-base);
   white-space: nowrap;
-  transition: background-color var(--duration-instant) var(--ease-standard),
-              border-color var(--duration-instant) var(--ease-standard),
-              transform var(--duration-instant) var(--ease-standard),
-              box-shadow var(--duration-instant) var(--ease-standard);
+  transition: background-color var(--duration-instant) var(--ease-workhorse),
+              border-color var(--duration-instant) var(--ease-workhorse),
+              transform var(--duration-instant) var(--ease-workhorse),
+              box-shadow var(--duration-instant) var(--ease-workhorse);
 }
 .btn:active:not(:disabled) { transform: translateY(1px); }
 .btn:disabled {
@@ -181,10 +243,28 @@ p { color: var(--color-text-primary); }
   pointer-events: none;
 }
 
+/* position:relative anchors the M5 press-state motif overlay (::before
+   below) — the button is otherwise unpositioned and the overlay needs
+   inset:0 against the button's own box, not an ancestor's. */
 .btn-primary {
+  position: relative;
+  min-height: var(--button-primary-min-height);
+  padding-block: var(--button-primary-padding-y);
+  padding-inline: var(--button-primary-padding-x);
+  border-radius: var(--button-primary-radius);
   background-color: var(--button-primary-bg);
   color: var(--button-primary-text);
   box-shadow: var(--button-primary-shadow);
+  /* Overrides .btn's shared transition wholesale (not additive — the
+     shorthand replaces it) so the CTA's own press/release gets the hero
+     curve (visual-identity R24-28, M6) on the one property that actually
+     moves (transform), while its color/shadow feedback stays on the same
+     workhorse timing every other button uses. This is the ONE place
+     --ease-hero/--duration-hero are allowed to appear. */
+  transition: background-color var(--duration-instant) var(--ease-workhorse),
+              border-color var(--duration-instant) var(--ease-workhorse),
+              box-shadow var(--duration-instant) var(--ease-workhorse),
+              transform var(--duration-hero) var(--ease-hero);
 }
 .btn-primary:hover:not(:disabled) { background-color: var(--button-primary-bg-hover); }
 .btn-primary:active:not(:disabled) { background-color: var(--button-primary-bg-active); }
@@ -192,8 +272,48 @@ p { color: var(--color-text-primary); }
   background-color: var(--color-bg-component-active);
   color: var(--color-text-secondary);
 }
+/* M5 — the brand waveform's second job (its first is the hero photo edge
+   and the mechanism/final-cta dividers): a faint motif wash that fades
+   in only while the CTA is pressed. Deliberately subtle (opacity 0.16,
+   never touched outside :active) — this is a texture on the one moment
+   of confidence the button gets, not a second competing graphic. Uses
+   the hero curve/duration to fade, matching the press/release motion
+   it's tied to. */
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--button-primary-text);
+  mask-image: var(--motif-wave-divider);
+  -webkit-mask-image: var(--motif-wave-divider);
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+  mask-size: 60% auto;
+  -webkit-mask-size: 60% auto;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-hero) var(--ease-hero);
+}
+.btn-primary:active:not(:disabled)::before {
+  opacity: 0.16;
+}
+/* Copper-on-copper otherwise: the default :focus-visible ring
+   (--color-border-focus = --accent-7) sits directly on the
+   --accent-9 CTA fill at 1.56:1 — nearly invisible. Swap to
+   --color-text-primary, which clears the CTA fill with the existing
+   2px outline-offset giving a visible ring even against the copper. */
+.btn-primary:focus-visible {
+  outline-color: var(--color-text-primary);
+}
 
 .btn-secondary {
+  min-height: var(--button-secondary-min-height);
+  padding-block: var(--button-secondary-padding-y);
+  padding-inline: var(--button-secondary-padding-x);
+  border-radius: var(--button-secondary-radius);
   background-color: transparent;
   color: var(--button-secondary-text);
   border-color: var(--button-secondary-border);
@@ -221,10 +341,12 @@ p { color: var(--color-text-primary); }
   font-weight: var(--font-weight-semibold);
   text-decoration: underline;
   cursor: pointer;
-  transition: color var(--duration-instant) var(--ease-standard);
+  transition: color var(--duration-instant) var(--ease-workhorse);
 }
 .link-button:hover { color: var(--color-text-secondary); }
-.link-button:active { color: var(--color-accent-decorative); }
+/* Same swap as .text-link:active above, same reason: --color-accent-decorative
+   fails 4.5:1 as a normal-weight text color; --color-action-primary-bg clears it. */
+.link-button:active { color: var(--color-action-primary-bg); }
 
 /* ---------------------------------------------------------------------- */
 /* Header / primary nav                                                   */
@@ -233,7 +355,7 @@ p { color: var(--color-text-primary); }
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: var(--color-bg-page);
+  background-color: var(--nav-bg);
   border-bottom: 1px solid var(--nav-border);
 }
 
@@ -261,8 +383,12 @@ p { color: var(--color-text-primary); }
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--tracking-tight);
   color: var(--color-text-primary);
-  transition: color var(--duration-instant) var(--ease-standard);
+  transition: color var(--duration-instant) var(--ease-workhorse);
 }
+/* --color-accent-decorative is safe here specifically: --type-h3-size (min
+   37.9px) is well past the ≥24px large-text threshold, so the ≥3:1 floor
+   applies, not ≥4.5:1 — it clears 3.41:1 on --color-bg-page. See the
+   @contrast assertion in tokens.css. */
 .nav-logo:hover { color: var(--color-accent-decorative); }
 .nav-logo:active { color: var(--color-text-secondary); }
 
@@ -274,7 +400,7 @@ p { color: var(--color-text-primary); }
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  background-color: var(--color-bg-page);
+  background-color: var(--nav-bg);
   border-bottom: 1px solid var(--nav-border);
   padding: var(--space-4);
   box-shadow: var(--shadow-3);
@@ -282,17 +408,17 @@ p { color: var(--color-text-primary); }
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity var(--duration-short) var(--ease-standard),
-              transform var(--duration-short) var(--ease-standard),
-              visibility 0s linear var(--duration-short);
+  transition: opacity var(--duration-workhorse) var(--ease-workhorse),
+              transform var(--duration-workhorse) var(--ease-workhorse),
+              visibility 0s linear var(--duration-workhorse);
 }
 .nav-menu.is-open {
   opacity: 1;
   transform: translateY(0);
   visibility: visible;
   pointer-events: auto;
-  transition: opacity var(--duration-short) var(--ease-standard),
-              transform var(--duration-short) var(--ease-standard),
+  transition: opacity var(--duration-workhorse) var(--ease-workhorse),
+              transform var(--duration-workhorse) var(--ease-workhorse),
               visibility 0s linear;
 }
 .nav-menu li a {
@@ -303,9 +429,9 @@ p { color: var(--color-text-primary); }
   border-radius: var(--radius-sm);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-primary);
-  transition: background-color var(--duration-instant) var(--ease-standard);
+  transition: background-color var(--duration-instant) var(--ease-workhorse);
 }
-.nav-menu li a:hover { background-color: var(--color-bg-component); }
+.nav-menu li a:hover { background-color: var(--color-bg-component-hover); }
 .nav-menu li a:active { background-color: var(--color-bg-component-active); }
 
 .header-actions {
@@ -327,8 +453,8 @@ p { color: var(--color-text-primary); }
   font-weight: var(--font-weight-semibold);
   font-size: var(--text-xs);
   color: var(--color-text-primary);
-  transition: border-color var(--duration-instant) var(--ease-standard),
-              background-color var(--duration-instant) var(--ease-standard);
+  transition: border-color var(--duration-instant) var(--ease-workhorse),
+              background-color var(--duration-instant) var(--ease-workhorse);
 }
 .price-chip:hover { border-color: var(--color-border-interactive); }
 .price-chip:active { background-color: var(--color-bg-component-active); }
@@ -346,9 +472,9 @@ p { color: var(--color-text-primary); }
   height: var(--target-min);
   border-radius: var(--radius-sm);
   flex-shrink: 0;
-  transition: background-color var(--duration-instant) var(--ease-standard);
+  transition: background-color var(--duration-instant) var(--ease-workhorse);
 }
-.nav-toggle:hover { background-color: var(--color-bg-component); }
+.nav-toggle:hover { background-color: var(--color-bg-component-hover); }
 .nav-toggle:active { background-color: var(--color-bg-component-active); }
 .nav-toggle-bar {
   display: block;
@@ -356,8 +482,8 @@ p { color: var(--color-text-primary); }
   height: 2px;
   background-color: var(--color-text-primary);
   border-radius: var(--radius-full);
-  transition: transform var(--duration-short) var(--ease-standard),
-              opacity var(--duration-short) var(--ease-standard);
+  transition: transform var(--duration-workhorse) var(--ease-workhorse),
+              opacity var(--duration-workhorse) var(--ease-workhorse);
 }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
   transform: translateY(6px) rotate(45deg);
@@ -412,14 +538,19 @@ p { color: var(--color-text-primary); }
 .hero-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-6);
+  row-gap: var(--space-6);
+  column-gap: var(--space-4);
   align-items: center;
+}
+@media (min-width: 768px) {
+  .hero-grid { column-gap: var(--grid-gutter); }
 }
 @media (min-width: 1024px) {
   /* 7/5 split: the photo column must carry enough visual mass to counter-
      balance the text block (composition-grids balance check) — a 78/22 split
-     read as a floating thumbnail, not a hero. */
-  .hero-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-7); align-items: stretch; }
+     read as a floating thumbnail, not a hero. Column gutter stays on the
+     one systemic --grid-gutter; only the row rhythm is section-specific. */
+  .hero-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: stretch; }
 }
 
 .hero-visual-wrap {
@@ -435,9 +566,13 @@ p { color: var(--color-text-primary); }
    group, compare link — matching source order. A prior mobile-only
    reorder surfaced the CTA above the headline to chase "above the
    fold," but that separated the ask from the copy that justifies it
-   (R10) and left the CTA cluster under-grouped (R9). The CTA still
-   lands within the first viewport in natural order at 375px, so no
-   reorder is needed to satisfy the above-fold requirement. */
+   (R10) and left the CTA cluster under-grouped (R9).
+   Reading order alone did NOT buy the fold: measured at 375x667 the CTA
+   top landed at 670.5px — 3.5px past the fold, i.e. fully invisible.
+   The fold is bought back by shortening the stack above the button
+   instead (see the <480px block after .cta-support): smaller hero photo
+   on a 16:10 crop, tighter hero top padding, tighter subhead/lead
+   margins — 73.6px removed, CTA now 597→655px, bottom edge inside 667. */
 .hero-copy {
   display: flex;
   flex-direction: column;
@@ -445,7 +580,7 @@ p { color: var(--color-text-primary); }
 
 .hero-visual {
   width: 100%;
-  max-width: 20rem;
+  max-width: 16rem;
   margin: 0;
 }
 @media (min-width: 480px) {
@@ -458,8 +593,17 @@ p { color: var(--color-text-primary); }
   /* Structural, not decorative: the portrait crop fills the entire 5fr
      column height, matching the text block edge-to-edge. */
   .hero-visual { max-width: none; height: 100%; }
-  .hero-visual picture,
-  .hero-visual img { width: 100%; height: 100%; object-fit: cover; }
+  /* .hero-visual.photo-frame, not .hero-visual — .photo-frame img below sets
+     height:auto at equal specificity and later source order, which used to
+     win the cascade here and let the image fall back to its own aspect
+     ratio instead of stretching to fill the column. Harmless while the
+     text column was short enough to nearly match the image's natural
+     height by coincidence; the M14 type-scale re-anchor made the copy
+     column taller and turned the coincidence into a visible gap under the
+     photo. The extra class on the selector outranks .photo-frame img on
+     specificity instead of relying on source order. */
+  .hero-visual.photo-frame picture,
+  .hero-visual.photo-frame img { width: 100%; height: 100%; object-fit: cover; }
 }
 
 /* Photographic assets (demo-assets skill): local WebP, explicit dimensions,
@@ -467,6 +611,7 @@ p { color: var(--color-text-primary); }
 .photo-frame {
   position: relative;
   overflow: hidden;
+  isolation: isolate; /* confine the grade blend to the photo, not the page bg */
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-2);
 }
@@ -475,12 +620,46 @@ p { color: var(--color-text-primary); }
   width: 100%;
   height: auto;
 }
+/* Grade: warm rim-lift, blended with SCREEN. All three photos are shot near
+   black, and soft-light over near-black is arithmetically a no-op — the
+   previous overlay changed nothing measurable. Screen lifts dark pixels
+   instead: a shadow at rgb(20,20,20) moves ~+17R/+10G/+3B under the warm
+   stop, ~+4 neutral under the deep stop, so the grade is visible where the
+   photos actually live. Same two tint tokens, low opacity. */
 .photo-frame::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(160deg, var(--color-photo-tint-warm), var(--color-photo-tint-deep));
-  mix-blend-mode: soft-light;
+  mix-blend-mode: screen;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* M5 — the distinctive brand asset, above the fold. The waveform divider
+   (its other job is the mechanism/final-cta section breaks) repeats along
+   the bottom edge of the HERO photo specifically — scoped to
+   .hero-visual, not every .photo-frame, so this stays a one-time hero
+   accent rather than a systemic photo treatment that would dilute it.
+   Painted after the grade overlay in source order, so it sits under the
+   ::after tint and gets graded the same warm/deep wash as the photo
+   itself instead of floating on top uncorrected. */
+.hero-visual.photo-frame::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  height: var(--space-5);
+  background-color: var(--color-accent-decorative);
+  mask-image: var(--motif-wave-divider);
+  -webkit-mask-image: var(--motif-wave-divider);
+  mask-repeat: repeat-x;
+  -webkit-mask-repeat: repeat-x;
+  mask-size: auto 100%;
+  -webkit-mask-size: auto 100%;
+  mask-position: bottom left;
+  -webkit-mask-position: bottom left;
+  opacity: 0.55;
   pointer-events: none;
 }
 
@@ -525,7 +704,7 @@ p { color: var(--color-text-primary); }
 @media (min-width: 768px) {
   .lead {
     font-size: var(--type-lead-size);
-    line-height: var(--leading-lg);
+    line-height: var(--leading-body);
     margin-block-end: var(--space-4);
   }
 }
@@ -547,6 +726,43 @@ p { color: var(--color-text-primary); }
   color: var(--color-text-secondary);
 }
 
+/* Above-the-fold budget at 375x667 (small-phone floor), re-measured after
+   the M14 type-scale re-anchor (--text-3xl's floor moved from 32px to
+   50.5px, which is why --type-h1-size now remaps to --text-2xl here
+   instead of --text-3xl — see tokens.css). Stack, measured live in-browser
+   at 375x667:
+   header 65 + hero pad-start 12 + photo 128 (16rem / 16:8) + grid row-gap 16
+   + eyebrow 2 lines 32 +8 + H1 4 lines 166.7 +12 + subhead 2 lines 49.1 +12
+   + lead 4 lines 96 +12 = CTA top 608.7; button 56 tall → bottom 664.7 < 667.
+   H1 grew from 3 lines/105.6px to 4 lines/166.7px even one remap rung down
+   (--text-2xl's own floor, 37.9px, is still bigger than the old --text-3xl
+   floor it replaces) — that 61px alone would have blown the old budget, so
+   the photo crop, grid row-gap and subhead size were all tightened again
+   (previous values: 16:10/160px photo, 32px row-gap, subhead at --text-xl/
+   3 lines/98.1px) to buy the difference back. 2.3px of slack left — tight,
+   correct as measured, revisit before adding anything else above the CTA. */
+@media (max-width: 479px) {
+  .hero { padding-block-start: var(--space-3); }
+  /* 16rem wide (set on .hero-visual above) on a 16:8 crop of the same
+     landscape source — 128px tall instead of 213.6px. Cropped tighter
+     than the 16:10 this used to be (160px) to help buy back the fold
+     budget the M14 type re-anchor spent — see the accounting below. */
+  .hero-visual img {
+    aspect-ratio: 16 / 8;
+    object-fit: cover;
+  }
+  /* Row rhythm tightened one notch (32px → 16px) for the same reason —
+     part of the fold-budget buyback below, not a general hero-grid
+     change (the >=480px grid keeps --space-6). */
+  .hero-grid { row-gap: var(--space-4); }
+  /* text-xl's own floor moved from 22px to 28.4px in the M14 re-anchor,
+     which pushed the subhead to 3 lines here. Stepped down one rung to
+     text-lg (floor 21.3px, close to the old 22px) to hold it back to 2 —
+     see the fold-budget comment below for the full accounting. */
+  .hero-subhead { font-size: var(--text-lg); margin-block-end: var(--space-3); }
+  .lead { margin-block-end: var(--space-3); }
+}
+
 /* ---------------------------------------------------------------------- */
 /* Trust / proof bar                                                       */
 /* ---------------------------------------------------------------------- */
@@ -564,44 +780,62 @@ p { color: var(--color-text-primary); }
   margin-block-end: var(--space-6);
 }
 
+/* Static facts, not controls. These were styled pixel-identical to the
+   interactive .price-chip (same pill radius, same border, same surface),
+   which promised a tap target that isn't there. Now a muted inline text
+   row with middot separators — the same treatment as the footer payment
+   row, which is the other "list of facts" on the page. */
 .trust-badge {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  min-height: var(--target-min);
-  padding-inline: var(--space-4);
-  background-color: var(--color-bg-surface-on-alt);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-full);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-secondary);
+}
+.trust-badge + .trust-badge::before {
+  content: "·";
+  margin-inline-end: var(--space-4);
+  color: var(--color-border-subtle);
 }
 .trust-badge-rating {
   color: var(--color-text-primary);
   font-weight: var(--font-weight-semibold);
 }
-/* Drawn rating mark — the same waveform motif used for the FAQ marker
-   and list bullets, standing in for a generic Unicode star rating
-   (design-tokens R29 — no unowned system glyphs for a brand-specific
-   signal). Decorative; the rating is announced via the sr-only text
-   alongside it. */
+/* Drawn star rating (M3) — an --icon-star glyph, not the waveform motif
+   (that shape now has exactly one job: brand divider + hero accent, see
+   tokens.css §9b). Five identical full stars used to claim a 5.0 rating
+   the product doesn't have; the 5th star here renders at
+   --rating-star-fill-5 (70%, derived from the real 4.7/5) via a hard-
+   stop gradient instead of a solid fill, so the glyph itself is honest
+   before a screen-reader user even reaches the sr-only "4.7 out of 5"
+   text next to it. Decorative either way — aria-hidden on the wrapper. */
 .trust-marks {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
 }
-.trust-mark {
+.trust-star {
   display: inline-block;
   width: var(--space-4);
   height: var(--space-4);
   background-color: var(--color-accent-decorative);
-  mask-image: var(--motif-wave-mark);
-  -webkit-mask-image: var(--motif-wave-mark);
+  mask-image: var(--icon-star);
+  -webkit-mask-image: var(--icon-star);
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
   mask-position: center;
   -webkit-mask-position: center;
+  mask-size: contain;
+  -webkit-mask-size: contain;
+}
+.trust-star--partial {
+  background-color: transparent;
+  background-image: linear-gradient(
+    to right,
+    var(--color-accent-decorative) var(--rating-star-fill-5),
+    var(--color-decorative-muted) var(--rating-star-fill-5)
+  );
 }
 
 .trust-quote {
@@ -611,7 +845,7 @@ p { color: var(--color-text-primary); }
 }
 .trust-quote p {
   font-size: var(--type-lead-size);
-  line-height: var(--leading-lg);
+  line-height: var(--leading-body);
   font-style: italic;
   margin-block-end: var(--space-3);
 }
@@ -623,8 +857,8 @@ p { color: var(--color-text-primary); }
 /* ---------------------------------------------------------------------- */
 /* Relevance section                                                       */
 /* ---------------------------------------------------------------------- */
-.relevance { padding-block: var(--space-8); }
-@media (min-width: 1024px) { .relevance { padding-block: var(--space-9); } }
+.relevance { padding-block: var(--layout-section-padding-mobile); }
+@media (min-width: 1024px) { .relevance { padding-block: var(--layout-section-padding-desktop); } }
 
 .relevance h2 {
   font-family: var(--font-family-display);
@@ -639,7 +873,7 @@ p { color: var(--color-text-primary); }
 
 .relevance .pull-quote {
   font-size: var(--type-lead-size);
-  line-height: var(--leading-lg);
+  line-height: var(--leading-body);
   font-style: italic;
   color: var(--color-text-primary);
   border-inline-start: 3px solid var(--color-accent-decorative);
@@ -650,10 +884,10 @@ p { color: var(--color-text-primary); }
 /* Email capture (secondary CTA)                                          */
 /* ---------------------------------------------------------------------- */
 .email-capture {
-  padding-block: var(--space-8);
+  padding-block: var(--layout-section-padding-mobile);
   background-color: var(--color-bg-alt);
 }
-@media (min-width: 1024px) { .email-capture { padding-block: var(--space-9); } }
+@media (min-width: 1024px) { .email-capture { padding-block: var(--layout-section-padding-desktop); } }
 
 .email-capture h2 {
   font-family: var(--font-family-display);
@@ -712,8 +946,8 @@ p { color: var(--color-text-primary); }
   background-color: var(--color-bg-surface);
   color: var(--color-text-primary);
   width: 100%;
-  transition: border-color var(--duration-instant) var(--ease-standard),
-              box-shadow var(--duration-instant) var(--ease-standard);
+  transition: border-color var(--duration-instant) var(--ease-workhorse),
+              box-shadow var(--duration-instant) var(--ease-workhorse);
 }
 .form-field input:not([aria-invalid="true"]):hover { border-color: var(--color-border-interactive); }
 .form-field input::placeholder { color: var(--color-text-secondary); }
@@ -735,8 +969,27 @@ p { color: var(--color-text-primary); }
   color: var(--color-feedback-error);
   font-weight: var(--font-weight-medium);
 }
+/* --icon-alert-triangle (M4), not the bare "⚠" system glyph: that
+   character rendered as a full-color emoji on Windows (an unowned,
+   unstyleable brand signal) and, as literal text content, was exposed to
+   assistive tech redundantly alongside the hint text it decorates. A
+   masked SVG carries no text semantics at all, so it never needs its own
+   aria-hidden — recolors through the same --color-feedback-error token
+   the message text already uses. */
 .form-field input[aria-invalid="true"] ~ .field-hint::before {
-  content: "⚠";
+  content: "";
+  flex-shrink: 0;
+  width: var(--space-4);
+  height: var(--space-4);
+  background-color: var(--color-feedback-error);
+  mask-image: var(--icon-alert-triangle);
+  -webkit-mask-image: var(--icon-alert-triangle);
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+  mask-size: contain;
+  -webkit-mask-size: contain;
 }
 
 .email-form-success {
@@ -752,19 +1005,29 @@ p { color: var(--color-text-primary); }
 /* ---------------------------------------------------------------------- */
 /* Mechanism section                                                       */
 /* ---------------------------------------------------------------------- */
-.mechanism { padding-block: var(--space-8); }
-@media (min-width: 1024px) { .mechanism { padding-block: var(--space-9); } }
+.mechanism { padding-block: var(--layout-section-padding-mobile); }
+@media (min-width: 1024px) { .mechanism { padding-block: var(--layout-section-padding-desktop); } }
 
-/* Adaptive-contour motif as a section divider — the same waveform device
-   used in the hero backdrop, the FAQ marker and the list bullets, marking
-   a narrative pivot at a section whose own heading is visually hidden. */
-.mechanism::before,
-.final-cta::before {
+/* Brand-divider motif (M5/MIN6) — the waveform's one non-hero job. Both
+   sections use it identically (one shared rule, not two near-duplicate
+   ones) and both anchor it to the CONTENT's left edge rather than the
+   viewport center: the pseudo-element sits on .container, not on the
+   full-width section, so its start edge lands on the same x=72
+   (desktop)/gutter line every other element on the page already lines up
+   on — see the "always LEFT-ANCHORED" note on .narrow-measure earlier in
+   this file. Page-centering it (the previous behavior) put the divider
+   on a different alignment line than the heading and copy it sits above,
+   in both the visually-hidden-H2 section (.mechanism) and the visible-H2
+   section (.final-cta) alike — "uniformly" here means literally the same
+   selector, same rule, not just visually similar. */
+.mechanism .container::before,
+.final-cta .container::before {
   content: "";
   display: block;
   width: var(--space-8);
   height: var(--space-4);
-  margin-inline: auto;
+  margin-inline-start: 0;
+  margin-inline-end: auto;
   margin-block-end: var(--space-6);
   background-color: var(--color-border-interactive);
   mask-image: var(--motif-wave-divider);
@@ -780,13 +1043,23 @@ p { color: var(--color-text-primary); }
 .feature-block {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-6);
-  align-items: center;
+  row-gap: var(--space-6);
+  column-gap: var(--space-4);
+  /* Top-aligned, not centred: centring floated the copy against the visual
+     so no two blocks shared a horizontal start line. */
+  align-items: start;
   margin-block-end: var(--space-8);
 }
 .feature-block:last-child { margin-block-end: 0; }
+@media (min-width: 768px) {
+  .feature-block { column-gap: var(--grid-gutter); }
+}
 @media (min-width: 1024px) {
-  .feature-block { grid-template-columns: 1fr 1fr; gap: var(--space-8); margin-block-end: var(--space-10); }
+  /* Same 7/5 copy-to-visual ratio as the hero, so the page has one column
+     rhythm rather than a second, 50/50 one. The reversed block mirrors the
+     ratio (5fr 7fr) so the copy column keeps the 7fr measure in both. */
+  .feature-block { grid-template-columns: 7fr 5fr; margin-block-end: var(--space-10); }
+  .feature-block-reverse { grid-template-columns: 5fr 7fr; }
   .feature-block-reverse .feature-visual { order: -1; }
 }
 
@@ -796,26 +1069,42 @@ p { color: var(--color-text-primary); }
   font-variation-settings: 'SOFT' 20, 'WONK' 1;
   font-size: var(--type-h3-size);
   line-height: var(--leading-heading);
+  /* H2 → H3 was a size-only step (same family, weight and colour). The
+     secondary text colour adds a value tier, so the level reads as
+     subordinate even where an H2 isn't on screen to compare against. */
+  color: var(--color-text-secondary);
   margin-block-end: var(--space-4);
 }
 .feature-copy p { color: var(--color-text-secondary); max-width: 68ch; }
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Single-column band: the block spans the full container, so a 68ch cap
+     lets Inter's narrow digit-derived ch run past 80 real characters per
+     line. Capped tighter for this band only. */
+  .feature-copy p { max-width: 56ch; }
+}
 
+/* No box-shadow here: every .feature-visual in index.html is also a
+   .photo-frame, which already carries --shadow-2 (and overflow:hidden +
+   its own radius) on the wrapping element — stacking a second
+   --shadow-2 on the img inside it doubled the shadow and let the inner
+   one bleed a clipped, uneven edge past the frame's own overflow. The
+   radius stays: it keeps the image's own corners smooth up to the
+   moment the frame's overflow:hidden takes over. */
 .feature-visual img,
 .feature-visual svg {
   width: 100%;
   height: auto;
   border-radius: var(--card-radius);
-  box-shadow: var(--shadow-2);
 }
 
 /* ---------------------------------------------------------------------- */
 /* Results / comparison                                                    */
 /* ---------------------------------------------------------------------- */
 .comparison {
-  padding-block: var(--space-8);
+  padding-block: var(--layout-section-padding-mobile);
   background-color: var(--color-bg-alt);
 }
-@media (min-width: 1024px) { .comparison { padding-block: var(--space-9); } }
+@media (min-width: 1024px) { .comparison { padding-block: var(--layout-section-padding-desktop); } }
 
 .comparison h2 {
   font-family: var(--font-family-display);
@@ -830,7 +1119,7 @@ p { color: var(--color-text-primary); }
 .feature-block-solo p {
   color: var(--color-text-secondary);
   font-size: var(--type-lead-size);
-  line-height: var(--leading-lg);
+  line-height: var(--leading-body);
 }
 
 .table-intro {
@@ -838,11 +1127,19 @@ p { color: var(--color-text-primary); }
   font-weight: var(--font-weight-medium);
 }
 
-.table-scroll {
-  overflow-x: auto;
+/* The wrapper carries the frame (border, radius, rhythm) and the inner box
+   does the scrolling — that way the <640px scroll-hint fade can sit inside
+   the border box instead of painting over the right border. */
+.table-scroll-wrap {
+  position: relative;
   margin-block-end: var(--space-4);
   border-radius: var(--card-radius);
   border: 1px solid var(--color-border-subtle);
+  overflow: hidden;
+}
+
+.table-scroll {
+  overflow-x: auto;
 }
 
 .spec-table {
@@ -873,13 +1170,39 @@ p { color: var(--color-text-primary); }
 .spec-table tbody tr:last-child td,
 .spec-table tbody tr:last-child th { border-bottom: 0; }
 
-.table-footnote { color: var(--color-text-secondary); font-size: var(--text-xs); max-width: 70ch; }
+/* Below the two-column breakpoint the table can only be read by scrolling it
+   sideways. Cheapest correct affordance (chosen over a stacked-card rewrite
+   of 24 cells): the row-header column stays pinned so every value keeps its
+   label, plus a fade at the right edge showing there is more table. */
+@media (max-width: 639px) {
+  .spec-table thead th:first-child,
+  .spec-table tbody th {
+    position: sticky;
+    inset-inline-start: 0;
+    z-index: 1;
+    border-inline-end: 1px solid var(--color-border-subtle);
+  }
+  .table-scroll-wrap::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    width: var(--space-6);
+    background-image: linear-gradient(to left, var(--color-bg-surface), transparent);
+    pointer-events: none;
+  }
+}
+
+/* 46ch, not 70ch: Inter's ch unit is its digit advance, which is narrower
+   than its average lowercase letter, so a 70ch cap was buying ~95 real
+   characters per line at this size. */
+.table-footnote { color: var(--color-text-secondary); font-size: var(--text-xs); max-width: 46ch; }
 
 /* ---------------------------------------------------------------------- */
 /* Peer validation (testimonials)                                          */
 /* ---------------------------------------------------------------------- */
-.reviews { padding-block: var(--space-8); }
-@media (min-width: 1024px) { .reviews { padding-block: var(--space-9); } }
+.reviews { padding-block: var(--layout-section-padding-mobile); }
+@media (min-width: 1024px) { .reviews { padding-block: var(--layout-section-padding-desktop); } }
 
 .reviews h2 {
   font-family: var(--font-family-display);
@@ -899,38 +1222,49 @@ p { color: var(--color-text-primary); }
 .testimonial-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-6);
+  row-gap: var(--space-6);
+  column-gap: var(--space-4);
   margin-block-end: var(--space-6);
 }
 @media (min-width: 640px) { .testimonial-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 768px) { .testimonial-grid { column-gap: var(--grid-gutter); } }
 @media (min-width: 1024px) { .testimonial-grid { grid-template-columns: repeat(3, 1fr); } }
 
 .testimonial-card {
   display: flex;
   flex-direction: column;
+  /* Quotes differ by ~80 words, so with the cards stretched to equal height
+     the three attribution footers sat on three different baselines with up
+     to 105px of dead space above them. space-between pins every footer to
+     the shared bottom line; the gap stays the minimum separation. */
+  justify-content: space-between;
   gap: var(--space-4);
   background-color: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--card-radius);
   box-shadow: var(--card-shadow);
-  padding: var(--card-padding);
-  transition: transform var(--duration-short) var(--ease-standard),
-              box-shadow var(--duration-short) var(--ease-standard);
-}
-.testimonial-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-2);
+  /* Inline padding one step below --card-padding: these cards hold running
+     prose, and every horizontal pixel spent on padding comes straight off
+     an already-short measure (see the measure note below). */
+  padding-block: var(--card-padding);
+  padding-inline: var(--space-5);
 }
 .testimonial-card p { color: var(--color-text-primary); }
+/* Attribution is one continuous phrase — name, then role. The role text used
+   to be a bare text node, which flex wraps in an anonymous item, so the
+   8px gap landed BEFORE its leading comma ("Priya Nataraj , Senior…").
+   Spacing here is explicit margin on the pieces that need it, gap 0. */
 .testimonial-card footer {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-2);
+  gap: 0;
   font-size: var(--text-xs);
   color: var(--color-text-secondary);
 }
 .testimonial-name { font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
+.testimonial-role { color: var(--color-text-secondary); }
+.testimonial-card .verified-tag { margin-inline-start: var(--space-2); }
 .verified-tag {
   padding-block: var(--space-1);
   padding-inline: var(--space-2);
@@ -943,10 +1277,10 @@ p { color: var(--color-text-primary); }
 /* Pricing section                                                         */
 /* ---------------------------------------------------------------------- */
 .pricing {
-  padding-block: var(--space-8);
+  padding-block: var(--layout-section-padding-mobile);
   background-color: var(--color-bg-page);
 }
-@media (min-width: 1024px) { .pricing { padding-block: var(--space-9); } }
+@media (min-width: 1024px) { .pricing { padding-block: var(--layout-section-padding-desktop); } }
 
 .pricing h2 {
   font-family: var(--font-family-display);
@@ -965,12 +1299,19 @@ p { color: var(--color-text-primary); }
   padding: var(--card-padding);
   margin-block-end: var(--space-7);
 }
+/* The price is the loudest number on the page — it must not inherit the
+   secondary-text colour and 400 weight from the section's paragraph rule
+   (which is why the cascade below is narrowed to the container's own
+   paragraphs). Primary colour + semibold, matching the H1 treatment it
+   sits at the size of. */
 .price-amount {
   font-family: var(--font-family-display);
   font-optical-sizing: auto;
   font-variation-settings: 'SOFT' 20, 'WONK' 1;
   font-size: var(--type-h1-size);
   line-height: var(--leading-display);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
   margin-block-end: var(--space-4);
 }
 
@@ -981,28 +1322,34 @@ p { color: var(--color-text-primary); }
   gap: var(--space-3);
   color: var(--color-text-secondary);
 }
+/* --icon-check (M3), not the waveform motif — this list is enumerating
+   what's included, and a check glyph reads as "included" on sight,
+   where the waveform shape carried no such meaning of its own. */
 .price-inclusions li::before {
   content: "";
   flex-shrink: 0;
   width: var(--space-4);
   height: var(--space-4);
   background-color: var(--color-accent-decorative);
-  mask-image: var(--motif-wave-mark);
-  -webkit-mask-image: var(--motif-wave-mark);
+  mask-image: var(--icon-check);
+  -webkit-mask-image: var(--icon-check);
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
   mask-position: center;
   -webkit-mask-position: center;
+  mask-size: contain;
+  -webkit-mask-size: contain;
 }
 
-.pricing p { color: var(--color-text-secondary); margin-block-end: var(--space-4); }
+/* Direct children only — never the price inside .price-block. */
+.pricing > .container > p { color: var(--color-text-secondary); margin-block-end: var(--space-4); }
 .pricing .cta-support { margin-block-start: var(--space-2); }
 
 /* ---------------------------------------------------------------------- */
 /* Final CTA + risk reversal                                               */
 /* ---------------------------------------------------------------------- */
-.final-cta { padding-block: var(--space-8); background-color: var(--color-bg-alt); }
-@media (min-width: 1024px) { .final-cta { padding-block: var(--space-9); } }
+.final-cta { padding-block: var(--layout-section-padding-mobile); background-color: var(--color-bg-alt); }
+@media (min-width: 1024px) { .final-cta { padding-block: var(--layout-section-padding-desktop); } }
 
 .final-cta h2 {
   font-family: var(--font-family-display);
@@ -1018,12 +1365,19 @@ p { color: var(--color-text-primary); }
   margin-block-end: var(--space-6);
 }
 
-.risk-list { display: flex; flex-direction: column; gap: var(--space-4); margin-block-end: var(--space-7); }
+/* Proximity was inverted: a 16px gap between items sat below the 24px line
+   height inside them, so the three guarantees read as one run-on block.
+   Gap now clears the line height (48px), and the margin to the CTA below
+   steps up with it so the list still groups against what follows. */
+.risk-list { display: flex; flex-direction: column; gap: var(--space-7); margin-block-end: var(--space-8); }
 .risk-list li {
   position: relative;
   padding-inline-start: calc(var(--space-4) + var(--space-3));
   color: var(--color-text-secondary);
 }
+/* Same --icon-check as .price-inclusions above (M3) — both lists are
+   enumerating what's covered, so both get the glyph that actually means
+   "covered," not the brand divider shape reused as a bullet. */
 .risk-list li::before {
   content: "";
   position: absolute;
@@ -1032,12 +1386,14 @@ p { color: var(--color-text-primary); }
   width: var(--space-4);
   height: var(--space-4);
   background-color: var(--color-accent-decorative);
-  mask-image: var(--motif-wave-mark);
-  -webkit-mask-image: var(--motif-wave-mark);
+  mask-image: var(--icon-check);
+  -webkit-mask-image: var(--icon-check);
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
   mask-position: center;
   -webkit-mask-position: center;
+  mask-size: contain;
+  -webkit-mask-size: contain;
 }
 .risk-list strong { color: var(--color-text-primary); }
 
@@ -1046,8 +1402,8 @@ p { color: var(--color-text-primary); }
 /* ---------------------------------------------------------------------- */
 /* FAQ                                                                     */
 /* ---------------------------------------------------------------------- */
-.faq { padding-block: var(--space-8); }
-@media (min-width: 1024px) { .faq { padding-block: var(--space-9); } }
+.faq { padding-block: var(--layout-section-padding-mobile); }
+@media (min-width: 1024px) { .faq { padding-block: var(--layout-section-padding-desktop); } }
 
 .faq h2 {
   font-family: var(--font-family-display);
@@ -1075,33 +1431,44 @@ p { color: var(--color-text-primary); }
   cursor: pointer;
   font-weight: var(--font-weight-semibold);
   font-size: var(--type-body-size);
-  transition: background-color var(--duration-instant) var(--ease-standard);
+  transition: background-color var(--duration-instant) var(--ease-workhorse);
 }
-.faq-item summary:hover { background-color: var(--color-bg-component); }
+.faq-item summary:hover { background-color: var(--color-bg-component-hover); }
+/* One step deeper than hover (MIN4) — same pattern as .price-chip/
+   .nav-toggle: hover moves to -hover, active moves to -active. */
+.faq-item summary:active { background-color: var(--color-bg-component-active); }
 .faq-item summary::-webkit-details-marker { display: none; }
-/* Adaptive-contour motif, collapsed/expanded: the same waveform device
-   used in the hero backdrop and the list bullets, here standing in for
-   the FAQ +/- indicator — flat when collapsed, active when open. */
+/* Disclosure chevron (M3) — an --icon-chevron glyph, not the waveform
+   motif (that shape's collapsed state read as a generic "more options"
+   kebab, not an expand/collapse control). One asset for both states:
+   collapsed points down, [open] rotates it 180deg to point up, so there
+   is no second mask-image swap to keep in sync with the open attribute.
+   Anchored to the top of the summary rather than vertically centred: on a
+   two-line question a centred marker floats between the lines, and its
+   right edge is flush with the section's content edge (right: 0) instead
+   of sitting 8px inside it and breaking the right alignment line. */
 .faq-item summary::after {
   content: "";
   position: absolute;
-  right: var(--space-2);
-  top: 50%;
+  right: 0;
+  top: var(--space-3);
   width: var(--space-5);
   height: var(--space-5);
   background-color: var(--color-accent-decorative);
-  mask-image: var(--motif-wave-mark-flat);
-  -webkit-mask-image: var(--motif-wave-mark-flat);
+  mask-image: var(--icon-chevron);
+  -webkit-mask-image: var(--icon-chevron);
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
   mask-position: center;
   -webkit-mask-position: center;
-  transform: translateY(-50%);
-  transition: background-color var(--duration-instant) var(--ease-standard);
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  transform: rotate(0deg);
+  transition: background-color var(--duration-instant) var(--ease-workhorse),
+              transform var(--duration-workhorse) var(--ease-workhorse);
 }
 .faq-item[open] summary::after {
-  mask-image: var(--motif-wave-mark);
-  -webkit-mask-image: var(--motif-wave-mark);
+  transform: rotate(180deg);
 }
 
 .faq-item p {
@@ -1124,25 +1491,30 @@ p { color: var(--color-text-primary); }
 .footer-columns {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-7);
+  row-gap: var(--space-7);
+  column-gap: var(--space-4);
   margin-block-end: var(--space-8);
 }
 @media (min-width: 640px) { .footer-columns { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px) { .footer-columns { column-gap: var(--grid-gutter); } }
 
+/* Column heading sits further from its own list (32px) than the links sit
+   from each other (8px on top of the 44px target boxes) — otherwise the
+   heading reads as the first list item. */
 .footer-column h3 {
   font-size: var(--text-xs);
   letter-spacing: var(--type-eyebrow-tracking);
   text-transform: uppercase;
   color: var(--color-text-inverse);
-  margin-block-end: var(--space-4);
+  margin-block-end: var(--space-6);
 }
-.footer-column ul { display: flex; flex-direction: column; gap: var(--space-3); }
+.footer-column ul { display: flex; flex-direction: column; gap: var(--space-2); }
 .footer-column a {
   display: inline-flex;
   align-items: center;
   min-height: var(--target-min);
   font-size: var(--type-body-size);
-  transition: opacity var(--duration-instant) var(--ease-standard);
+  transition: opacity var(--duration-instant) var(--ease-workhorse);
 }
 .footer-column a:hover { opacity: 0.75; }
 .footer-column a:active { opacity: 0.55; }
@@ -1152,10 +1524,12 @@ p { color: var(--color-text-primary); }
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-6);
+  row-gap: var(--space-6);
+  column-gap: var(--space-4);
   padding-block: var(--space-7);
   border-block: 1px solid var(--color-border-on-inverse);
 }
+@media (min-width: 768px) { .footer-capture { column-gap: var(--grid-gutter); } }
 .footer-capture-card {
   background-color: var(--card-bg);
   border-radius: var(--card-radius);
@@ -1176,8 +1550,8 @@ p { color: var(--color-text-primary); }
   height: var(--target-min);
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border-on-inverse);
-  transition: border-color var(--duration-instant) var(--ease-standard),
-              background-color var(--duration-instant) var(--ease-standard);
+  transition: border-color var(--duration-instant) var(--ease-workhorse),
+              background-color var(--duration-instant) var(--ease-workhorse);
 }
 .social-icons a:hover { border-color: var(--color-text-inverse); }
 .social-icons a:active { background-color: var(--color-border-on-inverse); }
@@ -1218,7 +1592,7 @@ p { color: var(--color-text-primary); }
   align-items: center;
   min-height: var(--target-min);
   text-decoration: underline;
-  transition: opacity var(--duration-instant) var(--ease-standard);
+  transition: opacity var(--duration-instant) var(--ease-workhorse);
 }
 .footer-legal a:hover { opacity: 0.75; }
 .footer-legal a:active { opacity: 0.55; }
@@ -1242,8 +1616,8 @@ p { color: var(--color-text-primary); }
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, 0.5rem);
-  transition: opacity var(--duration-medium) var(--ease-standard),
-              transform var(--duration-medium) var(--ease-standard);
+  transition: opacity var(--duration-medium) var(--ease-workhorse),
+              transform var(--duration-medium) var(--ease-workhorse);
 }
 .toast.is-visible {
   opacity: 1;
@@ -1270,10 +1644,9 @@ p { color: var(--color-text-primary); }
   .social-icons a,
   .faq-item summary,
   .faq-item summary::after,
-  .form-field input,
-  .testimonial-card {
+  .btn-primary::before,
+  .form-field input {
     transition: none;
   }
-  .testimonial-card:hover { transform: none; }
   .btn:active { transform: none; }
 }

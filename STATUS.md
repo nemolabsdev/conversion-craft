@@ -8,7 +8,7 @@
 - ✅ **Phase 1 — Research**: 7 domains distilled (haiku scouts + sonnet analysts); completeness critic surfaced 20 gaps → `curriculum/research/GAPS.md`
 - ✅ **Phase 2 — Distillation**: 4 gap-filling research files + **12 skills** written and sharpened (16 after Phase 5); 26/26 agents clean
 - ✅ **Phase 3 — Proof build**: AURI A1 demo built by the team; 3 critics (opus art director + CRO + QA) → 54 findings, 38 BLOCKER/MAJOR fixed; independent review added 5 more fixes (brand-claim honesty, mobile above-fold price, layout defects)
-- ✅ **Phase 4 — Packaging**: plugin manifests, MIT license, English docs, GitHub (private) as `mmanja84/conversion-craft`
+- ✅ **Phase 4 — Packaging**: plugin manifests, MIT license, English docs, GitHub (private) as `nemolabsdev/conversion-craft`
 - ✅ **Phase 5 — Completeness audit + supplement wave**: 5-lens audit (verdict: "~80% — passes a portfolio review, fails a retainer") → 4 new skills (experimentation-measurement, composition-grids, brand-voice, visual-identity), native `<dialog>`/Popover modernization, pricing/SEO distillation rescue, figure-ground photo rules; opus integration verifier found 20 defects in the wave itself (3 BLOCKERs incl. a rule inverting its own source) — all fixed, spacing-lint extended to enforce the new `--flow-*` fluid-space contract mechanically
 
 ## Deliverables
@@ -27,4 +27,4 @@
 - Deferred from GAPS.md (v1.1 candidates): promotions/sale-event architecture, post-purchase & abandonment lifecycle, B2B landing patterns
 - `curriculum/research/awards-visual-language.md` was snippet-verified only (lower confidence) — candidate for a re-pass
 - ~~Demo hero still uses vector art~~ — resolved: demo now uses locally-hosted Unsplash photography (WebP, srcset, brand-graded) per the `demo-assets` skill; credits in `demo/img/CREDITS.md`
-- Going public: flip with `gh repo edit mmanja84/conversion-craft --visibility public` when ready
+- Going public: flip with `gh repo edit nemolabsdev/conversion-craft --visibility public` when ready

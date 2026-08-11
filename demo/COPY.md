@@ -11,6 +11,63 @@
 
 ---
 
+## Voice card
+
+**Per `skills/brand-voice/SKILL.md` — the `copy-chief` handoff artifact.** This card is the fixed input for every line below; `copy-chief`'s clarity rules still win the exact line on any CTA, form label, price, or error (Precedence), but everything else routes through this card.
+
+```
+VOICE CARD — AURI v1.0, 2026-08-12
+```
+
+**1. Four-dimension score**
+
+| Axis | Position | Why |
+|---|---|---|
+| Funny ↔ Serious | Serious-leaning (●●○ toward Serious) | The page argues from spec numbers and a comparison table, not levity — a joke would undercut a durability/premium claim built entirely on being taken at face value. |
+| Formal ↔ Casual | Casual-leaning (●●○ toward Casual) | Direct second-person address, contractions ("you're," "it's"), conversational sentence rhythm — but never slangy; still reads clean next to a $349 price. |
+| Respectful ↔ Irreverent | Respectful (●●●, at the Respectful pole) | Competitor comparisons (the $150 tier, the flagship class) are argued through specs in the comparison table, never mocked or named-and-shamed. |
+| Enthusiastic ↔ Matter-of-fact | Matter-of-fact-leaning (●●○ toward Matter-of-fact) | Claims are stated as facts and numbers ("60 hours," "titanium," "10-year support") rather than exclamation-driven hype — confident, not gushing. |
+
+*Aaker cross-check:* Confident-but-plainspoken → Competence. Direct-but-warm → Sincerity. Premium-but-restrained → Sophistication. No trait mapped to Excitement or Ruggedness — neither is claimed anywhere on the page, so neither is in the chart.
+
+**2. This-not-that pairs (guardrails)**
+
+- **Confident but never boastful.** Claims ship as specific numbers or named mechanisms ("60 hours," "adaptive ANC," "titanium drivers"), never bare superlatives ("best," "revolutionary," "game-changing") — this is copy-chief Rule 5 shipped as a voice guardrail, not a separate rule.
+- **Plainspoken but never terse.** Sentences stay short and direct without clipping into curtness — error and form copy still name the cause and the fix in full, not one-word labels.
+- **Direct about competitors but never snarky.** The $150 tier and the flagship class are named and compared on spec, never mocked, mislabeled, or reduced to a punchline.
+
+**3. Lexicon**
+
+- **Preferred terms:** "adaptive ANC" (not "smart ANC" / "AI ANC" — the mechanism is adaptive, not AI-branded anywhere in the brief); "titanium drivers" / "studio-tuned" (not "premium sound" alone — always paired with the concrete material/spec); "swappable parts" / "10-year repair support" or "10-year support commitment" (never shortened to "warranty" — the warranty is 2 years; conflating the two is a factual error, not a style choice); "verified buyers" (not "customers say" — matches the actual proof-bar claim).
+- **Banned synonyms:** "best," "revolutionary," "game-changing," "cutting-edge," "life-changing" (superlatives banned site-wide per copy-chief Rule 5); "cheap" applied to the $150 competitor tier (use "$150 tier" / "$150 'good enough' pair," matching the page's own established framing — "cheap" reads as a jab, not a spec comparison).
+- **Coined/proprietary terms:** "AURI A1" (product name, always full form on first mention per section, "A1" alone acceptable in running body copy after); "adaptive ANC" (the named mechanism — capitalization stays lowercase "adaptive," ANC stays all-caps as the industry-standard acronym).
+- **Casing decisions (the four drifts this audit fixed, now locked as rules):**
+  - **Visible H2 section headers:** Title Case, no exceptions. (`sr-only` H2s — headings that exist for screen-reader structure only and are never painted on screen — are exempt; they're document structure, not read copy.)
+  - **Trust-bar badges** (`2-Year Warranty`, `30-Day Returns`, `Free Shipping, Every Order` in the horizontal proof strip, Section 3): **Title Case is the deliberate exception**, recorded here per SKILL.md's instruction to log it rather than silently unify. Reason: these render as compact pill/badge UI components, not running prose — badge/chip labels conventionally read as Title Case across the design-tokens badge pattern, distinct from sentence-style body copy.
+  - **Fact-triad CTA support lines** (the middot-joined lines under primary CTA buttons, e.g. `Free shipping · 30-day returns · 2-year warranty`): **sentence case is the single convention**, every item lowercase except a proper noun, joined with ` · `. This is prose-style microcopy, not a badge — the earlier "No subscription" capital was the drift; it now reads "no subscription" everywhere it appears.
+  - **CTA pronoun:** second person, unified. `Get the Spec Sheet` (not `Send Me the Spec Sheet`), `Track Your Order` (not `Track My Order`). **Reserved exception:** the primary purchase CTA's underlying pronoun choice ("your" vs. an unshipped first-person "my" variant, see Chief's notes above) stays flagged for a future A/B test — that reservation is scoped to the primary Add-to-Cart CTA only. Every secondary and footer CTA is unified to second person outright with no reservation.
+  - **Form field labels:** always the plain field name (`Email address`), never a value-prop or CTA restatement (`Get the spec sheet` as a label was the drift — that phrase now lives only on the button, not the label). This is copy-chief's form-label precedence (Precedence, above) recorded here as a standing lexicon rule so it isn't relitigated per form.
+
+**4. Verbosity & reading-level target**
+
+Marketing/body sentences: ~15–20 words, paragraphs 2–4 sentences (matches copy-chief's FAB paragraph structure in Sections 4, 6, 7, 9). Overall page reading level: roughly 8th–9th grade (Flesch-Kincaid). Legal/demo-disclosure copy (the Legal stub, footer): ≤9th-grade level, one sentence per stub, zero sentences over 30 words (brand-voice Rule 17).
+
+**5. Tone-by-context excerpt**
+
+| Context | Warmth | Humor | Formality | Adjectives | On this page |
+|---|---|---|---|---|---|
+| Marketing (hero, relevance, mechanism, results, reviews) | Brand default | None shipped — no line needed the free-humor test | Casual-leaning | Full range, numeric-first | "The ANC Headphone Built to Last a Decade, Not a Year." |
+| Checkout (Add to Cart — this demo has no real checkout, so the add-to-cart toast stands in for it) | Down | None | Neutral-formal | Minimal | "Added to cart. This is a demo page — no real order was placed." |
+| Error (email validation + simulated server error) | Down, no blame words | None | Neutral | Minimal | "Enter your email so we know where to send it." |
+| Success (email-capture confirmation — routine, not milestone; no confetti/exclamation per Rule 16) | Scaled to routine | None | Neutral | Precise, factual | "You're on the list." |
+| Legal (footer Legal stub — privacy/terms/CCPA) | Low | None | Formal, plain | Near-zero | "AURI is a fictional demo brand — this page collects no real personal data..." |
+
+**6. Sign-off**
+
+Validated against real users? **N.** Not yet run against a ≥5-point Likert study (SKILL.md Rule 7) — this chart is scored by the fixer team against already-shipped copy, per Rule 30's quarterly-sample cadence, not against fresh user testing. A Likert pass is the open item before this chart is considered locked. Logged 2026-08-12.
+
+---
+
 ## 1. Nav
 
 **Purpose:** persistent access to price + primary CTA; no path off the conversion flow.
@@ -100,7 +157,7 @@
 **Maps to:** Offer/CTA (secondary). Catches not-ready visitors. Must stay visually subordinate to "Add to Cart" — smaller button, lower contrast, one field.
 
 **Section header:**
-### Not ready to buy yet?
+### Not Ready to Buy Yet?
 
 **Body copy:**
 > Get the full AURI A1 spec sheet and our restock/launch updates — no spam, unsubscribe any time.
@@ -257,7 +314,7 @@
 **`Add to Cart — $349`**
 
 **CTA support line:**
-`Free shipping · 30-day returns · 2-year warranty · No subscription`
+`Free shipping · 30-day returns · 2-year warranty · no subscription`
 
 ---
 
@@ -309,7 +366,7 @@
 **Columns:**
 
 **Shop**
-- `Add to Cart`
+- `Pricing`
 - `Compare the options`
 - `Spec Sheet`
 
@@ -318,21 +375,27 @@
 - `Warranty Terms`
 - `Repair & Parts`
 - `Contact Us`
-- `Track My Order`
+- `Track Your Order`
 
 **Company**
 - `FAQ`
-- `Privacy Policy`
-- `Terms of Service`
+- `Privacy Policy` *(anchors to the on-page Legal stub, id `privacy` — resolves to real content, not a dead link)*
+- `Terms of Service` *(anchors to the on-page Legal stub, id `terms` — resolves to real content, not a dead link)*
+
+**Legal stub (footer area, sr-only "Legal" heading; minimal — demo scope, not real legal copy):**
+- `Privacy Policy.` `AURI is a fictional demo brand — this page collects no real personal data and stores nothing beyond your browser session.` *(id `privacy`)*
+- `Terms of Service.` `AURI is a fictional demo brand — no real purchases, orders, or contracts are created by anything on this page.` *(id `terms`)*
+- `Do Not Sell or Share My Personal Information.` `AURI is a fictional demo brand — there is no real personal data collected here to sell, share, or opt out of.` *(id `ccpa` — the CCPA control below links here, not to `#privacy`)*
 
 **Utility microcopy:**
 - Copyright line: `© 2026 AURI. All rights reserved.`
+- CCPA control (footer legal row, next to copyright): `Do Not Sell or Share My Personal Information` — links to `#ccpa` (the Legal stub above), not `#privacy`
 - Payment icon alt texts: `Visa`, `Mastercard`, `American Express`, `Apple Pay`, `PayPal`
 - Footer email re-capture (smallest weight on the page, last-chance secondary offer):
-  - Label: `Get the spec sheet`
+  - Label: `Email address` *(copy-chief precedence on form labels — the label names the field, not the offer; the offer is carried by the section context and button, not the label)*
   - Field placeholder: `you@company.com`
-  - Button: **`Send Me the Spec Sheet`**
-- Social icon alt texts (if used): `AURI on Instagram`, `AURI on YouTube`
+  - Button: **`Get the Spec Sheet`** *(second person, unified with Section 5's identical submit button — one signup, one CTA wording)*
+- Social icon alt texts (if used): `AURI on Instagram`, `AURI on YouTube` — both link to `#top` (no real social presence for this demo brand); each also carries a `title` attribute suffixed `(demo placeholder)` so a sighted mouse-hover user gets the same honesty signal a screen-reader user would need to infer from the shared `#top` destination
 
 ---
 

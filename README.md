@@ -15,7 +15,7 @@ Conversion Craft turns Claude Code into a team that researches, designs, writes,
 ### Claude Code (recommended)
 
 ```
-/plugin marketplace add mmanja84/conversion-craft
+/plugin marketplace add nemolabsdev/conversion-craft
 /plugin install conversion-craft@conversion-craft
 ```
 
