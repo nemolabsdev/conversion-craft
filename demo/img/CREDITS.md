@@ -6,3 +6,11 @@ All photos from Unsplash, used under the Unsplash License (free to use, no attri
 - `silence-*.webp` — Unsplash photo `1762289701519-cc1511d4a791` (man wearing headphones, eyes closed)
 
 Known stock compromise (flagged per demo-assets skill): the headphones in the lifestyle shot are not the same model as the product shots — acceptable for a fictional demo, never for a real brand.
+
+## Publish-readiness note (2026-08-11)
+
+The Unsplash License covers copyright for all three photos (commercial use permitted, no
+attribution required). It does NOT warrant a model release for identifiable people: the
+`silence-*` portrait is fine for this demo and for the open-source repo, but if this page ever
+fronts a real commercial product, replace it with a released photo (or licensed stock with a
+model release). Fonts (Fraunces, Inter) are SIL OFL — free to embed and redistribute.
