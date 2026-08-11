@@ -14,6 +14,17 @@ description: Copywriting for sales pages - headlines, product copy, CTAs, microc
 - Writing microcopy: form labels, helper text, error messages, empty states, confirmation copy.
 - Any pass where the deliverable is customer-facing words meant to move a visitor toward a lead, signup, or sale.
 
+## Voice interface (contract with `brand-voice`)
+
+The `brand-voice` skill defines HOW the brand sounds and hands this skill a **voice card** as a
+fixed input. The precedence contract, declared identically in both skills: on the exact line of a
+primary CTA, a form label, a displayed price, or an error message, THIS skill's clarity rules win,
+full stop — no voice guardrail overrides them there. Everywhere else (headlines, body copy, empty
+states, hero taglines) brand-voice governs register and style, and headlines must still clear this
+skill's one-line clarity test. When drafting copy for a brand that has a voice card, load
+`brand-voice` alongside this skill; when there is no voice card yet, flag that gap instead of
+inventing a voice ad hoc. — brand-voice (Precedence section)
+
 ## Rules
 
 **Headlines & awareness stage**
@@ -35,7 +46,7 @@ description: Copywriting for sales pages - headlines, product copy, CTAs, microc
 
 10. **[Verb + deliverable]** Lead CTA copy with a specific action verb plus a stated deliverable ("Get my template," "Start my free trial") rather than a generic verb ("Submit," "Learn More," "Click Here"). One cited PPC test added this kind of relevance for a 68% lift. [TREND-2026] — Unbounce
 11. **[Benefit-forward verb]** Prefer verbs that frame what the user receives over verbs that frame what they must do: "Get" beat "Order" by 38.26% in one B2B test. [TREND-2026] — Unbounce
-12. **[Pronoun: A/B, don't assume]** Test first-person ("Start my trial") against second-person ("Start your trial") phrasing per audience rather than shipping a fixed rule — the widely cited "90% lift" figure is an unverified outlier, not an expected result. [TREND-2026, low confidence]
+12. **[Pronoun: A/B, don't assume]** Test first-person ("Start my trial") against second-person ("Start your trial") phrasing per audience rather than shipping a fixed rule — the widely cited "90% lift" figure is an unverified outlier, not an expected result. Micro-copy tests of this class are only valid above `experimentation-measurement`'s traffic floor (~1,000 sessions / 30 conversions per variant per month); below it, ship the second-person default and move on. [TREND-2026, low confidence] — experimentation-measurement R1-2
 13. **[One offer, one CTA]** Ship exactly one primary offer and one primary CTA per page. Multi-offer/multi-link pages measurably underperform single-offer pages (magnitude is source-dependent; direction is reliable). [TREND-2026] — SEO Sherpa
 14. **[CTA touch target]** Size every CTA button to a 44×44 CSS px floor (Apple HIG; Material 48dp) with ≥8px clearance from any adjacent tappable element. WCAG 2.2 AA's legal minimum is 24×24 CSS px — that's the compliance floor, not the target; ship 44. [LAW] — WCAG 2.2 SC 2.5.8, Apple HIG, Material Design
 
@@ -59,7 +70,7 @@ description: Copywriting for sales pages - headlines, product copy, CTAs, microc
 24. **[Charm pricing default]** Use charm pricing (.99/.97 endings) as the default for price-sensitive, transactional/low-consideration offers; cited lift is roughly 24-35% vs. round pricing. [TREND-2026] — MIT/U Chicago 2003, Cornell (via SHNO)
 25. **[Premium override]** For premium/luxury positioning, use round numbers instead of charm pricing — .99 endings signal value-hunting and can undercut premium positioning. [TREND-2026] — SHNO
 26. **[Anchoring]** When showing tiers, always place a visible reference point next to the target tier: a higher list price with strikethrough, or a higher-priced tier alongside it. Cited anchoring effect on perceived value is roughly +32%. [TREND-2026] — SHNO
-27. **[Decoy tier, replication caveat]** A decoy tier must be genuinely inferior, priced at or near the target tier's price. Ariely's classic test: a 68%/32% cheap-vs-bundle split with no decoy flipped to 84% choosing the bundle once a decoy was added — but the effect is reported to shrink with realistic (non-lab) stimuli. Validate with your own A/B test before relying on the lab magnitude. [TREND-2026, replication caveat] — GrowMeOrganic, SHNO
+27. **[Decoy tier, replication caveat]** A decoy tier must be genuinely inferior, priced at or near the target tier's price. Ariely's classic test: a 68%/32% cheap-vs-bundle split with no decoy flipped to 84% choosing the bundle once a decoy was added — but the effect is reported to shrink with realistic (non-lab) stimuli. Validate with your own A/B test before relying on the lab magnitude — subject to `experimentation-measurement`'s traffic floor and sample-size procedure (its R1-5); below the floor, don't ship a decoy on faith in the lab number. [TREND-2026, replication caveat] — GrowMeOrganic, SHNO; experimentation-measurement R1-5
 28. **[No price-gating self-serve]** Never hide price behind "Contact us" for a self-serve or low-consideration offer — it reopens the pricing-transparency objection (Rule 15, #6) instead of resolving it. Reserve "Contact us" pricing for genuinely custom/enterprise deals. [FRAMEWORK]
 
 **Microcopy & error messages**

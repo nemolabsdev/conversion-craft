@@ -85,6 +85,11 @@ description: Typography rules for premium sales websites - scale, pairing, measu
 38. [TREND-2026] State-driven kinetic type — letterforms that encode scroll position, hover, or data ("position = state," with scroll reversibility restoring prior states) — reads as premium on the current award circuit; decorative-only load-in type animation does not. Ship it on native scroll only, no scroll-hijacking (see `motion-performance.md`), content reachable without JS, and `prefers-reduced-motion` respected. Single-source/snippet-verified, lower confidence. — awards-visual-language.md
 39. [TREND-2026] Confident, editorial, single-typeface hierarchy — large type doing the work imagery used to do — scores better with judges than illustrated/decorated templates in the current cycle; variable-font hover/interaction weight-width morphing is validated only where typography itself is the product (type foundries, brand-identity microsites), not for general product-listing typography. Single-source/snippet-verified, lower confidence. — awards-visual-language.md
 
+**Text wrapping (`text-wrap: balance` / `pretty`)**
+
+40. [TREND-2026] Apply `text-wrap: balance` only to short blocks — headlines, pull-quotes, captions — never body copy, capped at **6 lines in Chromium** and **10 lines in Firefox**; past those line counts the browser silently falls back to normal wrapping (the balancing algorithm is computationally expensive per recalculation, which is why the value is gated by line count at all). Baseline **newly available since 2024-05-13**, not yet widely available (projected ~2026-11-13) — safe to ship, but verify the line count on the actual rendered headline, not just the design comp, since a long localized string can silently exceed the cap. — modern-baseline-css.md R15; MDN `text-wrap`
+41. [TREND-2026] Apply `text-wrap: pretty` to body copy as a harmless progressive enhancement only — never as the sole orphan-prevention mechanism on traffic with meaningful Firefox share. Firefox ships **no implementation** at all (the feature doesn't clear Baseline "newly available" status in the current dataset), and Chromium/WebKit disagree on scope even where both support it: **Chromium rebalances only the last 4 lines** of a paragraph, **WebKit evaluates the entire paragraph**. Don't assume identical visual output across engines, and don't rely on it for correctness on any layout where an orphaned word would break the design. — modern-baseline-css.md R16-17; WebKit blog (webkit.org/blog/16547)
+
 ## Checklist
 
 **Type scale & hierarchy**
@@ -137,6 +142,10 @@ description: Typography rules for premium sales websites - scale, pairing, measu
 - [ ] Any kinetic type is state-driven (scroll/hover/data), never decorative-only, and runs on native scroll with reduced-motion respected (Rule 38)
 - [ ] Variable-font hover-morph restricted to type-led brand microsites (Rule 39)
 
+**Text wrapping**
+- [ ] `text-wrap: balance` used only on headlines/pull-quotes/captions, never body copy, and the rendered line count is checked against the 6-line (Chromium) / 10-line (Firefox) cap on real content, not just the comp (Rule 40)
+- [ ] `text-wrap: pretty` on body copy is shipped as a progressive enhancement only, with no layout correctness depending on it for Firefox traffic (Rule 41)
+
 ## Anti-patterns
 
 - **Low-contrast "ghost text" hero copy** (light-gray-on-white, thin weights) chosen for aesthetic minimalism. Passes design-jury eyeballing but fails WCAG's 4.5:1 floor and real-world legibility on mobile/outdoor screens. Instead: check every hero pairing with a contrast calculator, never by eye.
@@ -152,3 +161,5 @@ description: Typography rules for premium sales websites - scale, pairing, measu
 - **Combining first-line paragraph indents *and* extra paragraph spacing.** Redundant separators that visually fragment a text block instead of clarifying it. Instead: pick one paragraph-separation method per block.
 - **Shipping `font-display: swap` without a metric-adjusted fallback.** Causes a visible, jarring layout shift the instant the webfont swaps in — "cinematic" font-loading intros on award sites often make this worse for a sales page, where every second of instability costs trust. Instead: tune `size-adjust`/`ascent-override`/`descent-override` on the fallback before shipping `swap`, or graduate to `optional`.
 - **Kinetic type that's purely decorative** (animates once on load, doesn't encode scroll/hover/data state). The award-winning version ties type animation functionally to interaction state; a version with no functional tie-in is closer to the decorative-motion anti-pattern than to the pattern that actually wins. Instead: either wire the animation to real state or cut it.
+- **Applying `text-wrap: balance` to a long body paragraph** instead of a headline/pull-quote/caption. Past ~6 lines (Chromium) or ~10 (Firefox) it silently no-ops back to normal wrap, so it looks like it "isn't working" when it's simply out of its supported range — and it was never meant to run that long in the first place. Instead: reserve `balance` for short display blocks only.
+- **Treating `text-wrap: pretty` as a cross-browser orphan-prevention fix.** Firefox implements none of it, so any layout depending on it for correctness — not just enhancement — breaks for the entire Firefox user base; Chromium and WebKit also disagree on how much of the paragraph gets rebalanced. Instead: ship it as a no-risk enhancement only, never the mechanism a layout actually depends on.

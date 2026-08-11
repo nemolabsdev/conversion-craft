@@ -12,7 +12,7 @@ description: Layout and composition for sales pages - grid, spacing rhythm, abov
 - Choosing container max-width, breakpoints, or a mobile-first column structure.
 - Ordering sections on a sales/landing/product page, or auditing an existing order.
 - Deciding whether a bento/modular grid fits a section, or reviewing one already shipped.
-- Auditing whitespace, Gestalt grouping, or visual-hierarchy levels on a drafted layout.
+- Auditing whitespace, Gestalt PROXIMITY grouping, or visual-hierarchy levels on a drafted layout. (The rest of the Gestalt canon — figure-ground, similarity, common region, closure, continuity — plus column grids, optical alignment and visual balance live in `composition-grids`.)
 
 ## Rules
 
@@ -42,7 +42,7 @@ description: Layout and composition for sales pages - grid, spacing rhythm, abov
 13. [FRAMEWORK] Set the desktop container max-width to 1140-1320px for the primary content column; 1200-1280px is the converged default for a generous-whitespace, premium-feel layout. — Bootstrap convention via Framer
 14. [FRAMEWORK] Design mobile-first: base styles stacked/unstyled for narrow viewports, layer in multi-column/grid treatment at wider breakpoints. Never design desktop-first and squeeze down. — Framer
 15. [TREND-2026] Use `clamp()` for fluid type and spacing between breakpoints instead of discrete jumps — the standard 2026 technique for avoiding visible layout "steps."
-16. [TREND-2026] Use container queries for component-level responsive spacing (e.g. a pricing card that reflows on its own column width, not the viewport) — Baseline-supported (~93% global browser usage) and now preferred over viewport media queries for component-driven layout.
+16. [TREND-2026] Use container queries for component-level responsive spacing (e.g. a pricing card that reflows on its own column width, not the viewport) — Baseline-supported (~93% global browser usage) and now preferred over viewport media queries for component-driven layout. See Rules 29-32 for syntax, units, and a worked pattern.
 17. [LAW] Hold body-text columns to 45-75 characters per line (66 optimum), never exceeding 80 — this is what actually constrains a readable content-column width inside any container, independent of the container's own max-width. — Baymard/Bringhurst, WCAG
 
 **Section persuasion order (Shapiro layout scaffold)**
@@ -71,6 +71,13 @@ description: Layout and composition for sales pages - grid, spacing rhythm, abov
 27. [LAW] Avoid scroll-jacking, heavy WebGL hero showpieces, and experimental/non-standard primary navigation on a sales-page layout — documented award-circuit favorites correlated with visitor confusion and mobile failure, regardless of design-award performance. Native scroll-driven reveals are fine (content reachable without JS, respects `prefers-reduced-motion`); the hijack-vs-reveal mechanics live in `motion-performance.md` — this skill's stake is structural: every layout element must be reachable through normal document flow and scroll. — wearetenet, corroborated by awards-visual-language.md's own award-judging analysis
 28. [LAW] Never use "featured on Awwwards/FWA/CSSDA" or award-site aesthetics as a proxy for conversion-safe layout — award judging explicitly weights Design 40% + Creativity 20% vs. Content 10%, structurally skewed away from usability. Validate any award-inspired layout pattern against your own funnel before reuse. — wearetenet
 
+**Container queries (component-level responsiveness)**
+
+29. [LAW] `@container`, `container-type`, and `container-name` are Baseline **widely available since 2025-08-14** (newly available 2023-02-14) — safe as the default responsive mechanism for any component (plan card, nav item, product tile) that must reflow against its own column width rather than the viewport. Reach for a container query, not a viewport media query, whenever the reflow trigger is "how much room does this component have," not "how wide is the screen" — that distinction is what decides component-level vs. viewport breakpoints. — modern-baseline-css.md R18; web-features `container-queries`
+30. [FRAMEWORK] Syntax: set `container-type: inline-size` on the component's **direct parent** (never the component itself — it cannot query its own size), then scope rules to it with `@container (inline-size > Nch) { … }`. Add an explicit `container-name` only once multiple nested containers could otherwise make it ambiguous which ancestor a given `@container` rule targets. — modern-baseline-css.md R19
+31. [LAW] Container query units (`cqi`, `cqw`, `cqb`, `cqh`) always resolve against the nearest ancestor with `container-type` set, never the element they're applied to — default to `cqi` for width-driven component sizing, reach for `cqmin`/`cqmax` only when a value must explicitly track the tighter or looser of two axes. When mixing `cqi` into a `clamp()` for in-component fluid type, keep the `cqi` coefficient low (≈0.5, not multiple whole units) relative to the `rem` base — a high container-unit contribution shrinks the influence of the user's root font-size preference, the same WCAG 1.4.4 zoom concern Rule 15 raises for viewport-driven clamps. — modern-baseline-css.md R20-21
+32. [FRAMEWORK] Worked pattern — a card that reflows on its own column width, not a viewport breakpoint: the slot wrapping the card gets `container-type: inline-size`; the card itself sets nested `@container (inline-size > 40ch)` for its first jump (a label/value pair moves from stacked to inline) and `@container (inline-size > 50ch)` for its second (single-column body becomes two-column). Set thresholds in `ch` units, not fixed `px`, so the card reflows consistently regardless of which font is actually rendering. This is the case where component-level querying beats a viewport breakpoint outright: the identical card markup can sit in a wide single-column sidebar or a narrow slot in a 3-up grid and reflow correctly in both — a `min-width` media query keyed to the viewport cannot do that, because it only knows the screen's width, not the card's. — modern-baseline-css.md R22 (worked example)
+
 ## Checklist
 
 **8pt grid & touch targets**
@@ -97,6 +104,9 @@ description: Layout and composition for sales pages - grid, spacing rhythm, abov
 - [ ] Fluid type/spacing uses `clamp()` instead of stepped breakpoint jumps (Rule 15)
 - [ ] Component-level spacing uses container queries where applicable (Rule 16)
 - [ ] Body-text columns stay in 45-75 CPL, hard cap 80 (Rule 17)
+- [ ] `container-type: inline-size` is set on the component's direct parent, not the component itself; `container-name` used only when nesting makes an ancestor ambiguous (Rule 30)
+- [ ] Container query units (`cqi` default) resolve against the correct ancestor; any `cqi`-in-clamp() coefficient stays low relative to its `rem` base (Rule 31)
+- [ ] Any component-level breakpoint uses `@container (inline-size > Nch)` in `ch`, not fixed `px` (Rule 32)
 
 **Section order**
 - [ ] Section order matches the Nav->Hero->proof->CTA->features->CTA->FAQ->footer scaffold, or the deviation is documented (Rule 18)
@@ -130,3 +140,4 @@ description: Layout and composition for sales pages - grid, spacing rhythm, abov
 - **Stacking more than 3 hierarchy tiers** (5-6 different size/weight/color combinations competing for attention on one screen) so nothing reads as clearly more important than anything else. Instead: cap contrast levels at 3 and drive them with size + value/saturation, not a proliferation of hue variants.
 - **Building a bento or asymmetric layout for the page's core persuasion sequence** (hero, social proof, primary CTA) instead of reserving it for genuinely comparable, non-sequential content like a feature grid or plan comparison. Instead: keep the persuasion spine in a straightforward stacked/scaffolded order; use bento only where the content itself is naturally parallel.
 - **Shipping a layout pattern because it won an Awwwards/FWA/CSSDA award**, without checking it against this site's own funnel. Award judging weights Design and Creativity far above Content, so award-winning layout choices are not pre-validated for conversion. Instead: treat any award-inspired pattern as a hypothesis to test, not a proof.
+- **Reaching for a `min-width` viewport media query on a component that gets reused at different column widths** (a card in a sidebar vs. a 3-up grid slot) instead of a container query. The component looks right at the one width it was designed against and breaks the moment it's dropped into a narrower or wider slot at the same viewport width. Instead: set `container-type: inline-size` on the component's parent and query the component's own available space with `@container`.

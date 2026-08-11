@@ -1,6 +1,6 @@
 # Conversion Craft
 
-> A complete conversion-design team for Claude Code: **9 agents**, **12 skills**, **3 mechanical QA gates** — research-backed rules distilled from 2024–2026 design-award winners and Baymard / Nielsen Norman Group / CXL conversion research, enforced down to the **rendered pixel** by tooling that fails the build.
+> A complete conversion-design team for Claude Code: **9 agents**, **16 skills**, **3 mechanical QA gates** — research-backed rules distilled from 2024–2026 design-award winners and Baymard / Nielsen Norman Group / CXL conversion research, enforced down to the **rendered pixel** by tooling that fails the build.
 
 Conversion Craft turns Claude Code into a team that researches, designs, writes, builds, critiques and QA-checks high-converting sales pages. Every rule in every skill is operational and checkable ("body line length 45–75ch", never "comfortable line length"), carries its source, and is confidence-tagged `[LAW]` / `[FRAMEWORK]` / `[TREND-2026]`.
 
@@ -65,6 +65,10 @@ page at 375px and 1280px, qa-inspector runs the lint gates last.
 | `demo-assets` | Sourcing and art-directing photography; no abstract vector "product art" |
 | `art-director-review` | The adversarial review rubric with severity levels |
 | `pixel-qa` | The mechanical QA protocol — gates, a11y checklist, coverage rules |
+| `composition-grids` | Column/modular grids, full Gestalt set, text-over-photo contrast, optical alignment, balance |
+| `experimentation-measurement` | A/B methodology, sample size, peeking discipline, event taxonomy, heatmap/replay rules |
+| `brand-voice` | Voice charts, this-not-that guardrails, tone-by-context, the voice-card handoff |
+| `visual-identity` | Icon systems, ownable hue selection, distinctive brand assets, signature motion |
 
 ## QA gates
 
@@ -97,8 +101,8 @@ All testimonials and product claims in the demo are fictional and labeled as suc
 ```
 .claude-plugin/    plugin + marketplace manifests
 agents/            9 team-role definitions
-skills/            12 skills (operational rules + checklists)
-tools/             the two QA gates
+skills/            16 skills (operational rules + checklists)
+tools/             the three QA gates
 curriculum/        research corpus the skills were distilled from (sources + rules)
 demo/              AURI A1 proof-of-concept page
 ```

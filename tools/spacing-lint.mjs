@@ -48,7 +48,45 @@ for (const file of files) {
       const value = m[2].trim()
 
       if (prop.startsWith('--')) {
-        if (/(space|spacing|gap)/i.test(prop)) {
+        if (/^--flow-/.test(prop)) {
+          // Fluid-space tokens: clamp() whose min/max bounds must land exactly
+          // on the 8px section grid; preferred value must carry a rem term
+          // (zoom coherence). Interpolated in-between values are off-grid by
+          // design — only the written bounds are checked.
+          const cm = value.match(/clamp\(([^)]*)\)/)
+          if (!cm) {
+            console.log(`ERROR ${file}:${n}  token ${prop}: --flow-* tokens must be a clamp() between two grid-step bounds`)
+            errors++
+          } else {
+            const parts = cm[1].split(',')
+            if (parts.length !== 3) {
+              console.log(`ERROR ${file}:${n}  token ${prop}: clamp() needs exactly 3 arguments`)
+              errors++
+            } else {
+              const toPx = (s) => {
+                const m = s.trim().match(/^(-?\d*\.?\d+)(px|rem)$/)
+                return m ? (m[2] === 'rem' ? parseFloat(m[1]) * 16 : parseFloat(m[1])) : null
+              }
+              const mn = toPx(parts[0])
+              const mx = toPx(parts[2])
+              if (mn === null || mx === null) {
+                console.log(`ERROR ${file}:${n}  token ${prop}: clamp() min/max must be plain px or rem literals`)
+                errors++
+              } else {
+                for (const [label, v] of [['min', mn], ['max', mx]]) {
+                  if (v % 8 !== 0) {
+                    console.log(`ERROR ${file}:${n}  token ${prop}: ${label} bound ${v}px is not on the 8px section grid`)
+                    errors++
+                  }
+                }
+              }
+              if (!/rem/.test(parts[1])) {
+                console.log(`ERROR ${file}:${n}  token ${prop}: preferred value needs a rem term (pure vw/vi ignores browser zoom)`)
+                errors++
+              }
+            }
+          }
+        } else if (/(space|spacing|gap)/i.test(prop)) {
           for (const mm of value.matchAll(/(-?\d*\.?\d+)px/g)) {
             const v = parseFloat(mm[1])
             if (v !== 0 && Math.abs(v) % 4 !== 0) {

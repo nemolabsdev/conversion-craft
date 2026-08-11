@@ -28,7 +28,7 @@ The token layer every other skill builds on. Nothing in a build references a raw
 
 **Color scale (OKLCH ramps, 11–12 steps)**
 
-7. [LAW] Build every brand color and neutral as an ordered 11–12 step ramp, never a single hex value. — color-systems.md R9
+7. [LAW] Build every brand color and neutral as an ordered 11–12 step ramp, never a single hex value. Choosing WHICH hue to ramp (category audit, ownable color, accent relationships) happens first and belongs to the `visual-identity` skill — this skill starts once the hue is chosen. — color-systems.md R9; visual-identity
 8. [LAW] Generate the ramp in OKLCH, not RGB/HSL interpolation — equal lightness deltas must look like equal visual steps across every hue in the palette; this is why Tailwind v4 rebuilt its default palette in OKLCH. — color-systems.md R10
 9. [LAW] Fix semantic roles to specific steps and hold them across every color in the system: steps 1–2 page/canvas background, 3–5 interactive component background (rest/hover/active), 6–8 borders (subtle → interactive → focus ring), 9–10 solid/saturated fills (primary button default/hover), 11–12 text (secondary, primary). — color-systems.md R9 (Radix Colors)
 10. [LAW] Reserve the solid/saturated step (~9) for large filled UI elements and the darkest steps (11–12) for running text — a mid-saturation ~500-level swatch routinely fails 4.5:1 against white and must never be body-text color. — color-systems.md R11
@@ -45,9 +45,9 @@ The token layer every other skill builds on. Nothing in a build references a raw
 
 **Spacing scale (4px / 8px grid)**
 
-18. [LAW] Use 8px as the base spacing unit; every section margin, padding, and gutter is a multiple of 8 (8/16/24/32/40/48/64/80/96). — layout-spacing.md R1
+18. [LAW] Use 8px as the base spacing unit; every section margin, padding, and gutter is a multiple of 8 (8/16/24/32/40/48/64/80/96). Declared fluid exception: a `--flow-*` token (Rules 40-41) whose two written bounds land on this grid may interpolate between them at intermediate viewports. — layout-spacing.md R1
 19. [LAW] Reserve the 4px sub-grid for internal component spacing only (icon-to-label gap, button internal padding, inline badge spacing) — never for section-level layout. — layout-spacing.md R2
-20. [LAW] Fix the spacing scale as a token set, not arbitrary values: `--space-1: 4px`, `--space-2: 8px`, then 12/16/24/32/48/64/96/128px — 7–10 steps total, every layout value pulled from this list. — layout-spacing.md R3
+20. [LAW] Fix the spacing scale as a token set, not arbitrary values: `--space-1: 4px`, `--space-2: 8px`, then 12/16/24/32/48/64/96/128px — 7–10 steps total, every layout value pulled from this list or expressed as a `--flow-*` clamp between two of these steps (Rules 40-41). — layout-spacing.md R3
 21. [LAW] Set `--leading-*` (line-height) tokens to multiples of 4px so text baselines stay locked to the spacing grid. — layout-spacing.md R4
 22. [LAW] Ship `--target-min: 44px` as the touch/click-target design floor (Apple HIG 44×44pt; Material 48×48dp) with ≥8px clearance between adjacent targets. WCAG 2.2 SC 2.5.8's legal AA minimum is 24×24px — state both in review, ship 44. — layout-spacing.md R6-7; WCAG 2.2 SC 2.5.8
 
@@ -75,6 +75,12 @@ The token layer every other skill builds on. Nothing in a build references a raw
 36. [TREND-2026] Default cart, checkout, and payment screens to light mode (or exact system match) even on sites offering dark mode elsewhere — lighter UI reads as more trustworthy at the payment-trust moment. Direction is corroborated across sources; specific abandonment percentages are not — don't cite a number. — color-systems.md R28
 37. [TREND-2026] If dark mode is supported, make it a persistent saved user toggle, not OS-detection-only — the cited driver of dissatisfaction is a mismatch between expectation and rendered theme, which a persistent toggle resolves directly. — color-systems.md R29
 38. [TREND-2026] If shipping partial-dark, segment by module type: imagery-heavy modules (hero, product gallery, lifestyle photography) read fine or better on dark surfaces; data-dense modules (pricing tables, spec comparisons, forms) read better on light. — color-systems.md R31
+39. [TREND-2026] Implement the dark-mode rebuild (Rule 34) through `light-dark()` paired unconditionally with `color-scheme: light dark` (or an explicit `light`/`dark` value) declared on `:root`/`html` — `light-dark()` is Baseline **newly available since 2024-05-13** (not yet widely available, ~2026-11-13 projected) and resolves light-only if the paired `color-scheme` declaration is missing. This is a mechanism choice layered on top of Rule 34, not a substitute for it: each `light-dark(#lightHex, #darkHex)` pair is still two independently rebuilt values, never a light value with the dark half derived by inversion. `contrast-check.mjs` cannot resolve a `light-dark()` call any more than it resolves `oklch()` (Rule 4) — commit both arguments as literal hex, and Rule 35's dark-mode `@contrast` re-verification runs against the resolved dark-branch hex specifically. — modern-baseline-css.md R23-24; web-features `light-dark`, `color-scheme`
+
+**Fluid-space tokens (clamp within the grid)**
+
+40. [TREND-2026] `--flow-*` tokens are a fluid-space option layered on top of the fixed 8px scale (Rule 20), for section-level rhythm that must not visibly "jump" at a breakpoint: declare each as `clamp()` between two bounds that are themselves grid-step values from Rule 20's scale, e.g. `--flow-md: clamp(1rem, 0.9rem + 0.5vi, 2rem)` where the 1rem (16px) floor and 2rem (32px) ceiling both land on the fixed scale. Component-internal spacing stays on the 4px sub-grid (Rule 19) and is never expressed as a `--flow-*` token. — modern-baseline-css.md R27-29 (Utopia methodology)
+41. [FRAMEWORK] `spacing-lint.mjs` enforces the `--flow-*` contract mechanically: each such token must be a `clamp()` whose written min/max bounds are plain px/rem literals landing exactly on the 8px section grid (Rule 18), and whose preferred value carries a `rem` term — a pure-`vw`/`vi` middle ignores browser zoom (for text clamps that is a WCAG 1.4.4 failure per modern-baseline-css R28; for space it breaks zoom coherence, same discipline, no legal ratio constraint applies). The clamp's interpolated output at intermediate viewports is off-grid by design (Rule 40's declared tradeoff) — flagging those values in review is noise, not rigor. — tools/spacing-lint.mjs; modern-baseline-css.md R28-29
 
 ## Checklist
 
@@ -110,6 +116,7 @@ The token layer every other skill builds on. Nothing in a build references a raw
 - [ ] Body text never drops below 16px/1rem; all sizes in rem/em (R25)
 - [ ] Line-height inverse to size (~1.1–1.2 display, 140–150% body) (R26)
 - [ ] Each scale step has its own `clamp()` with rem floor/ceiling (R27-28)
+- [ ] Any `--flow-*` fluid-space token's two `clamp()` bounds both land on the fixed 4/8px-grid scale; the interpolated mid-range value is not lint-chased (R40-41)
 
 **Radius, shadow, duration**
 - [ ] `border-radius` values resolve through the 4-step radius scale (R29)
@@ -121,6 +128,7 @@ The token layer every other skill builds on. Nothing in a build references a raw
 **Dark mode**
 - [ ] Dark theme tokens rebuilt per-role, not inverted from light (R34)
 - [ ] Dark-mode fg/bg pairs re-verified through `@contrast` (R35)
+- [ ] Any `light-dark()` token is paired with a `color-scheme` declaration on `:root`/`html`, and both hex arguments are committed literals, not `var()`/`oklch()` (R39)
 - [ ] Checkout/cart/payment default light or system-match (R36)
 - [ ] Dark mode is a persistent toggle, not OS-detection-only (R37)
 - [ ] Partial-dark (if used) segmented by module type (R38)
@@ -140,6 +148,8 @@ The token layer every other skill builds on. Nothing in a build references a raw
 - **One-off `border-radius`/`box-shadow` values per component** ("this card gets 10px, that modal gets 14px"). Produces a system that looks hand-tuned-inconsistent rather than designed. Instead: pick from the fixed radius/shadow scale; if nothing fits, add a scale step deliberately.
 - **`vw`-only fluid type with no rem floor/ceiling on the `clamp()`.** Breaks WCAG 1.4.4 because text never stops scaling in lockstep with viewport width, regardless of browser zoom. Instead: always wrap the preferred `vw` value in rem-based min/max bounds.
 - **Forcing dark-mode-only on checkout/payment regardless of saved preference.** Repeatedly flagged as a trust/abandonment risk at the exact moment trust matters most. Instead: default transactional screens to light or system-match; let dark mode elsewhere be an explicit, persistent user choice.
+- **Shipping `light-dark()` with no `color-scheme` declaration on `:root`/`html`.** The function silently resolves to its light branch only — a dark-mode toggle appears to do nothing. Instead: always declare `color-scheme` and `light-dark()` together, never one without the other.
+- **Chasing a `--flow-*` clamp()'s intermediate viewport-width value to force it onto the 4px grid.** The interpolated value between the two bounds is off-grid by design; only the clamp's own min/max literals need to land on 4px multiples. Instead: grid-check the two bounds, accept the fluid interpolation between them.
 - **Multiple co-equal saturated "primary" buttons on one screen.** Re-creates the no-isolation condition that makes a CTA fail to stand out, independent of hue. Instead: exactly one component token (`--button-primary-*`) per screen gets the solid/saturated treatment.
 
 ## Plugin context

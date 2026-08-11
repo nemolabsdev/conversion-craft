@@ -1,19 +1,19 @@
-# Gaps found by completeness critic (Faza 1)
+# Known gaps — deferred to v1.1+
 
-## Filled in round 2 (Faza 2 gap researchers)
-- Navigation/IA + site search + PLP faceted filtering → `navigation-search.md`
-- Forms outside checkout + unified accessibility checklist → `forms-accessibility.md`
-- Footer trust surface, cookie consent, email capture, post-purchase → `trust-peripheral.md`
-- SEO/structured data, product variants UX, pricing table layout → `seo-variants.md`
+> Updated after the Phase-5 completeness audit and supplement wave (2026-08). The five CRITICAL
+> gaps from that audit (experimentation, composition canon, brand voice, visual identity,
+> superseded dialog pattern) are now closed. What remains, ranked:
 
-## Reconciliations (applied during skill distillation)
-1. **Touch targets**: design floor = 44×44 CSS px (Apple HIG; Material uses 48dp) with ≥8px clearance. WCAG 2.2 AA legal minimum = 24×24 px. Skills state both; team ships 44.
-2. **Scroll motion**: native scroll-driven reveals are ALLOWED (high-consideration storytelling; content reachable without JS; respects `prefers-reduced-motion`). Scroll-HIJACKING (overriding scroll position/speed) is FORBIDDEN on sales pages.
-3. **Tag rigor**: `[LAW]` only for WCAG/regulatory or multi-source replicated findings. Practitioner frameworks (Dunford, Shapiro, Schwartz) = `[FRAMEWORK]`. Dated trends = `[TREND-2026]`.
-4. **awards-visual-language.md** is snippet-verified only (WebFetch was unavailable in that session) — treat as lower confidence than the other files.
+## IMPORTANT
+- **Promotions & sale-event architecture** — sitewide sale banners vs. one-primary-CTA rule, discount-code UX, bundles/GWP, temporary-urgency truthfulness.
+- **Post-purchase & cart-abandonment lifecycle** — confirmation/shipping emails, abandoned-cart recovery sequence, review-request timing, win-back.
+- **B2B landing-page patterns** — demo-request flows, gated content, buying-committee content, lead-qualification forms.
 
-## Deferred (not blocking; candidates for a future research round)
-- B2B sales-page patterns (demo-request, gated content, buying committees)
-- Post-purchase email flows in depth
-- A/B testing methodology (sample size, significance, peeking)
-- Dedicated pricing-page deep dive beyond layout basics
+## NICE
+- Video/motion-image art direction (hero loops, cinemagraphs) — demo-assets covers stills only.
+- Loyalty, subscription and referral surfaces (positive patterns; dark-pattern bans already exist).
+- Personalization implementation guidance (flicker/FOUC, LCP interplay, SSR tradeoffs) — currently experiment-gated only.
+- PWA/add-to-homescreen and deep-linking from ad traffic.
+
+## Process debt
+- Distillation-completeness check: research→skill pipeline lost content once (pricing/SEO, caught in audit); future waves should diff research topics against shipped skill coverage before closing.

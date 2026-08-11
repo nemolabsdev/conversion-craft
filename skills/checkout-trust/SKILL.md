@@ -66,8 +66,8 @@ description: Cart, checkout, forms and trust surfaces - field design, guest chec
 
 30. [LAW] Give "Accept" and "Reject" equal visual weight (same size, saturation, banner layer) AND equal click-depth — no settings-drilldown required to reject when accept is one click. This is the single most-cited factor in 2024-2025 EU enforcement (CNIL fines: Google €325M, Shein €150M). — EDPB Cookie Banner Taskforce, CNIL
 31. [LAW] Never pre-tick any consent checkbox, including "soft" categories like analytics or personalization — pre-ticked is treated as no consent at all under GDPR. — EDPB Cookie Banner Taskforce
-32. [LAW] If the banner is a modal, trap focus inside it (Tab/Shift+Tab cycle within it) and make Escape, or an equally reachable control, close it. — WCAG 2.1.2
-33. [FRAMEWORK] Keep the banner to a bottom or corner bar rather than a full-viewport takeover wherever applicable regulation allows a non-blocking presentation — full-page interstitials combine two of the most-negatively-rated UI patterns tested (blocked content + forced choice). — NN/g most-hated-techniques research, applied by analogy
+32. [LAW] If the banner is a modal, build it on native `<dialog>` + `.showModal()` — never a hand-rolled `role="dialog"` div with manual JS focus-trap code. The browser makes background content `inert`, cycles Tab/Shift+Tab focus only within the dialog, and restores focus to the invoking control on close, automatically and correctly (see Rules 44-45 below). Make Escape, or an equally reachable control, close it. — WCAG 2.1.2; MDN `<dialog>`
+33. [FRAMEWORK] Consent state gates what analytics may run — the event/consent interplay is owned by `experimentation-measurement` (its consent-gating rules); this skill owns the banner surface itself. Keep the banner to a bottom or corner bar rather than a full-viewport takeover wherever applicable regulation allows a non-blocking presentation — full-page interstitials combine two of the most-negatively-rated UI patterns tested (blocked content + forced choice). — NN/g most-hated-techniques research, applied by analogy
 
 **Email capture & popups**
 
@@ -84,6 +84,15 @@ description: Cart, checkout, forms and trust surfaces - field design, guest chec
 41. [FRAMEWORK] Defer account creation to the confirmation page rather than forcing it pre-checkout, and use this page — not the checkout flow — for newsletter opt-in and cross-sell offers, where there's layout room and no in-progress-transaction friction. — Baymard
 42. [LAW] Present every post-purchase add-on as an explicit, actively-selected offer — never pre-select a paid add-on or bundle it into the confirmed total. Let it complete via the already-stored payment method with zero card re-entry. — EU Consumer Rights Directive Art. 22 (regulatory for EU buyers; sound practice generally)
 43. [LAW] Never build a subscription/recurring upsell around a "roach motel" pattern (easy one-click signup, deliberately hard cancellation) — cancellation must be at least as easy as signup under ROSCA, FTC Section 5, and state autorenewal statutes, independent of the 2025 vacatur of the federal click-to-cancel rule. — FTC Section 5, ROSCA, state UDAP laws
+
+**Native dialogs, popovers & `:has()` (2026 baseline)**
+
+44. [LAW] When a surface is modal at all — R33 prefers a non-blocking bottom/corner bar for consent wherever regulation allows, so a consent MODAL is the exception, not the default — implement it as native `<dialog>` opened via `.showModal()` with an accessible name (`aria-labelledby` to its visible heading, or `aria-label`), and style the scrim with `dialog[open]::backdrop { … }` directly rather than an absolutely positioned sibling `<div>`. `<dialog>` is Baseline **widely available since 2024-09-14** — safe as the default with zero fallback concern. — MDN `<dialog>`; web-features `dialog`
+45. [LAW] Do not write manual JS focus-trap code for a `<dialog>` opened via `.showModal()` — the browser makes background content `inert`, cycles Tab focus only within the dialog, and restores focus to the invoking control on close. A hand-rolled `role="dialog"` div gets none of this for free and must independently rebuild all five behaviors (focus trap, click-outside dismissal, Escape handling, focus restoration, initial-focus placement). — CSS-Tricks (Scott O'Hara / W3C APA WG)
+46. [TREND-2026] Build the cart drawer and any quick-view/product-preview overlay on the Popover API (`popover` attribute + `popovertarget`/`popovertargetaction`), not `<dialog>` — these surfaces must not make the rest of the page inert, since the shopper should still be able to scan products behind an open cart drawer. Reserve `<dialog>` for anything that must block background interaction. The Popover API is Baseline **newly available only** (since 2025-01-27, not yet widely available) — confirm the project's Safari floor is ≥18.3 before relying on it as the sole implementation. — web-features `popover`; web.dev/blog/popover-baseline
+47. [LAW] Never style a popover's `::backdrop` (cart drawer, quick-view) to visually read as a modal scrim — popovers do not trap clicks the way `<dialog>` does, so a click can pass through the styled backdrop to whatever sits underneath it, a documented click-through vulnerability. If the design calls for a click-blocking backdrop, that is a `<dialog>`, not a popover. — remysharp.com (2026-05-08)
+48. [TREND-2026] Legacy note: only fall back to a hand-rolled `role="dialog"` + manual JS focus-trap, or a hand-rolled non-modal panel, when the audience floor predates native support (pre-Chrome 37/Edge 79/Firefox 98/Safari 15.4 for `<dialog>`; pre-2025 evergreen browsers for Popover) — document the specific legacy constraint in the build notes rather than defaulting to it. — web-features `dialog`, `popover`
+49. [FRAMEWORK] Pair `:has()` with `:user-invalid`/`:user-valid` on the field wrapper for inline-validation styling — e.g. `.field:has(input:user-invalid) { border-color: var(--error) }` — instead of a JS-toggled error class, so the error state renders only after the user has actually interacted with the field, never on initial load. Scope every such selector to the immediate field wrapper, never `body:has(...)` or `:root:has(...)` — `:has()` re-evaluates on every relevant DOM mutation, and a broad anchor forces a full-document recheck on every keystroke. `:has()` is Baseline **widely available since 2026-06-19**. — MDN `:has()`; MDN form-validation pseudo-class pattern
 
 ## Checklist
 
@@ -131,8 +140,16 @@ description: Cart, checkout, forms and trust surfaces - field design, guest chec
 **Cookie consent**
 - [ ] Accept/Reject have equal visual weight and equal click-depth (Rule 30)
 - [ ] No consent checkbox is pre-ticked (Rule 31)
-- [ ] Cookie modal traps focus and closes on Escape (Rule 32)
+- [ ] Cookie modal is a native `<dialog>` (`.showModal()`), not a hand-rolled `role="dialog"` div, and closes on Escape (Rule 32)
 - [ ] Banner is a bottom/corner bar, not a full-viewport takeover (Rule 33)
+
+**Native dialogs, popovers & `:has()`**
+- [ ] Any surface built as a MODAL (consent bar remains the preferred default, Rule 33) uses native `<dialog>`/`.showModal()` with `aria-labelledby`/`aria-label`, scrim via `::backdrop` (Rule 44)
+- [ ] No manual JS focus-trap code exists for a native `<dialog>` (Rule 45)
+- [ ] Cart drawer and quick-view use the Popover API, not `<dialog>` (Rule 46)
+- [ ] No popover `::backdrop` is styled to look like a modal scrim (Rule 47)
+- [ ] Any hand-rolled dialog/popover fallback documents the specific legacy-browser constraint (Rule 48)
+- [ ] Inline-validation wrappers use `.field:has(input:user-invalid)`, scoped to the field, not an unscoped `:has()` (Rule 49)
 
 **Email capture & popups**
 - [ ] Promotional popups wait ≥10s or ≥30% scroll before firing (Rule 34)
@@ -164,3 +181,5 @@ description: Cart, checkout, forms and trust surfaces - field design, guest chec
 - **Order confirmation pages that bury or omit the core order summary** in favor of cross-sell, survey, or promo content. Instead: order summary first, always visible above any supplementary content.
 - **"Roach motel" cancellation flows** — one-click subscribe paired with a multi-step, phone-required, or guilt-messaged cancel. The FTC's and multiple state regulators' named target pattern for negative-option enforcement. Instead: cancellation at least as easy as signup.
 - **Award-circuit visual patterns (scroll-jacking, heavy hero animation, delayed content reveal) applied to cart/checkout flows.** Pushes price, CTA, and trust signals below the fold and adds load time — directly contradicts the above-the-fold and speed-sensitive rules in this file. Native scroll-driven reveals (content reachable without JS, respecting `prefers-reduced-motion`) are fine elsewhere on the site; never let a checkout or cart page override scroll position or speed.
+- **Hand-rolling `role="dialog"` + custom JS focus-trap for a cookie-consent modal or confirm dialog when native `<dialog>` would do the job for free.** Every reimplementation has to independently get five behaviors right (focus trap, click-outside dismissal, Escape handling, focus restoration, initial-focus placement) that `.showModal()` provides automatically. Instead: native `<dialog>`, reserving a hand-rolled fallback for a documented pre-2022-browser floor.
+- **Styling a cart-drawer or quick-view popover's `::backdrop` to look like a modal scrim.** A popover does not trap clicks — the visual implies modality the interaction doesn't deliver, producing a real click-through vulnerability onto whatever sits beneath the backdrop. Instead: use `<dialog>` if click-blocking is actually the intent.

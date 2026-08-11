@@ -69,6 +69,12 @@ description: Adversarial design review rubric - hierarchy, spacing rhythm, typog
 30. Flag unmodified default type/color choices shipped with zero customization on a premium/high-ticket page (stock Inter at default weights with no type-scale work, an unmodified framework default palette) as a genericness MAJOR — it reads as a decorated template, not a committed point of view. [TREND-2026] — typography-craft.md Anti-patterns ("Inter fatigue"); awards-visual-language.md R28
 31. Scrollytelling narrative-before-CTA (a long-form scroll-driven sequence preceding the commercial ask) is acceptable only for high-consideration/high-ticket verticals, and only as a native scroll-driven reveal — content reachable without JS, motion respecting `prefers-reduced-motion`. Scroll-**hijacking** (any JS override of scroll position or speed) is a BLOCKER on every vertical — independently corroborated by NN/g usability testing and a documented relaunch (+40% bounce, −50% form conversion). [LAW] — motion-performance.md R35; layout-spacing.md R30 (scroll-hijack ban, multi-source); awards-visual-language.md Trends table (scrollytelling scope — apply narrowly)
 
+**Composition & optical judgment**
+
+32. Figure-ground check on any text-over-image: any headline/label placed over a photo needs a genuine contrast break from the image below it — value/color contrast, shadow, blur, or scrim — because stacking order alone doesn't trigger the automatic foreground/background split. Measure contrast at the single worst-case pixel neighborhood the text overlaps (lightest region under dark text, darkest under light text), never the image's average color, and confirm it clears WCAG SC 1.4.3: ≥4.5:1 for body/UI text, ≥3:1 for large text. No figure-ground treatment at all is MAJOR; a treatment present but failing the measured threshold is a BLOCKER — same severity logic as the focus-ring rule (R23). [LAW] — canonical numbers: composition-grids (audit against that skill); provenance: composition-canon.md rules 9-11 (NN/g Figure/Ground; W3C WCAG 2.1 SC 1.4.3)
+33. Optical-alignment check: run an optical, not just mathematical, pass on icon+text pairings, centered glyphs, and nested rounded containers. Pointed/asymmetric shapes (play triangles, arrows, checkmarks) sitting at their bounding-box center but visibly leaning is a MINOR polish miss in isolation, escalating to MAJOR when the same un-corrected pattern repeats across multiple primary UI elements. Verify with a squint pass (R3) plus a rotation/inversion check on any asymmetric icon. [FRAMEWORK] — composition-canon.md rules 20-26 (Overshoot/typography; Apple HIG icon guidance; ringcentral-ux optical-alignment; baraa.app practitioner heuristics)
+34. Visual-balance check — intentional vs. accidental asymmetry: for any asymmetric composition (hero split, unequal card weights, off-center visual), judge balance by eye against the compounding weight factors — size, color/value contrast, texture/density, isolation, distance from center — not by area ratio alone. It passes when removing or resizing any single element visibly tips the composition; it fails as MAJOR when elements could be nudged freely with no perceptible change, or when the minority-weight side of a hero split (e.g. the 30% of a 70/30 split) is too pale/low-contrast to actually counterbalance the dominant side despite a textbook-correct ratio. [LAW] — composition-canon.md rules 27-31 (Smashing Magazine, "Design Principles: Compositional Balance")
+
 ## Checklist
 
 **Severity**
@@ -118,6 +124,11 @@ description: Adversarial design review rubric - hierarchy, spacing rhythm, typog
 - [ ] No unmodified stock type/color defaults on a premium page (R30)
 - [ ] Scroll storytelling (if present) is native-reveal only, never hijacked (R31)
 
+**Composition & optical judgment**
+- [ ] Text-over-image has a genuine figure-ground break, not just stacking order; worst-case contrast clears WCAG SC 1.4.3 (R32)
+- [ ] Icon+text pairings and asymmetric glyphs pass an optical (not just mathematical) alignment check (R33)
+- [ ] Asymmetric compositions judged balanced by eye against weight factors, not by area ratio alone (R34)
+
 ## Anti-patterns
 
 - **Approving a page because it "looks intentional" up close, without ever running the actual blur/squint test.** Close-up review misses hierarchy failures that only show up when detail drops away. Instead: blur the screenshot (or defocus your eyes) at both checkpoints before signing off, every time.
@@ -129,6 +140,8 @@ description: Adversarial design review rubric - hierarchy, spacing rhythm, typog
 - **Treating "not generic" as a vibe check instead of the logo-swap test.** "It feels premium" is not a finding. Instead: ask concretely what would still look wrong if the logo changed, and write down the answer.
 - **Averaging severity — "three MINORs and one MAJOR, close enough to ship."** There is no partial credit in this rubric. Instead: any single BLOCKER or MAJOR sends the build back, full stop, regardless of how many MINORs or passes surround it.
 - **Approving a type scale because each individual size "looks fine in isolation."** Sizes that don't trace to one ratio read as arbitrary once placed on the same screen, even if none look wrong alone. Instead: name the ratio, verify every step derives from it.
+- **Trusting z-index alone to make text-over-image legible, with no measured contrast check at the worst-case pixel.** Stacking order doesn't trigger figure-ground on its own, and a scrim that "looks fine" against one region of a photo can fail badly under the actual text. Instead: find the lightest/darkest pixel neighborhood the text overlaps and measure against WCAG SC 1.4.3 there, not the image average.
+- **Judging a hero split by area ratio alone, ignoring whether the minority side actually carries enough visual weight to counterbalance the majority.** A textbook 70/30 or 60/40 ratio can still read as lopsided if the smaller side is pale and low-contrast. Instead: weigh size, color/value contrast, texture, and isolation together, and confirm by eye that removing the smaller element would visibly tip the composition.
 
 ## Plugin context
 

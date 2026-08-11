@@ -13,6 +13,8 @@ description: Product page anatomy and conversion - gallery, price, CTA, social p
 - Building or reviewing a sticky/persistent add-to-cart bar.
 - Implementing or auditing `Product`, `Offer`, `AggregateRating`, `Review`, or `BreadcrumbList` structured data.
 - Adding urgency, scarcity, or live-activity messaging to a PDP and needing to check it against dark-pattern risk.
+- Building or reviewing a pricing page or tier-comparison table.
+- Setting title tags, meta descriptions, canonicals on facet/variant URLs, or the og:image/twitter:card for any sales page.
 - For headline/CTA wording, testimonial copy, and pricing-psychology tactics (charm pricing, anchoring, decoys), pair this with `copy-chief`. For cart/checkout flow and footer trust, pair with `checkout-trust`.
 
 ## Rules
@@ -85,6 +87,19 @@ description: Product page anatomy and conversion - gallery, price, CTA, social p
 40. [TREND-2026] Tie any countdown timer to a real, non-resetting expiration timestamp stored server-side — a timer that resets on page reload or new session is the most-flagged fake-urgency pattern in CRO literature. — practitioner consensus, regulatory trend
 41. [FRAMEWORK] Prefer verifiable urgency (real low-stock counts pulled from inventory, a real sale end-date) over generic urgency copy with no underlying mechanism — an unverifiable urgency claim compounds the shopper's legitimacy objection instead of resolving it. — InstantPress (objection sequence)
 
+**Pricing pages & tier comparison**
+
+42. [FRAMEWORK] Default to 3–4 pricing tiers, not 2 or 5+ — 2 tiers gives the buyer nothing to compare against, and 5+ tiers creates comparison fatigue that stalls the decision. Treat any specific conversion-lift multiplier attached to this claim as unverified — multiple sources cite mutually inconsistent figures for the exact lift, none traced to a confirmable primary study. — SaaS pricing-strategy sources (multiple, mutually inconsistent on % lift, consistent on tier count)
+43. [FRAMEWORK] Give exactly one tier — typically the middle or highest-margin one — a visually distinct treatment: a colored border/fill, a "Most Popular"/"Recommended" badge, and a CTA button with higher contrast than the surrounding columns, so it functions as the default comparison anchor rather than all tiers carrying equal visual weight. For the pricing-psychology mechanics behind why an anchor tier works (reference pricing, decoy-tier construction, replication caveats), see `copy-chief` Rules 26-27 — this rule covers the visual/layout treatment only, not the pricing-psychology reasoning. — SaaS pricing-page design consensus
+44. [FRAMEWORK] Place a row-based feature comparison table below the tier cards, grouped by feature category, with the feature-name column pinned during horizontal scroll on narrow viewports — this lets a shopper scan one feature across every tier without losing their place, which a card-only layout (features buried inside each card) doesn't support. — SaaS pricing-page design consensus
+
+**Page metadata & social artifacts**
+
+45. [LAW] Target a 51–60 character title tag as the lowest-rewrite band — Google's own large-sample analysis (80,959 titles/2,370 sites) found this range rewritten only 39–42% of the time, versus 99.9% past 70 characters. Match the on-page H1 to the title tag string as closely as possible: the same study found this measurably reduces content loss on rewrite (e.g., a number present in both title and H1 survives 97.3% of the time, vs. 74.2% when only the title has it). Expect the majority of titles to be rewritten regardless of how well they're written — two independent studies put the baseline at 61.6% (2022/23) climbing to 76.04% (2025) — so treat title discipline as reducing rewrite risk, not eliminating it. — Zyppy; hireawriter.us (McAlpin 2025)
+46. [FRAMEWORK] Write a unique 120–158 character meta description for every PDP, including every color/size variant — never template an identical description across variant URLs. Google rewrites meta descriptions even more often than titles (62–71% rewrite rate across three independently-run large-sample studies), but still uses the static tag roughly 30% of the time, and a unique per-variant description also gives Google better on-page source material to draw from when it does write its own snippet. The 120–158 character band is industry-consensus guidance, not a controlled-study result — unlike the title-length figure in Rule 45. — Portent; SearchEngineJournal; Ahrefs (via aggregator)
+47. [FRAMEWORK] Put a self-referencing canonical on any facet/variant URL you deliberately want indexed on its own (e.g., a color page with real standalone search demand) — don't canonicalize it away by default. Canonicalize low-value facet combinations (a sort or minor filter layered onto a category) back to the parent/category URL. Use `noindex, follow` — not a canonical — for presentation-only parameters (sort order, items-per-page, view type): these aren't duplicates of the parent, they're just not worth indexing, and `noindex, follow` keeps internal link equity flowing while dropping the URL from the index. Reserve `robots.txt Disallow` for parameters with zero search value at any scale (session IDs, cart-action params) as a crawl-budget control only, never as a substitute for deindexing an already-indexed URL — a disallowed URL can persist in the index with a stripped, information-free snippet until it's actually noindexed or removed. Google Search Console's URL Parameters tool has been retired; manage facet/variant URL behavior entirely through canonical tags, `noindex`, robots rules, and clean URL design. — Search Engine Land (faceted navigation guide)
+48. [FRAMEWORK] Ship a purpose-designed `og:image` (1200×630px, 1.91:1 ratio) for every sales/product page — never a raw page screenshot. Keep the primary text and subject inside the safe zone (roughly the center 80% of the frame), since different platforms crop the frame differently, and size any text large enough to stay legible at the small thumbnail size most platforms actually render it at (Facebook/LinkedIn/Slack link previews, Twitter/X cards). Set `twitter:card` to `summary_large_image` to get the large-image treatment instead of the small square fallback. This rule reflects standard cross-platform social-card practice, not a finding from this skill's underlying research pass — no primary study on og:image dimensions or thumbnail legibility was located there; treat the spec as current platform documentation rather than a lab-verified figure, and recheck it periodically since platforms revise crop/thumbnail behavior. — Open Graph protocol / Twitter Cards developer documentation (not sourced from the seo-variants.md research pass)
+
 ## Checklist
 
 **Above-fold anatomy**
@@ -147,6 +162,17 @@ description: Product page anatomy and conversion - gallery, price, CTA, social p
 - [ ] Any countdown timer has a real, server-stored, non-resetting expiration (Rule 40)
 - [ ] Urgency messaging is tied to a verifiable mechanism, not generic scarcity copy (Rule 41)
 
+**Pricing pages & tier comparison**
+- [ ] Pricing page defaults to 3-4 tiers, not 2 or 5+ (Rule 42)
+- [ ] Exactly one tier has a visually distinct anchor treatment (border/fill, badge, higher-contrast CTA) (Rule 43)
+- [ ] Row-based feature comparison table sits below the cards, grouped by category, with feature column pinned on narrow viewports (Rule 44)
+
+**Page metadata & social artifacts**
+- [ ] Title tag targets 51-60 characters and matches the on-page H1 (Rule 45)
+- [ ] Meta description is unique per PDP/variant, 120-158 characters (Rule 46)
+- [ ] Facet/variant URLs carry the correct canonical, `noindex, follow`, or `robots.txt` treatment for their value (Rule 47)
+- [ ] Every sales page ships a purpose-designed 1200x630 og:image (not a screenshot), with safe-zone text legible at thumbnail size, and `twitter:card` set to `summary_large_image` (Rule 48)
+
 ## Anti-patterns
 
 - **Single hero image, or fewer than 5 angles.** Measured at roughly 60% lower conversion than a 5+-image gallery. Instead: ship at minimum 5 images/angles per product (Rule 3).
@@ -163,3 +189,7 @@ description: Product page anatomy and conversion - gallery, price, CTA, social p
 - **Fake urgency and fake scarcity** — countdown timers that reset on refresh, "only 3 left" that never changes. Carries rising regulatory exposure (FTC, EU digital fairness rules) and undermines the legitimacy objection instead of resolving it. Instead: tie every urgency element to a real, verifiable, server-stored value, or drop the tactic (Rules 39-41).
 - **Award-circuit visual patterns (scroll-jacking, heavy hero animation, delayed content reveal) applied to a PDP.** Pushes price, image, and CTA below the fold and adds load time, directly contradicting the above-the-fold rules in this file. Instead: use scroll-driven reveals only within the bounds Rule 27 allows — never override scroll position or speed to force content into view.
 - **A sticky add-to-cart bar that adds an unconfirmed variant to the cart.** On multi-axis products, tapping the sticky CTA without a re-selector risks cart errors on size/color the shopper never chose. Instead: embed a compact re-selector in the bar or deep-link back to the primary selector (Rule 29).
+- **An identical meta description templated across every color/size variant of the same product.** Removes Google's ability to differentiate between variant URLs when selecting which one answers a query, and wastes the ~30% of cases where Google does use the static tag as written. Instead: write a unique 120-158 character description per variant (Rule 46).
+- **Canonicalizing every faceted/filtered URL back to the parent category by default, including combinations with real standalone search demand.** Silently forfeits ranking potential for legitimately distinct pages. Instead: a case-by-case index/noindex/canonical decision (Rule 47).
+- **Using `robots.txt Disallow` as a substitute for deindexing an already-indexed low-value URL.** Disallow only blocks crawling — a previously-indexed URL can keep appearing in results, often with a degraded, information-free snippet, until it's actually removed via `noindex`. Instead: pair Disallow with `noindex` for anything already indexed (Rule 47).
+- **Shipping a raw page screenshot as the `og:image`.** Illegible at the small thumbnail size link previews actually render, and gives up control over safe-zone cropping across platforms. Instead: a purpose-designed 1200x630 image with legible text inside the safe zone (Rule 48).
