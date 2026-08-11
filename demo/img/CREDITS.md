@@ -11,7 +11,7 @@ from its ground at >=3:1 on key edges — see composition-grids figure-ground ru
 - `driver-1x/2x.webp` — Unsplash photo `1510766315117-0f791eb90af7` (perforated speaker-grille
   macro; illustrates the titanium-driver block; distinct source from the hero photo)
 - `silence-1x/2x.webp` — Unsplash photo `1603715749723-240c88df18b1` (acoustic-foam wave texture;
-  illustrates the adaptive-ANC "engineered silence" block; no people, no brand marks)
+  illustrates the adaptive-ANC "engineered silence" block; no people, no brand marks; strong shadow-lift grade at source so the wave relief reads at >=120 luminance levels)
 
 No identifiable people appear in any demo photo (the earlier lifestyle portrait was replaced per
 the strategy rule "no stock people wearing a different product" and the model-release nuance).

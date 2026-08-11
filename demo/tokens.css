@@ -460,7 +460,7 @@
   --type-lead-size: var(--text-lg);
   --type-h3-size: var(--text-2xl);
   --type-h2-size: var(--text-3xl);
-  --type-h1-size: var(--text-4xl); /* remapped to --text-2xl below 480px — see the media query at the
+  --type-h1-size: clamp(1.75rem, 0.7325rem + 4.3431vw, 4.2075rem); /* dedicated continuous hero clamp: 28px@375 -> 67.3px@1280 (anchors x1=375, x2=1280). One curve at every width - no breakpoint remap, so no size cliff at 480 (M5), and the 67.3px ceiling keeps the desktop hero CTA above the 800px fold (B3). Superseded note: previously var(--text-4xl) with a sub-480 remap — see the media query at the
                                        bottom of this file for why, and for the fold math */
   /* --type-hero-size (--text-5xl) was declared for a hero-scale display
      step above H1 and never reached for anywhere — the hero headline
@@ -607,8 +607,3 @@
    blew the fold budget, so the remap steps down one rung to --text-2xl
    (floor now 37.9px, up from the old 26px) and the hero stack was
    re-tightened again to buy back the difference — see styles.css. */
-@media (max-width: 479px) {
-  :root {
-    --type-h1-size: var(--text-2xl);
-  }
-}

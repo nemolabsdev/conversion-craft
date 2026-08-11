@@ -29,8 +29,16 @@ if (!url) {
   console.error('usage: node tools/geometry-audit.mjs <url> [--viewports 375x812,1280x800] [--shots <dir>]')
   process.exit(2)
 }
-const vpArg = args.includes('--viewports') ? args[args.indexOf('--viewports') + 1] : '375x812,768x1024,1280x800'
+const vpArg = args.includes('--viewports') ? args[args.indexOf('--viewports') + 1] : '375x667,768x1024,1280x800'
 const shotsDir = args.includes('--shots') ? args[args.indexOf('--shots') + 1] : null
+// --assert "selector:property:expected" (repeatable) — computed-style regression
+// guards; catches silent CSS parse breakage (a stray */ once dropped the whole
+// .btn rule while every source-level gate passed).
+const styleAsserts = args.flatMap((a, i) => (a === '--assert' ? [args[i + 1]] : []))
+  .map((s) => { const [sel, prop, expected] = s.split(':'); return { sel, prop, expected } })
+// --fold-selector ".hero .btn-primary" — the element must sit fully inside the
+// first viewport at scroll 0, at EVERY tested viewport.
+const foldSelector = args.includes('--fold-selector') ? args[args.indexOf('--fold-selector') + 1] : null
 const viewports = vpArg.split(',').map((s) => {
   const [w, h] = s.split('x').map(Number)
   return { width: w, height: h || 900 }
@@ -113,7 +121,9 @@ await send('Page.enable', {}, sessionId)
 await send('Runtime.enable', {}, sessionId)
 
 // ---------- In-page audit ----------
+const AUDIT_PARAMS = JSON.stringify({ styleAsserts, foldSelector })
 const AUDIT_JS = `(async () => {
+  const PARAMS = ${AUDIT_PARAMS};
   await document.fonts.ready;
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
   const findings = [];
@@ -183,7 +193,45 @@ const AUDIT_JS = `(async () => {
     });
   });
 
-  // 5. Image integrity — rendered aspect ratio must match intrinsic (no squish).
+  // 5. Computed-style regression guards (--assert selector:property:expected).
+  for (const a of PARAMS.styleAsserts) {
+    const el = document.querySelector(a.sel);
+    if (!el) { findings.push({ check: 'style-assert', detail: a.sel + ' matched no element' }); continue; }
+    const got = getComputedStyle(el)[a.prop.replace(/-([a-z])/g, (m, c) => c.toUpperCase())];
+    if (String(got) !== a.expected) findings.push({ check: 'style-assert', detail: a.sel + ' ' + a.prop + ' = ' + got + ' (expected ' + a.expected + ')' });
+  }
+
+  // 6. Fold contract — the declared element sits fully inside the first viewport.
+  if (PARAMS.foldSelector) {
+    const el = document.querySelector(PARAMS.foldSelector);
+    if (!el) findings.push({ check: 'fold', detail: PARAMS.foldSelector + ' matched no element' });
+    else {
+      const r = el.getBoundingClientRect();
+      if (r.bottom > window.innerHeight + 0.5 || r.top < -0.5) {
+        findings.push({ check: 'fold', detail: PARAMS.foldSelector + ' spans ' + Math.round(r.top) + '-' + Math.round(r.bottom) + 'px vs viewport ' + window.innerHeight + 'px — below the fold' });
+      }
+    }
+  }
+
+  // 7. Real CPL — measured average glyph advance of the element's own text and
+  //    font (not the ch unit, which tracks digit advance and under-counts by
+  //    ~35% in Inter). Body ceiling: 80 characters per line.
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  document.querySelectorAll('p, li').forEach(el => {
+    if (!visible(el)) return;
+    const text = (el.innerText || '').trim();
+    if (text.length < 60) return;
+    const cs = getComputedStyle(el);
+    ctx.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+    const avg = ctx.measureText(text).width / text.length;
+    if (!avg) return;
+    const contentW = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    const cpl = contentW / avg;
+    if (cpl > 80.5) findings.push({ check: 'cpl', detail: label(el) + ' runs ~' + Math.round(cpl) + ' real CPL (' + Math.round(contentW) + 'px at ' + cs.fontSize + ') — body ceiling is 80' });
+  });
+
+  // 8. Image integrity — rendered aspect ratio must match intrinsic (no squish).
   document.querySelectorAll('img').forEach(img => {
     if (!visible(img) || !img.naturalWidth) return;
     const r = img.getBoundingClientRect();

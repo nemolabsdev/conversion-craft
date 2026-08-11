@@ -137,7 +137,9 @@ p { color: var(--color-text-primary); }
 /* Body-copy measure inside narrow sections: the 45.5rem section cap serves
    the grid (M1), but Inter at 18px runs ~87 real CPL at that width — cap
    running paragraphs separately to stay under the 80-CPL body ceiling. */
-.narrow-measure p:not(.pull-quote) { max-width: 56ch; }
+.narrow-measure :is(p, li):not(.pull-quote),
+p.narrow-measure { max-width: 56ch; }
+.footer-legal p { max-width: 56ch; }
 
 .narrow-measure {
   max-width: 45.5rem;
@@ -212,15 +214,21 @@ p { color: var(--color-text-primary); }
   margin-inline-start: var(--space-2);
 }
 
+main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px sticky header with real breathing room */
+
 /* ---------------------------------------------------------------------- */
 /* Buttons                                                                 */
 /* ---------------------------------------------------------------------- */
 /* Shared layout/behavior only — geometry (padding, radius, min-height)
-   comes from each variant below via its own --button-primary-*/
-   --button-secondary-* component tokens, not a shared primitive here,
+   comes from each variant below via its own component tokens
+   (button-primary / button-secondary families), not a shared primitive,
    so the two variants can independently retune their footprint without
    touching the other (design-tokens R2: product CSS reads the
-   COMPONENT tier, never a primitive, for a component that has one). */
+   COMPONENT tier, never a primitive, for a component that has one).
+   NB: never write a token wildcard ending in asterisk-slash inside this
+   comment — that sequence closes the comment early and silently drops
+   the entire .btn rule (caught by audit 2026-08-12; geometry-audit now
+   asserts .btn font-weight as the regression guard). */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -322,6 +330,7 @@ p { color: var(--color-text-primary); }
 .btn-secondary:disabled { opacity: 0.55; cursor: default; }
 
 .btn-lg {
+  line-height: var(--leading-heading);
   padding-block: var(--space-4);
   padding-inline: var(--space-8);
   font-size: var(--type-lead-size);
@@ -504,7 +513,11 @@ p { color: var(--color-text-primary); }
     position: static;
     flex-direction: row;
     align-items: center;
-    gap: var(--space-6);
+    /* space-3, not space-6: at 768px the 44px-minimum links (touch-target
+       floor, applied horizontally too) plus 32px gaps overflowed the
+       container by 12px — caught by geometry-audit's overflow check. Links
+       carry their own padding, so the visual rhythm holds at 12px gaps. */
+    gap: var(--space-3);
     padding: 0;
     border-bottom: 0;
     background-color: transparent;
@@ -516,7 +529,7 @@ p { color: var(--color-text-primary); }
   }
   /* Keep the 44px target floor on desktop too — layout-spacing R6/R7 applies
      at every viewport, not just touch devices (geometry-audit enforces it). */
-  .nav-menu li a { min-height: var(--target-min); padding-block: 0; padding-inline: var(--space-2); }
+  .nav-menu li a { min-height: var(--target-min); min-width: var(--target-min); justify-content: center; padding-block: 0; padding-inline: var(--space-2); }
   .nav-toggle { display: none; }
 }
 
@@ -636,7 +649,7 @@ p { color: var(--color-text-primary); }
   pointer-events: none;
 }
 
-/* M5 — the distinctive brand asset, above the fold. The waveform divider
+/* M5 — the distinctive brand asset on the hero itself (above the fold on mobile; at 1280x800 the strip rides the photo's bottom edge just below the fold). The waveform divider
    (its other job is the mechanism/final-cta section breaks) repeats along
    the bottom edge of the HERO photo specifically — scoped to
    .hero-visual, not every .photo-frame, so this stays a one-time hero
@@ -742,13 +755,15 @@ p { color: var(--color-text-primary); }
    3 lines/98.1px) to buy the difference back. 2.3px of slack left — tight,
    correct as measured, revisit before adding anything else above the CTA. */
 @media (max-width: 479px) {
-  .hero { padding-block-start: var(--space-3); }
+  .hero { padding-block-start: var(--space-2); } /* 8px - on the 8px base grid (M3); was 12px (4px sub-grid, off-limits for section layout) */
   /* 16rem wide (set on .hero-visual above) on a 16:8 crop of the same
      landscape source — 128px tall instead of 213.6px. Cropped tighter
      than the 16:10 this used to be (160px) to help buy back the fold
      budget the M14 type re-anchor spent — see the accounting below. */
+  .hero-visual-wrap { justify-content: flex-start; }
+  .hero-visual { max-width: 100%; }
   .hero-visual img {
-    aspect-ratio: 16 / 8;
+    aspect-ratio: 8 / 3;
     object-fit: cover;
   }
   /* Row rhythm tightened one notch (32px → 16px) for the same reason —
@@ -792,11 +807,6 @@ p { color: var(--color-text-primary); }
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-secondary);
-}
-.trust-badge + .trust-badge::before {
-  content: "·";
-  margin-inline-end: var(--space-4);
-  color: var(--color-border-subtle);
 }
 .trust-badge-rating {
   color: var(--color-text-primary);
@@ -1264,14 +1274,6 @@ p { color: var(--color-text-primary); }
 }
 .testimonial-name { font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
 .testimonial-role { color: var(--color-text-secondary); }
-.testimonial-card .verified-tag { margin-inline-start: var(--space-2); }
-.verified-tag {
-  padding-block: var(--space-1);
-  padding-inline: var(--space-2);
-  border-radius: var(--radius-full);
-  background-color: var(--color-bg-component);
-  font-size: var(--text-xs);
-}
 
 /* ---------------------------------------------------------------------- */
 /* Pricing section                                                         */
@@ -1567,11 +1569,6 @@ p { color: var(--color-text-primary); }
 .payment-icons li {
   font-size: var(--text-xs);
   color: var(--color-text-inverse-muted);
-}
-.payment-icons li + li::before {
-  content: "·";
-  margin-inline-end: var(--space-4);
-  color: var(--color-border-on-inverse);
 }
 
 .footer-legal {

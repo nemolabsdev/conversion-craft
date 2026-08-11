@@ -110,7 +110,7 @@ Validated against real users? **N.** Not yet run against a ≥5-point Likert stu
 `Free shipping · 30-day returns · 2-year warranty`
 
 **Hero image alt text:**
-`AURI A1 titanium over-ear headphones, side profile, on a dark studio desk`
+`AURI A1 over-ear headphones resting on dark textile, the leather ear cushions catching low studio light`
 
 **Secondary link in hero (low visual weight, not a competing CTA):**
 `See how it compares to the flagship class ↓` *(anchor-links to Section 7)*
@@ -143,7 +143,7 @@ Validated against real users? **N.** Not yet run against a ≥5-point Likert stu
 ## You've Already Tried to Buy Your Way Out of Distraction
 
 **Body copy:**
-> You're not shopping for your first pair of ANC headphones. You already own one — probably the $150 "good enough" pair that seemed fine in the store and then let you down in the open-plan office, on back-to-back calls, or three hours into a deep-work block when the battery died. Or you're pricing the flagship ANC class and wondering if $400+ actually buys you anything the cheap pair didn't.
+> You're not shopping for your first pair of ANC headphones. You already own one — probably the $150 "good enough" pair that seemed fine in the store and then let you down in the open-plan office, on back-to-back calls, or three hours into a deep-work block when the battery died. Or you're pricing the flagship ANC class and wondering if $400+ actually buys you anything the $150 pair didn't.
 
 > AURI A1 is built for exactly this moment: remote and hybrid professionals who need real silence to do real work, and who are done gambling $150 at a time on headphones that get replaced every 12–18 months.
 
@@ -258,7 +258,7 @@ Validated against real users? **N.** Not yet run against a ≥5-point Likert stu
 > "I paid $429 for a flagship pair two years ago and never loved the ANC presets — one of them always let the office AC through. AURI's adaptive ANC actually adjusted to my apartment in about three days. I didn't expect that to matter this much."
 > **— Priya Nataraj, Senior Data Analyst, remote** *(fictional demo testimonial)*
 
-**Testimonial 2 — switched from the cheap tier:**
+**Testimonial 2 — switched from the $150 tier:**
 > "Third pair of $150 headphones in two years, all of them dead or falling apart. I was skeptical about spending $349, but the 10-year repair promise is the first time a headphone company has said 'we expect you to keep these,' instead of 'buy the next model in 18 months.'"
 > **— Marcus Webb, Freelance Software Engineer** *(fictional demo testimonial)*
 
