@@ -19,6 +19,12 @@ Conversion Craft turns Claude Code into a team that researches, designs, writes,
 /plugin install conversion-craft@conversion-craft
 ```
 
+Or grab individual skills with [skills.sh](https://skills.sh):
+
+```bash
+npx skills add nemolabsdev/conversion-craft
+```
+
 Skills become available namespaced as `/conversion-craft:<skill-name>`, and the nine agents join your Agent tool roster.
 
 ### Without installing
@@ -80,7 +86,18 @@ node tools/geometry-audit.mjs http://localhost:4173 # rendered pixels at 375/768
 
 All three exit non-zero on any violation. A tokens file with no contrast assertions is itself a failure — contrast must be declared, not assumed. The geometry audit exists because source checks aren't enough: an 18px form-row misalignment and 40px nav links both passed source lint before this gate caught them.
 
+## How this repo was built
+
+This repository was built by the very team it ships: Claude Code agents researched the rules,
+wrote the skills, built the demo, and an adversarial Art Director agent rejected the demo
+**seven times** across an 8-round audit cycle before issuing approval — every finding, fix and
+measurement is in the commit history. The `Co-Authored-By: Claude` trailers are not an accident;
+they are the point.
+
 ## Demo
+
+**Live page:** https://nemolabsdev.github.io/conversion-craft/
+
 
 [`demo/`](demo/) contains a complete sales page for **AURI A1** — a fictional premium headphone — built end-to-end by the team as proof of concept: strategy doc → copy doc → tokens → page.
 
