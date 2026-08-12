@@ -76,6 +76,13 @@
   --white: #FFFFFF;
   --black: #0E0F13;
 
+  /* Warm paper ramp — editorial ground replacing the clinical near-white.
+     Same hue family as the copper accent (~45deg), chroma whisper-low so
+     the accent still owns all saturation on the page. */
+  --paper-1: #FBF7F2; /* page ground */
+  --paper-2: #F5EEE5; /* alt section ground */
+  --paper-3: #FFFDFB; /* raised surfaces (cards, inputs) */
+
   /* --------------------------------------------------------------------
      2b. PRIMITIVE — Feedback ramp (single step, genuine red hue ≈ 22°).
      Kept deliberately separate from --accent (copper ≈ 45°) so error
@@ -269,9 +276,9 @@
      9. SEMANTIC — Color roles
      Named by function, never appearance (design-tokens R3).
      -------------------------------------------------------------------- */
-  --color-bg-page:            var(--neutral-1);
-  --color-bg-alt:              var(--neutral-2);  /* section-alt background */
-  --color-bg-surface:          var(--neutral-1);  /* cards on page bg */
+  --color-bg-page:            var(--paper-1);
+  --color-bg-alt:              var(--paper-2);  /* section-alt background */
+  --color-bg-surface:          var(--paper-3);  /* cards on page bg */
   --color-bg-surface-on-alt:   var(--white);       /* cards sitting on an alt section */
   --color-bg-component:        var(--neutral-3);
   --color-bg-component-hover:  var(--neutral-4);
@@ -279,7 +286,7 @@
   --color-bg-inverse:          var(--neutral-12);  /* dark surfaces, e.g. footer */
 
   --color-border-subtle:       var(--neutral-6);
-  --color-border-interactive:  var(--neutral-8);
+  --color-border-interactive:  var(--neutral-9); /* one step darker: neutral-8 fell to 2.92:1 on the warm alt paper */
   --color-border-focus:        var(--accent-7);    /* visible focus ring — interaction state, not a competing button */
 
   --color-text-primary:        var(--neutral-12);
@@ -314,6 +321,7 @@
      token for decoration is exactly what R18 forbids, and it's also how
      a page ends up with multiple "copper masses" competing with the one
      button that should win the squint test (R6). */
+  --color-accent-text: var(--accent-9); /* copper as TEXT (eyebrows, kickers) — same hex as the CTA fill, asserted at the 4.5 text floor */
   --color-accent-decorative: var(--accent-7);
 
   /* Unfilled/empty state of a decorative mark — e.g. the unfilled 30%
@@ -326,7 +334,7 @@
   /* Border sitting on an inverse (dark) surface — e.g. the footer.
      Named so component CSS never reaches for a raw --neutral-9 again. */
   --color-border-on-inverse: var(--neutral-9);
-  --color-border-interactive-hover: var(--neutral-9); /* hover step for interactive borders — one rung darker than --color-border-interactive */
+  --color-border-interactive-hover: var(--neutral-10); /* stays one rung past the darkened rest step */ /* hover step for interactive borders — one rung darker than --color-border-interactive */
 
   /* --------------------------------------------------------------------
      9b. SEMANTIC — Brand motif (design-tokens R29 / logo-swap test)
@@ -429,6 +437,7 @@
      text-sized placements are both large/bold-adjacent, non-text, or a
      hover state on large display type, so the non-text/large-text floor
      (≥3) is what actually applies: */
+  /* @contrast --color-accent-text on --color-bg-page >= 4.5 */
   /* @contrast --color-accent-decorative on --color-bg-page >= 3 */
   /* @contrast --color-accent-decorative on --color-bg-alt >= 3 */
 

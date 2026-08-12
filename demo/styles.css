@@ -675,39 +675,13 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   pointer-events: none;
 }
 
-/* M5 — the distinctive brand asset on the hero itself (above the fold on mobile; at 1280x800 the strip rides the photo's bottom edge just below the fold). The waveform divider
-   (its other job is the mechanism/final-cta section breaks) repeats along
-   the bottom edge of the HERO photo specifically — scoped to
-   .hero-visual, not every .photo-frame, so this stays a one-time hero
-   accent rather than a systemic photo treatment that would dilute it.
-   Painted after the grade overlay in source order, so it sits under the
-   ::after tint and gets graded the same warm/deep wash as the photo
-   itself instead of floating on top uncorrected. */
-.hero-visual.photo-frame::before {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  inset-block-end: 0;
-  height: var(--space-5);
-  background-color: var(--color-accent-decorative);
-  mask-image: var(--motif-wave-divider);
-  -webkit-mask-image: var(--motif-wave-divider);
-  mask-repeat: repeat-x;
-  -webkit-mask-repeat: repeat-x;
-  mask-size: auto 100%;
-  -webkit-mask-size: auto 100%;
-  mask-position: bottom left;
-  -webkit-mask-position: bottom left;
-  opacity: 0.55;
-  pointer-events: none;
-}
 
 .eyebrow {
   font-size: var(--type-eyebrow-size);
   line-height: var(--leading-xs);
   letter-spacing: var(--type-eyebrow-tracking);
   text-transform: uppercase;
-  color: var(--color-text-secondary);
+  color: var(--color-accent-text);
   font-weight: var(--font-weight-semibold);
   margin-block-end: var(--space-2);
 }
@@ -903,6 +877,11 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
 .relevance p { color: var(--color-text-secondary); margin-block-end: var(--space-5); }
 
 .relevance .pull-quote {
+  font-family: var(--font-family-display);
+  font-size: var(--text-xl);
+  line-height: var(--leading-heading);
+  border-inline-start: var(--space-1) solid var(--color-accent-decorative);
+  padding-inline-start: var(--space-5);
   max-width: 40ch;
   font-size: var(--type-lead-size);
   line-height: var(--leading-body);
@@ -1599,6 +1578,15 @@ p.table-footnote { color: var(--color-text-secondary); font-size: var(--text-xs)
 }
 .footer-legal a:hover { opacity: 0.75; }
 .footer-legal a:active { opacity: 0.55; }
+
+/* Editorial photo band — a full-bleed breather between argument sections;
+   decorative (empty alt), no text overlay, so no contrast contract applies. */
+.photo-band { line-height: 0; }
+.photo-band img {
+  width: 100%;
+  height: clamp(12rem, 30vw, 22.5rem);
+  object-fit: cover;
+}
 
 /* ---------------------------------------------------------------------- */
 /* Toast (add-to-cart confirmation)                                        */
