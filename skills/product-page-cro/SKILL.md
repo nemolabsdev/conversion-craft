@@ -36,7 +36,7 @@ description: Product page anatomy and conversion - gallery, price, CTA, social p
 
 8. [FRAMEWORK] Show the full price as plain, correctly-formatted text next to the product name/CTA — never behind a "Contact us" gate on a self-serve/off-the-shelf product (see `copy-chief` for the copy-level treatment of pricing psychology). — practitioner consensus
 9. [FRAMEWORK] Show price-per-unit next to the total price for anything sold by weight, volume, or count — 81% of sites currently omit it. — Baymard 2026
-10. [TREND-2026] When showing a reference/strikethrough price, render both the original and current price simultaneously, never behind a rollover or tooltip — a visible anchor is associated with roughly a 32% lift in perceived value. — SHNO.co
+10. [TREND-2026] When showing a reference/strikethrough price, render both the original and current price simultaneously, never behind a rollover or tooltip — a visible anchor is associated with roughly a 32% lift in perceived value. The reference price itself must satisfy `promotions-events` R24-R30 (FTC/Cal. B&P/EU Omnibus price-history rules) — display mechanics here, legality there. — SHNO.co; promotions-events R24-R30
 
 **Shipping & returns visibility**
 

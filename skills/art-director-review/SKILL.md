@@ -81,7 +81,15 @@ a 78/22 split that predated the balance check is the canonical example of why.
 33. Optical-alignment check: run an optical, not just mathematical, pass on icon+text pairings, centered glyphs, and nested rounded containers. Pointed/asymmetric shapes (play triangles, arrows, checkmarks) sitting at their bounding-box center but visibly leaning is a MINOR polish miss in isolation, escalating to MAJOR when the same un-corrected pattern repeats across multiple primary UI elements. Verify with a squint pass (R3) plus a rotation/inversion check on any asymmetric icon. [FRAMEWORK] — composition-canon.md rules 20-26 (Overshoot/typography; Apple HIG icon guidance; ringcentral-ux optical-alignment; baraa.app practitioner heuristics)
 34. Visual-balance check — intentional vs. accidental asymmetry: for any asymmetric composition (hero split, unequal card weights, off-center visual), judge balance by eye against the compounding weight factors — size, color/value contrast, texture/density, isolation, distance from center — not by area ratio alone. It passes when removing or resizing any single element visibly tips the composition; it fails as MAJOR when elements could be nudged freely with no perceptible change, or when the minority-weight side of a hero split (e.g. the 30% of a 70/30 split) is too pale/low-contrast to actually counterbalance the dominant side despite a textbook-correct ratio. [LAW] — composition-canon.md rules 27-31 (Smashing Magazine, "Design Principles: Compositional Balance")
 
+
+35. [FRAMEWORK] Occupancy check: at 1280+, measure each section's widest content row against
+the container. More than 40% dead width = MAJOR — the "one left line" rule does not excuse
+an uncomposed section; it was written to serve composition, not replace it. — composition-grids
+R33; synthesis from the conversion-craft demo post-mortem (2026-08-12)
+
 ## Checklist
+
+- [ ] R35 — no section leaves >40% of the container width dead at 1280+ (occupancy)
 
 **Severity**
 - [ ] Every finding tagged BLOCKER/MAJOR/MINOR by shipping impact, not evidence tag (R1)

@@ -51,3 +51,8 @@ Goal: distill publicly available top-tier knowledge about sales websites into **
 3. Anti-patterns are recorded explicitly (what NOT to do and why).
 4. Trends are separated from laws: a trend has a date and a shelf life; a law (contrast, hierarchy) does not.
 5. Every skill ships a checklist QA can verify.
+6. Distillation-completeness check: after any research → skill wave, diff the research
+   files' topic headings against the shipped skills' rule groups — content that was
+   researched but never distilled is a pipeline defect, not a judgment call (this
+   pipeline once lost pricing-page and SEO-metadata research for a full wave before an
+   audit caught it).

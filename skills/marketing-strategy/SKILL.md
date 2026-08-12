@@ -49,7 +49,10 @@ description: Positioning, offer architecture and page-level persuasion strategy.
    competitor-comparison search/retargeting ≈ Product-Aware; brand search/email list/returning
    cart ≈ Most-Aware. — kingeshop.com / Schwartz, *Breakthrough Advertising* (source page
    unreachable this research pass; stage model and mapping rest on established secondary
-   knowledge — see copy-strategy.md Open Questions)
+   knowledge — see copy-strategy.md Open Questions). For B2B traffic specifically, `b2b-landing`
+   extends this same five-stage model with committee-driven intent mapping and CTA language
+   (its Rule 31) — read that skill alongside this one when the buyer is a multi-person committee
+   rather than a single consumer.
 6. [FRAMEWORK] For Unaware/Problem-Aware traffic: open with a problem-first hook, hold the product
    name out of the first line, and place objection-handling/named-competitor comparison below an
    educational section rather than above the fold. For Product-Aware/Most-Aware traffic: lead with

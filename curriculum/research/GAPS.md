@@ -5,9 +5,9 @@
 > superseded dialog pattern) are now closed. What remains, ranked:
 
 ## IMPORTANT
-- **Promotions & sale-event architecture** — sitewide sale banners vs. one-primary-CTA rule, discount-code UX, bundles/GWP, temporary-urgency truthfulness.
-- **Post-purchase & cart-abandonment lifecycle** — confirmation/shipping emails, abandoned-cart recovery sequence, review-request timing, win-back.
-- **B2B landing-page patterns** — demo-request flows, gated content, buying-committee content, lead-qualification forms.
+
+*(cleared in v1.1, 2026-08-12: promotions-events, post-purchase-lifecycle and b2b-landing skills shipped)*
+
 
 ## NICE
 - Video/motion-image art direction (hero loops, cinemagraphs) — demo-assets covers stills only.
@@ -16,4 +16,4 @@
 - PWA/add-to-homescreen and deep-linking from ad traffic.
 
 ## Process debt
-- Distillation-completeness check: research→skill pipeline lost content once (pricing/SEO, caught in audit); future waves should diff research topics against shipped skill coverage before closing.
+- ~~Distillation-completeness check~~ *(implemented 2026-08-12: CURRICULUM.md rule 6 + research-analyst instruction)* — original note: Distillation-completeness check: research→skill pipeline lost content once (pricing/SEO, caught in audit); future waves should diff research topics against shipped skill coverage before closing.

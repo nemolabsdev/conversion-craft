@@ -1,7 +1,7 @@
 {
   "name": "conversion-craft",
-  "version": "1.0.0",
-  "description": "Elite sales-website team: 9 specialized agents + 16 distilled skills (design tokens, typography, layout, navigation, CRO, checkout, motion, copy, strategy, demo assets, review, QA) + mechanical lint tools for pixel discipline and WCAG contrast. Knowledge distilled from 2024-2026 award winners and Baymard/NN-g/CXL research.",
+  "version": "1.1.0",
+  "description": "Elite sales-website team: 9 specialized agents + 19 distilled skills (design tokens, typography, layout, navigation, CRO, checkout, motion, copy, strategy, demo assets, review, QA) + mechanical lint tools for pixel discipline and WCAG contrast. Knowledge distilled from 2024-2026 award winners and Baymard/NN-g/CXL research.",
   "author": {
     "name": "Nemo Labs"
   },

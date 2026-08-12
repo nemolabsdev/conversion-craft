@@ -1,6 +1,6 @@
 ---
 name: checkout-trust
-description: Cart, checkout, forms and trust surfaces - field design, guest checkout, wallets, cookie consent, footer, post-purchase. Use for anything between "add to cart" and the thank-you page, plus site-wide trust.
+description: Cart, checkout, forms and trust surfaces - field design, guest checkout, wallets, cookie consent, footer, and the on-page order confirmation. Use for anything between "add to cart" and the thank-you page, plus site-wide trust; everything AFTER the thank-you page (confirmation email, shipping notices, cart recovery, win-back) lives in post-purchase-lifecycle.
 ---
 
 # Checkout, Forms & Trust Surfaces
@@ -11,7 +11,7 @@ description: Cart, checkout, forms and trust surfaces - field design, guest chec
 - Designing or auditing any form field, label, or validation pattern site-wide (checkout, lead-gen, account, login).
 - Placing trust signals, security badges, or guarantee copy near a CTA or payment field.
 - Writing or reviewing footer architecture, cookie-consent banners, or email-capture popups.
-- Designing the thank-you/order-confirmation page or any post-purchase upsell/cancellation flow.
+- Designing the thank-you/order-confirmation PAGE and its immediate upsell (the flows that follow — email/SMS confirmation, shipping, recovery, win-back — belong to `post-purchase-lifecycle`).
 
 ## Rules
 
@@ -75,7 +75,7 @@ description: Cart, checkout, forms and trust surfaces - field design, guest chec
 35. [TREND-2026] Within that floor, tune timing upward for effect: a 6-10s delay measurably outperforms sub-1-second display (2.4% vs 1.9% conversion, 1.24B-impression dataset), and a second-pageview trigger outperforms both (28.98% conversion). — Omnisend 2025
 36. [LAW] Ship a visible, immediately-actionable, keyboard-reachable close control on every popup — a popup with no keyboard exit is a WCAG 2.1.2 no-keyboard-trap failure, and absence of a close button is one of the single most negatively-rated UI failures measured (93% negative). — WCAG 2.1.2, NN/g
 37. [FRAMEWORK] Never stack an exit-intent popup on top of a timed/scroll popup already shown in the same session — suppress exit-intent entirely once another popup has fired; exit-intent converts at the lowest rate of common triggers. — Omnisend 2025
-38. [LAW] Never pre-check a marketing-consent checkbox bundled with an unrelated required action (signup, checkout) — pre-ticked boxes for anything with cost/obligation attached are legally void under EU law. For existing customers, the "soft opt-in" (no fresh popup consent needed) applies only when all four hold: email collected during a sale, marketing is for similar products, opt-out was offered at collection, and every subsequent email offers opt-out again. — EU Consumer Rights Directive Art. 22, PECR Reg 22(3)
+38. [LAW] Never pre-check a marketing-consent checkbox bundled with an unrelated required action (signup, checkout) — pre-ticked boxes for anything with cost/obligation attached are legally void under EU law. For existing customers, the "soft opt-in" (no fresh popup consent needed) applies only when all four hold: email collected during a sale, marketing is for similar products, opt-out was offered at collection, and every subsequent email offers opt-out again (post-purchase-lifecycle R26 states the same four-part test for abandoned-cart sends — one statute, one enumeration). — EU Consumer Rights Directive Art. 22, PECR Reg 22(3)
 39. [FRAMEWORK] Prefer an embedded/inline signup form over a modal on pages with topic-specific intent (mid-article, resource pages); reserve modal popups for broad-traffic, low-intent pages. Single opt-in with an affirmative, unticked action is legally sufficient under GDPR — double opt-in is optional best practice, not a compliance floor. — comparative testing; GDPR Art. 7
 
 **Thank-you / order confirmation page**

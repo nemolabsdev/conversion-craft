@@ -1,6 +1,6 @@
 # Conversion Craft
 
-> A complete conversion-design team for Claude Code: **9 agents**, **16 skills**, **3 mechanical QA gates** — research-backed rules distilled from 2024–2026 design-award winners and Baymard / Nielsen Norman Group / CXL conversion research, enforced down to the **rendered pixel** by tooling that fails the build.
+> A complete conversion-design team for Claude Code: **9 agents**, **19 skills**, **3 mechanical QA gates** — research-backed rules distilled from 2024–2026 design-award winners and Baymard / Nielsen Norman Group / CXL conversion research, enforced down to the **rendered pixel** by tooling that fails the build.
 
 Conversion Craft turns Claude Code into a team that researches, designs, writes, builds, critiques and QA-checks high-converting sales pages. Every rule in every skill is operational and checkable ("body line length 45–75ch", never "comfortable line length"), carries its source, and is confidence-tagged `[LAW]` / `[FRAMEWORK]` / `[TREND-2026]`.
 
@@ -75,6 +75,9 @@ page at 375px and 1280px, qa-inspector runs the lint gates last.
 | `experimentation-measurement` | A/B methodology, sample size, peeking discipline, event taxonomy, heatmap/replay rules |
 | `brand-voice` | Voice charts, this-not-that guardrails, tone-by-context, the voice-card handoff |
 | `visual-identity` | Icon systems, ownable hue selection, distinctive brand assets, signature motion |
+| `promotions-events` | Sale banners vs the one-CTA law, code UX, truthful urgency, FTC/EU price-history rules |
+| `post-purchase-lifecycle` | Confirmation, shipping, cart recovery, review requests, win-back — with consent law |
+| `b2b-landing` | Demo-request anatomy, gating economics, buying-committee content, compliance trust |
 
 ## QA gates
 
@@ -108,7 +111,7 @@ how this team works.
 ```
 .claude-plugin/    plugin + marketplace manifests
 agents/            9 team-role definitions
-skills/            16 skills (operational rules + checklists)
+skills/            19 skills (operational rules + checklists)
 tools/             the three QA gates
 curriculum/        research corpus the skills were distilled from (sources + rules)
 ```

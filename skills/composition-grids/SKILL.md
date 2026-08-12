@@ -63,6 +63,16 @@ description: Compositional canon for sales-page layouts - column/modular grid st
 31. [FRAMEWORK] For a two-column hero (copy vs. product visual), a 60/40 split toward the copy side is the practical, buildable approximation of the golden ratio (61.8/38.2) and the most common SaaS hero pattern — the dominant 60% carries headline + subhead + CTA, the 40% carries one supporting visual that doesn't compete for the first read. — Elegant Themes, cross-referenced against Orizon Design's hero-pattern catalog
 32. [FRAMEWORK] Judging any dominant/secondary hero split by area ratio alone is not enough: the smaller side must carry enough visual weight (saturation, size, contrast, isolation — Rule 28) to act as a genuine counterweight — a 70/30 split with a pale, low-contrast thumbnail reads unbalanced despite a textbook-correct ratio. No primary source validates a fixed 70/30 target; treat it as one point on a weight-compensation continuum, not a rule to hit. — synthesis of Rule 28 applied to Rule 31's hero-ratio convention
 
+**Section occupancy (the void rule)**
+
+33. [FRAMEWORK] On viewports >=1024px, no section may leave more than 40% of the container's
+width empty at its widest content row. A heading + prose + card stacked in one narrow
+left-anchored column with a dead right half is a formatted document, not a composed
+section — compose into columns (heading-column | content-column on the page grid), give
+the void a deliberate counterweight, or narrow the section intentionally and say why.
+Alignment discipline is necessary but not sufficient: a page can hold one perfect left
+line and still have no composition. — synthesis of R5/R30 applied to the conversion-craft demo post-mortem (2026-08-12)
+
 ## Anti-patterns
 
 - **Averaging instead of worst-casing contrast**: sampling a photo's "average" color to compute text contrast instead of the single lightest/darkest neighborhood the text overlaps — passes a design-file checker and fails on the real photo. Violates Rules 14-15.

@@ -271,6 +271,19 @@ for (const vp of viewports) {
   await loaded
   await new Promise((r) => setTimeout(r, 400))
 
+  // Navigation guard: a dead server serves Chrome's own error page, whose
+  // buttons and text once got dutifully audited as if they were the site
+  // (#details-button, 74x33 — a real incident). Fail loudly instead.
+  const nav = await send('Runtime.evaluate', { expression: 'location.href', returnByValue: true }, sessionId)
+  const landed = String(nav.result.value || '')
+  let originOk = false
+  try { originOk = new URL(landed).origin === new URL(url).origin } catch {}
+  if (!originOk || landed.startsWith('chrome-error://')) {
+    console.log(`FAIL ${vp.width}x${vp.height} [navigation] page did not load — landed on "${landed}" (is the server running?)`)
+    totalFindings++
+    continue
+  }
+
   const { result, exceptionDetails } = await send('Runtime.evaluate', {
     expression: AUDIT_JS, awaitPromise: true, returnByValue: true,
   }, sessionId)

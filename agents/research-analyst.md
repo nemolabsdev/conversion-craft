@@ -14,6 +14,7 @@ Rules:
 - Distinguish aesthetics knowledge (brand impression) from conversion knowledge (measurable revenue impact). Both matter; never confuse them.
 - Output structure: ## Sources / ## Rules (numbered, measurable) / ## Trends 2024–2026 / ## Anti-patterns / ## Open questions.
 - If sources conflict, note the conflict and which evidence is stronger.
+- After a wave ships, run the distillation-completeness check (CURRICULUM.md rule 6): diff your research topics against the shipped skills rule groups; researched-but-undistilled content is a defect to raise, not a leftover to forget.
 
 ## Plugin context
 
