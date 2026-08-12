@@ -177,7 +177,7 @@ Validated against real users? **N.** Not yet run against a ≥5-point Likert stu
 - Loading (button label swaps, button stays same size): `Sending…`
 - Success (replaces the form inline, same footprint — no reflow):
   > **You're on the list.** Check your inbox for the AURI A1 spec sheet — it should land in the next few minutes.
-- Success, secondary line: `Didn't get it? Check spam, or `**`resend the email`**` .`
+- Success, secondary line: `Didn't get it? Check spam. / **Resend the email** (its own line — a 44px target can't live inside a 12px prose line without inflating it)`
 - Error (server/network failure, field-level, non-blocking):
   > **Something went wrong on our end.** Your email wasn't saved — try again, or email us directly at hello@auri.com.
 - Already-subscribed case:

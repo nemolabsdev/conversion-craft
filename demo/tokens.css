@@ -23,7 +23,7 @@
        1–2 page/canvas bg · 3–5 component bg (rest/hover/active)
        6–8 borders (subtle → interactive → focus) · 9–10 solid fills
        11–12 text (secondary, primary)
-     This page's semantic layer currently maps every step except 10
+     This page's semantic layer maps every step
      (--neutral-9 covers the one "solid fill" role this page needs, via
      --color-border-on-inverse). Step 10 stays declared, unconsumed here:
      the ramp is generated once as a complete 12-step system-level
@@ -40,7 +40,7 @@
   --neutral-7:  #AFB3BE; /* oklch(75.0% 0.013 255) — border stronger */
   --neutral-8:  #888C99; /* oklch(63.0% 0.016 255) — border interactive/focus */
   --neutral-9:  #6C7080; /* oklch(53.5% 0.018 255) — solid fill */
-  --neutral-10: #565A69; /* oklch(45.0% 0.018 255) — solid fill hover — reserved, unconsumed on this page */
+  --neutral-10: #565A69; /* oklch(45.0% 0.018 255) — solid fill hover — consumed by --color-bg-inverse-hover (skip-link hover) */
   --neutral-11: #454856; /* oklch(38.0% 0.017 255) — secondary text */
   --neutral-12: #1B1D24; /* oklch(19.5% 0.015 255) — primary text */
 
@@ -326,6 +326,7 @@
   /* Border sitting on an inverse (dark) surface — e.g. the footer.
      Named so component CSS never reaches for a raw --neutral-9 again. */
   --color-border-on-inverse: var(--neutral-9);
+  --color-border-interactive-hover: var(--neutral-9); /* hover step for interactive borders — one rung darker than --color-border-interactive */
 
   /* --------------------------------------------------------------------
      9b. SEMANTIC — Brand motif (design-tokens R29 / logo-swap test)
@@ -417,6 +418,7 @@
   /* @contrast --color-feedback-error on --color-bg-alt >= 4.5 */
   /* @contrast --color-text-inverse on --color-bg-inverse-hover >= 4.5 */
   /* @contrast --color-border-on-inverse on --color-bg-inverse >= 3 */
+  /* @contrast --color-border-interactive-hover on --color-bg-page >= 3 */
   /* @contrast --color-text-secondary on --color-bg-component >= 4.5 */
   /* @contrast --color-text-secondary on --color-bg-surface-on-alt >= 4.5 */
   /* @contrast --color-text-primary on --color-bg-surface-on-alt >= 4.5 */
@@ -503,7 +505,7 @@
   --card-padding: var(--space-6);
 
   --input-border: var(--color-border-interactive);
-  --input-border-hover: var(--neutral-9); /* one rung darker on hover — a declared hover that resolves to the rest value is a dead state */
+  --input-border-hover: var(--color-border-interactive-hover); /* via the semantic layer (R2) — a declared hover that resolves to the rest value is a dead state */
   --input-radius: var(--radius-md); /* matches the submit button beside it — one corner family per control group (visual-identity R5) */
   --input-height: var(--target-min);
   --input-padding-x: var(--space-4);
