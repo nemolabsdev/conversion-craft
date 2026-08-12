@@ -786,7 +786,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   .hero-visual-wrap { justify-content: flex-start; }
   .hero-visual { max-width: 100%; }
   .hero-visual img {
-    aspect-ratio: 8 / 3;
+    aspect-ratio: 3 / 1; /* flatter strip (-14px) — part of the fold budget that puts .cta-support above 667px */
     object-fit: cover;
   }
   /* Row rhythm tightened one notch (32px → 16px) for the same reason —
@@ -797,8 +797,8 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
      which pushed the subhead to 3 lines here. Stepped down one rung to
      text-lg (floor 21.3px, close to the old 22px) to hold it back to 2 —
      see the fold-budget comment below for the full accounting. */
-  .hero-subhead { margin-block-end: var(--space-3); } /* keeps --type-subhead-size (20px floor) — the --text-lg override collided with H3's floor */
-  .lead { margin-block-end: var(--space-3); }
+  .hero-subhead { margin-block-end: var(--space-2); } /* keeps --type-subhead-size; tightened one step to buy the trust microcopy back above the 667px fold */
+  .lead { margin-block-end: var(--space-2); }
 }
 
 /* ---------------------------------------------------------------------- */
@@ -850,8 +850,8 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
 }
 .trust-star {
   display: inline-block;
-  width: var(--space-4);
-  height: var(--space-4);
+  width: var(--icon-size-badge);
+  height: var(--icon-size-badge);
   background-color: var(--color-accent-decorative);
   mask-image: var(--icon-star);
   -webkit-mask-image: var(--icon-star);
@@ -1616,6 +1616,13 @@ p.table-footnote { color: var(--color-text-secondary); font-size: var(--text-xs)
   position: fixed;
   left: 50%;
   bottom: var(--space-6);
+}
+@media (max-width: 479px) {
+  /* On phones the hero CTA lives at the bottom of the first viewport — a
+     bottom-anchored toast covered the very button it confirms for 4s. */
+  .toast { bottom: auto; top: var(--space-9); }
+}
+.toast {
   z-index: 200;
   max-width: 90vw;
   padding-block: var(--space-3);

@@ -270,7 +270,8 @@
   /* --------------------------------------------------------------------
      8. PRIMITIVE — Touch target floor (design-tokens R22)
      -------------------------------------------------------------------- */
-  --target-min: 44px; /* Apple HIG / Material floor; WCAG 2.2 AA legal min is 24px — noted, not shipped */
+  --target-min: 44px;
+  --icon-size-badge: 20px; /* trust-bar marks: 16px hid the partial star's 30% unfilled tip */ /* Apple HIG / Material floor; WCAG 2.2 AA legal min is 24px — noted, not shipped */
 
   /* --------------------------------------------------------------------
      9. SEMANTIC — Color roles
@@ -474,7 +475,7 @@
   --type-body-leading: var(--leading-body); /* unitless 1.5 — body size is a clamp(); a static 24px fell to 133% at 1280 (round-5 MAJOR; typography-craft R7 wants 140-150%) */
   --type-lead-size: var(--text-lg);
   --type-h3-size: var(--text-xl); /* one rung below H2 at every width */
-  --type-logo-size: clamp(1.5rem, 1.2727rem + 0.9091vw, 2rem);        /* 24px -> 32px — the wordmark's own step: between H3 and H2, colliding with neither */
+  --type-logo-size: clamp(1.5rem, 1.4432rem + 0.2273vw, 1.625rem); /* 24px -> 26px: near-static wordmark, clearly below H3's curve at every width (they crossed at ~675px) */        /* 24px -> 32px — the wordmark's own step: between H3 and H2, colliding with neither */
   --type-subhead-size: clamp(1.25rem, 1.0104rem + 0.958vw, 1.777rem); /* 20px -> 28.4px — hero subhead: above lead, below H3 */
   --type-h2-size: var(--text-2xl); /* 28.4px @mobile floor → 50.5px @1280 */
   --type-h1-size: var(--text-3xl); /* ON the ladder, one full rung above --type-h2-size at every width (37.9px @mobile floor -> 67.3px @1280). The 67.3px ceiling keeps the desktop hero CTA above the 800px fold; both fold budgets are enforced mechanically by geometry-audit's --fold-selector guard, not by comments. */
