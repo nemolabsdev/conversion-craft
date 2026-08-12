@@ -20,13 +20,13 @@
 | Team (9 agents) | `agents/` | proven on the demo build |
 | Knowledge (19 skills) | `skills/` | every rule measurable, sourced, confidence-tagged |
 | Research corpus | `curriculum/research/` (16 files) | sources + rules + anti-patterns + open questions |
-| QA gates | `tools/` | all three PASS on demo: spacing clean, 14/14 contrast assertions, zero rendered-geometry findings at 375/768/1280 (`geometry-audit.mjs`, headless Chrome, zero deps) |
+| QA gates | `tools/` | all three PASS on demo-lab: spacing clean, 25/25 contrast assertions, zero rendered-geometry findings across five standing viewports incl. fold contracts and computed-style asserts (`geometry-audit.mjs`, headless Chrome, zero deps, loud navigation guard) |
 | Proof of concept | `demo/` | full page: strategy → copy → tokens → build |
 
 ## Known limitations / next candidates
 
 - `[TREND-2026]` rules need a refresh pass ~Q3 2027
-- Deferred from GAPS.md (v1.1 candidates): promotions/sale-event architecture, post-purchase & abandonment lifecycle, B2B landing patterns
+- v1.1 candidates cleared 2026-08-12 (promotions-events, post-purchase-lifecycle, b2b-landing); remaining NICE-tier items live in GAPS.md
 - `curriculum/research/awards-visual-language.md` was snippet-verified only (lower confidence) — candidate for a re-pass
 - ~~Demo hero still uses vector art~~ — resolved: demo now uses locally-hosted Unsplash photography (WebP, srcset, brand-graded) per the `demo-assets` skill; credits in `demo/img/CREDITS.md`
 - Going public: flip with `gh repo edit nemolabsdev/conversion-craft --visibility public` when ready
