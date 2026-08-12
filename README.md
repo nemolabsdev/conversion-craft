@@ -94,28 +94,14 @@ wrote the skills, built the demo, and an adversarial Art Director agent rejected
 measurement is in the commit history. The `Co-Authored-By: Claude` trailers are not an accident;
 they are the point.
 
-## Demo
+## Proof build
 
-**Live page:** https://nemolabsdev.github.io/conversion-craft/
-
-
-[`demo/`](demo/) contains a complete sales page for **AURI A1** — a fictional premium headphone — built end-to-end by the team as proof of concept: strategy doc → copy doc → tokens → page.
-
-| Desktop (1280) | Mobile (375) |
-|---|---|
-| ![AURI A1 demo, desktop hero](docs/img/demo-desktop.png) | ![AURI A1 demo, mobile hero](docs/img/demo-mobile.png) |
-
-Serve it locally:
-
-```bash
-python3 -m http.server 4173 --directory demo
-```
-
-All testimonials and product claims in the demo are fictional and labeled as such.
-
-> **Approval:** zero BLOCKER outstanding — approved under rulebook version 2026-08-12 after an
-> 8-round adversarial audit cycle (78 findings raised, 76 fixed, 2 logged), every fix verified by
-> live DOM measurement and three mechanical gates across five viewports (375/560/640/768/1280).
+The team's proof-of-concept sales page (a fictional premium headphone) lives on the
+[`demo-lab`](https://github.com/nemolabsdev/conversion-craft/tree/demo-lab) branch while it is
+being art-directed to the same standard the skills preach — it returns to the front page when it
+clears that bar. Its 8-round adversarial audit trail (78 findings raised, 76 fixed, every one
+measured in the live DOM) is preserved in the commit history and is the honest demonstration of
+how this team works.
 
 ## Structure
 
@@ -125,7 +111,6 @@ agents/            9 team-role definitions
 skills/            16 skills (operational rules + checklists)
 tools/             the three QA gates
 curriculum/        research corpus the skills were distilled from (sources + rules)
-demo/              AURI A1 proof-of-concept page
 ```
 
 ## Knowledge freshness
