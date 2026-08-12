@@ -143,6 +143,27 @@ p { color: var(--color-text-primary); }
   .container { padding-inline: var(--layout-gutter-desktop); }
 }
 
+/* Editorial section split: heading column (5) | content column (7) at
+   >=1024px. Kills the "narrow document column swimming in a void" read on
+   wide screens while keeping one left line and 12-col discipline —
+   columns 5+7 share the page grid, gutter is the standing token. */
+.section-split > .section-side > h2 { margin-block-end: var(--space-4); }
+@media (min-width: 1024px) {
+  .section-split {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: var(--grid-gutter);
+    align-items: start;
+  }
+  .section-side {
+    position: sticky;
+    top: var(--space-10); /* heading keeps context while the long column scrolls */
+  }
+}
+/* Content-column measure discipline (mirrors the narrow-measure caps) */
+.section-main :is(p, li):not(.pull-quote),
+.section-side p { max-width: 56ch; }
+
 /* Measure cap, always LEFT-ANCHORED. A centered narrow column inside a
    centered container puts its first text edge at x=320 while full-width
    sections start at x=72 — five sections doing that made the page's left
