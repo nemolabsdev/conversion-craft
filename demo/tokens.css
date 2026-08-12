@@ -284,7 +284,8 @@
 
   --color-text-primary:        var(--neutral-12);
   --color-text-secondary:      var(--neutral-11);
-  --color-text-inverse-muted: var(--neutral-7); /* de-emphasized text on inverse surfaces (payment row, legal) */
+  --color-text-inverse-muted: var(--neutral-7);
+  --color-bg-inverse-hover: var(--neutral-10); /* hover fill on inverse surfaces (skip link) — fill role, not a text token */ /* de-emphasized text on inverse surfaces (payment row, legal) */
   /* Photo grade overlay (demo-assets R5) — decorative only, never behind text,
      so no @contrast assertion applies. 8-digit hex: RRGGBBAA. */
   --color-photo-tint-warm: #C9742926; /* accent-7 @ 15% */
@@ -414,6 +415,8 @@
   /* @contrast --color-text-inverse-muted on --color-bg-inverse >= 4.5 */
   /* @contrast --color-feedback-error on --color-bg-page >= 4.5 */
   /* @contrast --color-feedback-error on --color-bg-alt >= 4.5 */
+  /* @contrast --color-text-inverse on --color-bg-inverse-hover >= 4.5 */
+  /* @contrast --color-border-on-inverse on --color-bg-inverse >= 3 */
   /* @contrast --color-text-secondary on --color-bg-component >= 4.5 */
   /* @contrast --color-text-secondary on --color-bg-surface-on-alt >= 4.5 */
   /* @contrast --color-text-primary on --color-bg-surface-on-alt >= 4.5 */
@@ -456,7 +459,7 @@
   --type-eyebrow-size: var(--text-xs);
   --type-eyebrow-tracking: var(--tracking-wide);
   --type-body-size: var(--text-base);
-  --type-body-leading: var(--leading-base);
+  --type-body-leading: var(--leading-body); /* unitless 1.5 — body size is a clamp(); a static 24px fell to 133% at 1280 (round-5 MAJOR; typography-craft R7 wants 140-150%) */
   --type-lead-size: var(--text-lg);
   --type-h3-size: var(--text-xl); /* one rung below H2 at every width */
   --type-logo-size: clamp(1.5rem, 1.2727rem + 0.9091vw, 2rem);        /* 24px -> 32px — the wordmark's own step: between H3 and H2, colliding with neither */

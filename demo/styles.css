@@ -130,7 +130,7 @@ p { color: var(--color-text-primary); }
   transform: translateY(0);
 }
 .skip-link:hover {
-  background-color: var(--color-text-secondary);
+  background-color: var(--color-bg-inverse-hover);
 }
 
 .container {
@@ -731,8 +731,10 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   max-width: 56ch;
 }
 @media (min-width: 768px) {
+  /* .lead deliberately keeps --type-body-size at every width: promoting it to
+     --type-lead-size made it equal the subhead at 1280 and LARGER than it at
+     768-1024 (round-5 MAJOR), and dragged its measure down to 39 CPL. */
   .lead {
-    font-size: var(--type-lead-size);
     line-height: var(--leading-body);
     margin-block-end: var(--space-4);
   }
@@ -790,7 +792,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
      which pushed the subhead to 3 lines here. Stepped down one rung to
      text-lg (floor 21.3px, close to the old 22px) to hold it back to 2 —
      see the fold-budget comment below for the full accounting. */
-  .hero-subhead { font-size: var(--text-lg); margin-block-end: var(--space-3); }
+  .hero-subhead { margin-block-end: var(--space-3); } /* keeps --type-subhead-size (20px floor) — the --text-lg override collided with H3's floor */
   .lead { margin-block-end: var(--space-3); }
 }
 
@@ -1341,7 +1343,7 @@ p.table-footnote { color: var(--color-text-secondary); font-size: var(--text-xs)
    height inside them, so the three guarantees read as one run-on block.
    Gap now clears the line height (48px), and the margin to the CTA below
    steps up with it so the list still groups against what follows. */
-.risk-list { display: flex; flex-direction: column; gap: var(--space-5); margin-block-end: var(--space-4); } /* 24px between items, 16px to the CTA — same copy-to-CTA coupling as hero/pricing; 48/64 read as one more list item (R9/R10) */
+.risk-list { display: flex; flex-direction: column; gap: var(--space-6); margin-block-end: var(--space-4); } /* 32px between items: with 1.5 body leading the intra-item pitch is 27px, so 27+32 over 27 = 2.19x clears R9's 2x; 16px to the CTA keeps R10 */ /* 24px between items, 16px to the CTA — same copy-to-CTA coupling as hero/pricing; 48/64 read as one more list item (R9/R10) */
 .risk-list li {
   position: relative;
   padding-inline-start: calc(var(--space-4) + var(--space-3));

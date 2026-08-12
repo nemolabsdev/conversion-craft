@@ -38,19 +38,19 @@
       "@type": "Review",
       "reviewRating": { "@type": "Rating", "ratingValue": "5" },
       "author": { "@type": "Person", "name": "Priya Nataraj" },
-      "reviewBody": "AURI's adaptive ANC actually adjusted to my apartment in about three days. I didn't expect that to matter this much."
+      "reviewBody": "AURI’s adaptive ANC actually adjusted to my apartment in about three days. I didn’t expect that to matter this much."
     },
     {
       "@type": "Review",
       "reviewRating": { "@type": "Rating", "ratingValue": "5" },
       "author": { "@type": "Person", "name": "Marcus Webb" },
-      "reviewBody": "The 10-year repair promise is the first time a headphone company has said 'we expect you to keep these,' instead of 'buy the next model in 18 months.'"
+      "reviewBody": "The 10-year repair promise is the first time a headphone company has said ‘we expect you to keep these,’ instead of ‘buy the next model in 18 months.’"
     },
     {
       "@type": "Review",
       "reviewRating": { "@type": "Rating", "ratingValue": "5" },
       "author": { "@type": "Person", "name": "Sofia Andrade" },
-      "reviewBody": "I genuinely forget I'm wearing them, which is the whole point."
+      "reviewBody": "I genuinely forget I’m wearing them, which is the whole point."
     }
   ]
 }
@@ -576,18 +576,18 @@
 
   /* ---------- Email capture forms: inline validation + states ---------- */
   var EMPTY_MSG = "Enter your email so we know where to send it.";
-  var INVALID_MSG = "That email doesn't look complete — check for a typo (e.g. name@example.com).";
+  var INVALID_MSG = "That email doesn’t look complete — check for a typo (e.g. name@example.com).";
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   /* Copy per COPY.md §5 "Submit states" — success, error and
      already-subscribed all render into the same headline slot
      (data-success-headline) so no state needs its own extra markup. */
   var SUCCESS_HEADLINE =
-    "<strong>You're on the list.</strong> Check your inbox for the AURI A1 spec sheet — it should land in the next few minutes.";
+    "<strong>You’re on the list.</strong> Check your inbox for the AURI A1 spec sheet — it should land in the next few minutes.";
   var ALREADY_SUBSCRIBED_HEADLINE =
-    "<strong>You're already on the list.</strong> The spec sheet is on its way to your inbox again — check spam if it's not there in a few minutes.";
+    "<strong>You’re already on the list.</strong> The spec sheet is on its way to your inbox again — check spam if it’s not there in a few minutes.";
   var SERVER_ERROR_MSG =
-    "<strong>Something went wrong on our end.</strong> Your email wasn't saved — please try again, or email us directly at hello@auri.com.";
+    "<strong>Something went wrong on our end.</strong> Your email wasn’t saved — try again, or email us directly at hello@auri.com.";
 
   /* One shared mailing list across both forms (header + footer capture
      are the same signup, not two separate lists) — lets a repeat

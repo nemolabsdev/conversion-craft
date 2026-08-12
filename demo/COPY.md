@@ -179,7 +179,7 @@ Validated against real users? **N.** Not yet run against a ≥5-point Likert stu
   > **You're on the list.** Check your inbox for the AURI A1 spec sheet — it should land in the next few minutes.
 - Success, secondary line: `Didn't get it? Check spam, or `**`resend the email`**` .`
 - Error (server/network failure, field-level, non-blocking):
-  > **Something went wrong on our end.** Your email wasn't saved — please try again, or email us directly at hello@auri.com.
+  > **Something went wrong on our end.** Your email wasn't saved — try again, or email us directly at hello@auri.com.
 - Already-subscribed case:
   > **You're already on the list.** The spec sheet is on its way to your inbox again — check spam if it's not there in a few minutes.
 
