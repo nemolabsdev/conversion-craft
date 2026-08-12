@@ -66,7 +66,20 @@ h1, h2, h3 {
 
 /* Section headings run 4-9 words at display size — balanced wrapping keeps
    the last line from dropping a single orphan word (typography-craft). */
-h2 { text-wrap: balance; }
+h1, h2, .eyebrow, .faq-item summary { text-wrap: balance; }
+
+/* One heading treatment for every visible section H2 — same role, one rhythm,
+   one grid-legal gap (was: seven copy-pasted blocks with three different
+   trailing margins, two of them on the 4px sub-grid). */
+.relevance h2, .email-capture h2, .comparison h2, .reviews h2,
+.pricing h2, .final-cta h2, .faq h2 {
+  font-family: var(--font-family-display);
+  font-optical-sizing: auto;
+  font-variation-settings: 'SOFT' 20, 'WONK' 1;
+  font-size: var(--type-h2-size);
+  line-height: var(--leading-heading);
+  margin-block-end: var(--space-6);
+}
 
 p { color: var(--color-text-primary); }
 
@@ -138,8 +151,8 @@ p { color: var(--color-text-primary); }
    the grid (M1), but Inter at 18px runs ~87 real CPL at that width — cap
    running paragraphs separately to stay under the 80-CPL body ceiling. */
 .narrow-measure :is(p, li):not(.pull-quote),
-p.narrow-measure { max-width: 56ch; }
-.footer-legal p { max-width: 56ch; }
+p.narrow-measure { max-width: 52ch; } /* 52ch, not 56: worst-line CPL (narrow-glyph runs) hits 81 at 56ch — the per-line gate measures lines, not averages */
+.footer-legal p { max-width: 46ch; }
 
 .narrow-measure {
   max-width: 45.5rem;
@@ -154,9 +167,12 @@ p.narrow-measure { max-width: 56ch; }
   max-width: var(--layout-container-max-width);
   margin-inline: auto;
 }
-.container.narrow-measure > * {
+.container.narrow-measure > :not(p):not(li):not(blockquote) {
   max-width: 45.5rem;
 }
+/* p/li/blockquote take the ch-based worst-line cap above — this child rule's
+   higher specificity (0,2,0) was silently overriding it with 45.5rem (~91
+   worst-line CPL) until the per-line gate caught the 81-char line. */
 
 .text-link {
   display: inline-flex;
@@ -854,6 +870,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   text-align: center;
 }
 .trust-quote p {
+  max-width: 46ch;
   font-size: var(--type-lead-size);
   line-height: var(--leading-body);
   font-style: italic;
@@ -870,18 +887,11 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
 .relevance { padding-block: var(--layout-section-padding-mobile); }
 @media (min-width: 1024px) { .relevance { padding-block: var(--layout-section-padding-desktop); } }
 
-.relevance h2 {
-  font-family: var(--font-family-display);
-  font-optical-sizing: auto;
-  font-variation-settings: 'SOFT' 20, 'WONK' 1;
-  font-size: var(--type-h2-size);
-  line-height: var(--leading-heading);
-  margin-block-end: var(--space-5);
-}
 
 .relevance p { color: var(--color-text-secondary); margin-block-end: var(--space-5); }
 
 .relevance .pull-quote {
+  max-width: 40ch;
   font-size: var(--type-lead-size);
   line-height: var(--leading-body);
   font-style: italic;
@@ -899,14 +909,6 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
 }
 @media (min-width: 1024px) { .email-capture { padding-block: var(--layout-section-padding-desktop); } }
 
-.email-capture h2 {
-  font-family: var(--font-family-display);
-  font-optical-sizing: auto;
-  font-variation-settings: 'SOFT' 20, 'WONK' 1;
-  font-size: var(--type-h2-size);
-  line-height: var(--leading-heading);
-  margin-block-end: var(--space-3);
-}
 .email-capture > .container > p {
   color: var(--color-text-secondary);
   margin-block-end: var(--space-6);
@@ -1085,7 +1087,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   color: var(--color-text-secondary);
   margin-block-end: var(--space-4);
 }
-.feature-copy p { color: var(--color-text-secondary); max-width: 68ch; }
+.feature-copy p { color: var(--color-text-secondary); max-width: 45ch; } /* 45ch guarantees <=80 worst-line CPL in the 649px column (68ch never bound - the ch trap again) */
 @media (min-width: 768px) and (max-width: 1023px) {
   /* Single-column band: the block spans the full container, so a 68ch cap
      lets Inter's narrow digit-derived ch run past 80 real characters per
@@ -1116,14 +1118,6 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
 }
 @media (min-width: 1024px) { .comparison { padding-block: var(--layout-section-padding-desktop); } }
 
-.comparison h2 {
-  font-family: var(--font-family-display);
-  font-optical-sizing: auto;
-  font-variation-settings: 'SOFT' 20, 'WONK' 1;
-  font-size: var(--type-h2-size);
-  line-height: var(--leading-heading);
-  margin-block-end: var(--space-6);
-}
 
 .feature-block-solo { grid-template-columns: 1fr; margin-block-end: var(--space-6); }
 .feature-block-solo p {
@@ -1214,14 +1208,6 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
 .reviews { padding-block: var(--layout-section-padding-mobile); }
 @media (min-width: 1024px) { .reviews { padding-block: var(--layout-section-padding-desktop); } }
 
-.reviews h2 {
-  font-family: var(--font-family-display);
-  font-optical-sizing: auto;
-  font-variation-settings: 'SOFT' 20, 'WONK' 1;
-  font-size: var(--type-h2-size);
-  line-height: var(--leading-heading);
-  margin-block-end: var(--space-3);
-}
 
 .reviews-summary {
   color: var(--color-text-secondary);
@@ -1284,14 +1270,6 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
 }
 @media (min-width: 1024px) { .pricing { padding-block: var(--layout-section-padding-desktop); } }
 
-.pricing h2 {
-  font-family: var(--font-family-display);
-  font-optical-sizing: auto;
-  font-variation-settings: 'SOFT' 20, 'WONK' 1;
-  font-size: var(--type-h2-size);
-  line-height: var(--leading-heading);
-  margin-block-end: var(--space-6);
-}
 
 .price-block {
   background-color: var(--card-bg);
@@ -1353,14 +1331,6 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
 .final-cta { padding-block: var(--layout-section-padding-mobile); background-color: var(--color-bg-alt); }
 @media (min-width: 1024px) { .final-cta { padding-block: var(--layout-section-padding-desktop); } }
 
-.final-cta h2 {
-  font-family: var(--font-family-display);
-  font-optical-sizing: auto;
-  font-variation-settings: 'SOFT' 20, 'WONK' 1;
-  font-size: var(--type-h2-size);
-  line-height: var(--leading-heading);
-  margin-block-end: var(--space-5);
-}
 
 .final-cta > .container > p:first-of-type {
   color: var(--color-text-secondary);
@@ -1407,14 +1377,6 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
 .faq { padding-block: var(--layout-section-padding-mobile); }
 @media (min-width: 1024px) { .faq { padding-block: var(--layout-section-padding-desktop); } }
 
-.faq h2 {
-  font-family: var(--font-family-display);
-  font-optical-sizing: auto;
-  font-variation-settings: 'SOFT' 20, 'WONK' 1;
-  font-size: var(--type-h2-size);
-  line-height: var(--leading-heading);
-  margin-block-end: var(--space-6);
-}
 
 .faq-item {
   border-bottom: 1px solid var(--color-border-subtle);
@@ -1515,6 +1477,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   display: inline-flex;
   align-items: center;
   min-height: var(--target-min);
+  min-width: var(--target-min);
   font-size: var(--type-body-size);
   transition: opacity var(--duration-instant) var(--ease-workhorse);
 }

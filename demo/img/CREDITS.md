@@ -10,8 +10,10 @@ from its ground at >=3:1 on key edges — see composition-grids figure-ground ru
   textile; two crops of one photo, used only in the hero slot pair)
 - `driver-1x/2x.webp` — Unsplash photo `1510766315117-0f791eb90af7` (perforated speaker-grille
   macro; illustrates the titanium-driver block; distinct source from the hero photo)
-- `silence-1x/2x.webp` — Unsplash photo `1603715749723-240c88df18b1` (acoustic-foam wave texture;
-  illustrates the adaptive-ANC "engineered silence" block; no people, no brand marks; strong shadow-lift grade at source so the wave relief reads at >=120 luminance levels)
+- `silence-1x/2x.webp` — Unsplash photo `1633239953245-bbfdc040a731` (studio condenser microphone
+  in darkness; illustrates the adaptive-ANC block — the mics that listen to your environment; no
+  people, no brand marks; exposure-led grade preserves true blacks while lifting the mesh
+  speculars past L=140, so tonal range stays in the 200+ family with the hero/driver assets)
 
 No identifiable people appear in any demo photo (the earlier lifestyle portrait was replaced per
 the strategy rule "no stock people wearing a different product" and the model-release nuance).

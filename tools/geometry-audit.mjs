@@ -213,22 +213,35 @@ const AUDIT_JS = `(async () => {
     }
   }
 
-  // 7. Real CPL — measured average glyph advance of the element's own text and
-  //    font (not the ch unit, which tracks digit advance and under-counts by
-  //    ~35% in Inter). Body ceiling: 80 characters per line.
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  document.querySelectorAll('p, li').forEach(el => {
+  // 7. Real CPL — counted PER RENDERED LINE via per-character Range rects,
+  //    not an average-advance estimate: lines that pack narrow glyphs
+  //    (i l t f, spaces) run longest, and a whole-paragraph average
+  //    under-reports exactly those worst lines (caught in audit round 3:
+  //    the average said 76 CPL where the worst rendered line held 81).
+  document.querySelectorAll('p, li, blockquote').forEach(el => {
     if (!visible(el)) return;
-    const text = (el.innerText || '').trim();
-    if (text.length < 60) return;
-    const cs = getComputedStyle(el);
-    ctx.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
-    const avg = ctx.measureText(text).width / text.length;
-    if (!avg) return;
-    const contentW = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-    const cpl = contentW / avg;
-    if (cpl > 80.5) findings.push({ check: 'cpl', detail: label(el) + ' runs ~' + Math.round(cpl) + ' real CPL (' + Math.round(contentW) + 'px at ' + cs.fontSize + ') — body ceiling is 80' });
+    const total = (el.innerText || '').trim().length;
+    if (total < 60 || total > 2000) return;
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const lineCounts = new Map();
+    const range = document.createRange();
+    let node;
+    while ((node = walker.nextNode())) {
+      const len = node.textContent.length;
+      for (let i = 0; i < len; i++) {
+        range.setStart(node, i); range.setEnd(node, i + 1);
+        const r = range.getClientRects()[0];
+        if (!r || r.width === 0) continue;
+        const key = Math.round(r.top);
+        let hit = false;
+        for (const [top, n] of lineCounts) {
+          if (Math.abs(top - key) <= 2) { lineCounts.set(top, n + 1); hit = true; break; }
+        }
+        if (!hit) lineCounts.set(key, 1);
+      }
+    }
+    const worst = Math.max(0, ...lineCounts.values());
+    if (worst > 80) findings.push({ check: 'cpl', detail: label(el) + ' [' + Math.round(el.clientWidth) + 'px @ ' + getComputedStyle(el).fontSize + '; text: "' + (el.innerText||'').trim().slice(0, 40) + '…"]: worst rendered line holds ' + worst + ' characters — body ceiling is 80' });
   });
 
   // 8. Image integrity — rendered aspect ratio must match intrinsic (no squish).

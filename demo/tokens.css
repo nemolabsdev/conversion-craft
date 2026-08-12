@@ -130,8 +130,8 @@
   --text-base: clamp(1rem, 0.9432rem + 0.2273vw, 1.125rem);         /* 16px → 18px, body floor never below 16px (R25) */
   --text-lg:   clamp(1.333rem, 1.1312rem + 0.8073vw, 1.777rem);     /* 21.3px → 28.4px */
   --text-xl:   clamp(1.777rem, 1.5086rem + 1.0736vw, 2.3675rem);    /* 28.4px → 37.9px */
-  --text-2xl:  clamp(2.3675rem, 2.0093rem + 1.4329vw, 3.1556rem);   /* 37.9px → 50.5px */
-  --text-3xl:  clamp(3.1556rem, 2.6775rem + 1.9125vw, 4.2075rem);   /* 50.5px → 67.3px */
+  --text-2xl:  clamp(1.777rem, 1.1502rem + 2.5068vw, 3.1556rem);    /* 28.4px @400 → 50.5px @1280 — floor one rung down so section headings are mobile-scale at the mobile floor */
+  --text-3xl:  clamp(2.3675rem, 1.5311rem + 3.3455vw, 4.2075rem);   /* 37.9px @400 → 67.3px @1280 */
   --text-4xl:  clamp(4.2075rem, 3.5703rem + 2.5489vw, 5.6094rem);   /* 67.3px → 89.8px — H1 ceiling */
 
   /* Leading — multiples of 4px (design-tokens R21). Static px steps stay
@@ -458,9 +458,9 @@
   --type-body-size: var(--text-base);
   --type-body-leading: var(--leading-base);
   --type-lead-size: var(--text-lg);
-  --type-h3-size: var(--text-2xl);
-  --type-h2-size: var(--text-3xl);
-  --type-h1-size: clamp(1.75rem, 0.7325rem + 4.3431vw, 4.2075rem); /* dedicated continuous hero clamp: 28px@375 -> 67.3px@1280 (anchors x1=375, x2=1280). One curve at every width - no breakpoint remap, so no size cliff at 480 (M5), and the 67.3px ceiling keeps the desktop hero CTA above the 800px fold (B3). Superseded note: previously var(--text-4xl) with a sub-480 remap — see the media query at the
+  --type-h3-size: var(--text-xl); /* one rung below H2 at every width */
+  --type-h2-size: var(--text-2xl); /* 28.4px @mobile floor → 50.5px @1280 */
+  --type-h1-size: var(--text-3xl); /* ON the ladder, one full rung above --type-h2-size at every width (37.9px @mobile floor -> 67.3px @1280). The 67.3px ceiling keeps the desktop hero CTA above the 800px fold; both fold budgets are enforced mechanically by geometry-audit's --fold-selector guard, not by comments. */
                                        bottom of this file for why, and for the fold math */
   /* --type-hero-size (--text-5xl) was declared for a hero-scale display
      step above H1 and never reached for anywhere — the hero headline
