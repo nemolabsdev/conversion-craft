@@ -67,6 +67,7 @@ h1, h2, h3 {
 /* Section headings run 4-9 words at display size — balanced wrapping keeps
    the last line from dropping a single orphan word (typography-craft). */
 h1, h2, .eyebrow, .faq-item summary { text-wrap: balance; }
+main p, main li { text-wrap: pretty; }
 
 /* One heading treatment for every visible section H2 — same role, one rhythm,
    one grid-legal gap (was: seven copy-pasted blocks with three different
@@ -222,6 +223,7 @@ p.narrow-measure { max-width: 52ch; } /* 52ch, not 56: worst-line CPL (narrow-gl
 }
 .icon-arrow-right--down { transform: rotate(90deg); }
 
+.testimonial-card .fictional-tag { margin-inline-start: 0; }
 .fictional-tag {
   display: inline-block;
   color: var(--color-text-secondary);
@@ -343,6 +345,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   border-color: var(--button-secondary-border);
 }
 .btn-secondary:hover:not(:disabled) { background-color: var(--button-secondary-bg-hover); }
+.btn-secondary:active:not(:disabled) { background-color: var(--button-secondary-bg-active); }
 .btn-secondary:disabled { opacity: 0.55; cursor: default; }
 
 .btn-lg {
@@ -584,7 +587,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
 
 .hero-visual-wrap {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start; /* the photo shares the copy's left axis at every width below the two-column layout */
   order: -1;
 }
 @media (min-width: 1024px) {
@@ -963,7 +966,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   transition: border-color var(--duration-instant) var(--ease-workhorse),
               box-shadow var(--duration-instant) var(--ease-workhorse);
 }
-.form-field input:not([aria-invalid="true"]):hover { border-color: var(--color-border-interactive); }
+.form-field input:not([aria-invalid="true"]):hover { border-color: var(--input-border-hover); }
 .form-field input::placeholder { color: var(--color-text-secondary); }
 .form-field input[aria-invalid="true"] {
   border-color: var(--color-feedback-error);
@@ -974,9 +977,12 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  min-height: var(--leading-xs);
-  font-size: var(--text-xs);
-  line-height: var(--leading-xs);
+  /* Messages here are 1-3 lines of prose a blocked buyer must read — body
+     size and fluid leading, not the caption step (--text-xs's own comment
+     reserves it for single-line labels). Reserved height = one body line. */
+  min-height: var(--space-6);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-leading);
   color: var(--color-text-secondary);
 }
 .form-field input[aria-invalid="true"] ~ .field-hint {
@@ -1546,6 +1552,19 @@ p.table-footnote { color: var(--color-text-secondary); font-size: var(--text-xs)
   font-size: var(--text-xs);
   color: var(--color-text-inverse);
 }
+/* The three legal paragraphs sit on the SAME 3-column grid as the footer nav
+   above them — a second column system in one footer drifted 7-14px at 1280
+   and produced an orphan-row hole at 1024 (space-between on a wrapping flex
+   row). The copyright row below keeps flex: two items, nothing to align to. */
+.footer-legal-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: var(--space-4);
+}
+@media (min-width: 640px) {
+  .footer-legal-grid { grid-template-columns: repeat(3, 1fr); column-gap: var(--grid-gutter); }
+}
+.footer-legal-grid p { max-width: none; }
 .footer-legal p {
   color: var(--color-text-inverse);
 }

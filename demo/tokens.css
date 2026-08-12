@@ -285,7 +285,7 @@
   --color-text-primary:        var(--neutral-12);
   --color-text-secondary:      var(--neutral-11);
   --color-text-inverse-muted: var(--neutral-7);
-  --color-bg-inverse-hover: var(--neutral-10); /* hover fill on inverse surfaces (skip link) — fill role, not a text token */ /* de-emphasized text on inverse surfaces (payment row, legal) */
+  --color-bg-inverse-hover: var(--neutral-10); /* hover fill on inverse surfaces (skip link) — fill role, not a text token */
   /* Photo grade overlay (demo-assets R5) — decorative only, never behind text,
      so no @contrast assertion applies. 8-digit hex: RRGGBBAA. */
   --color-photo-tint-warm: #C9742926; /* accent-7 @ 15% */
@@ -486,6 +486,7 @@
 
   --button-secondary-border: var(--color-action-secondary-border);
   --button-secondary-text: var(--color-action-secondary-text);
+  --button-secondary-bg-active: var(--color-bg-component-active);
   --button-secondary-bg-hover: var(--color-action-secondary-bg-hover);
   --button-secondary-radius: var(--radius-md);
   --button-secondary-padding-y: var(--space-3);
@@ -502,7 +503,8 @@
   --card-padding: var(--space-6);
 
   --input-border: var(--color-border-interactive);
-  --input-radius: var(--radius-sm);
+  --input-border-hover: var(--neutral-9); /* one rung darker on hover — a declared hover that resolves to the rest value is a dead state */
+  --input-radius: var(--radius-md); /* matches the submit button beside it — one corner family per control group (visual-identity R5) */
   --input-height: var(--target-min);
   --input-padding-x: var(--space-4);
 
