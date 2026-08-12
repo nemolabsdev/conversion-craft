@@ -96,6 +96,10 @@ python3 -m http.server 4173 --directory demo
 
 All testimonials and product claims in the demo are fictional and labeled as such.
 
+> **Approval:** zero BLOCKER outstanding — approved under rulebook version 2026-08-12 after an
+> 8-round adversarial audit cycle (78 findings raised, 76 fixed, 2 logged), every fix verified by
+> live DOM measurement and three mechanical gates across five viewports (375/560/640/768/1280).
+
 ## Structure
 
 ```

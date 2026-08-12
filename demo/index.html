@@ -169,8 +169,8 @@
           <div class="form-field">
             <label for="email-1">Email address</label>
             <input type="email" id="email-1" name="email" placeholder="you@company.com" aria-required="true" aria-describedby="email-1-hint" required>
-            <p class="field-hint" id="email-1-hint" aria-live="polite"></p>
           </div>
+          <p class="field-hint" id="email-1-hint" aria-live="polite"></p>
           <button type="submit" class="btn btn-secondary">Get the Spec Sheet</button>
         </div>
         <div class="email-form-success" data-form-success hidden aria-live="polite">
@@ -647,6 +647,7 @@
       var emailValue = input.value.trim().toLowerCase();
       var originalLabel = submitBtn.textContent;
       submitBtn.disabled = true;
+      submitBtn.style.minWidth = submitBtn.offsetWidth + "px"; // COPY.md: the button stays the same size while the label swaps
       submitBtn.textContent = "Sending…";
       window.setTimeout(function () {
         submitBtn.disabled = false;

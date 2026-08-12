@@ -224,6 +224,9 @@ p.narrow-measure { max-width: 52ch; } /* 52ch, not 56: worst-line CPL (narrow-gl
 .icon-arrow-right--down { transform: rotate(90deg); }
 
 .testimonial-card .fictional-tag { margin-inline-start: 0; }
+@media (max-width: 639px) {
+  .testimonial-card .fictional-tag { margin-inline-start: var(--space-2); } /* inline with the role text in this band — 0 margin fused "remote(fictional…)" */
+}
 .fictional-tag {
   display: inline-block;
   color: var(--color-text-secondary);
@@ -488,7 +491,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   transition: border-color var(--duration-instant) var(--ease-workhorse),
               background-color var(--duration-instant) var(--ease-workhorse);
 }
-.price-chip:hover { border-color: var(--color-border-interactive); }
+.price-chip:hover { border-color: var(--color-border-interactive-hover); }
 .price-chip:active { background-color: var(--color-bg-component-active); }
 @media (min-width: 480px) {
   .price-chip { display: inline-flex; }
@@ -947,7 +950,13 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   .email-form-body .field-hint { grid-column: 1 / -1; grid-row: 3; order: 0; min-height: var(--space-6); }
 }
 
-.email-form-body .field-hint { order: 4; min-height: 0; } /* stacked (<560px) flow: the reserved hint row sat INSIDE the input->button path, pushing the submit 56px from its field; messages render after the button, and the reservation returns with the grid layout */
+@media (max-width: 559px) {
+  /* Stacked flow: the hint is now a real sibling of the submit button (it was
+     trapped inside .form-field, where order had nothing to reorder), so
+     messages genuinely render after the button and the reserved row leaves
+     the input->button path. The reservation returns with the >=560 grid. */
+  .email-form-body .field-hint { order: 4; min-height: 0; }
+}
 
 .form-field {
   display: flex;
@@ -991,7 +1000,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   line-height: var(--type-body-leading);
   color: var(--color-text-secondary);
 }
-.form-field input[aria-invalid="true"] ~ .field-hint {
+.email-form-body:has(input[aria-invalid="true"]) .field-hint {
   color: var(--color-feedback-error);
   font-weight: var(--font-weight-medium);
 }
@@ -1002,7 +1011,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
    masked SVG carries no text semantics at all, so it never needs its own
    aria-hidden — recolors through the same --color-feedback-error token
    the message text already uses. */
-.form-field input[aria-invalid="true"] ~ .field-hint::before {
+.email-form-body:has(input[aria-invalid="true"]) .field-hint::before {
   content: "";
   flex-shrink: 0;
   width: var(--space-4);
@@ -1010,8 +1019,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   background-color: var(--color-feedback-error);
   margin-block-start: var(--space-1);
   mask-image: var(--icon-alert-triangle);
-  -webkit-margin-block-start: var(--space-1);
-  mask-image: var(--icon-alert-triangle);
+  -webkit-mask-image: var(--icon-alert-triangle);
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
   mask-position: center;
@@ -1576,7 +1584,9 @@ p.table-footnote { color: var(--color-text-secondary); font-size: var(--text-xs)
 @media (min-width: 768px) {
   .footer-legal-grid { column-gap: var(--grid-gutter); } /* switches gutters on the same line as .footer-columns */
 }
-.footer-legal-grid p { max-width: none; }
+@media (min-width: 640px) {
+  .footer-legal-grid p { max-width: none; } /* release the 46ch cap ONLY when the 3-track grid exists; below 640 the cap must bind or legal copy runs to 105 CPL (round-8 BLOCKER, found in the band between the old checkpoints) */
+}
 .footer-legal p {
   color: var(--color-text-inverse);
 }

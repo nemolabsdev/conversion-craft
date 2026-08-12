@@ -34,7 +34,7 @@ no partial credit — a check either passes a number or it doesn't.
    written justification in the QA report. [LAW] — tools/spacing-lint.mjs; layout-spacing.md R1-3
 4. Run `node tools/geometry-audit.mjs <served url> --fold-selector "<primary CTA selector>" --assert "<key selector>:font-weight:<expected>" --assert "<primary CTA>:background-color:<expected rgb>"` (requires system Chrome; serve the page
    first, e.g. `python3 -m http.server 4173 --directory demo`). This measures RENDERED pixels
-   at 375x667/768/1280 and fails on: horizontal page overflow, input-vs-button row misalignment
+   at 375x667/560/640/768/1280 and fails on: horizontal page overflow, input-vs-button row misalignment
    >1px, touch targets under 44px, mixed rendered heights within one button class, and
    squished images; plus three regression guards: real-CPL per text element (>80 fails; measured
    via the element's own glyph advance, never the ch unit), the declared primary-CTA fold

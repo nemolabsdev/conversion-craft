@@ -419,6 +419,7 @@
   /* @contrast --color-text-inverse on --color-bg-inverse-hover >= 4.5 */
   /* @contrast --color-border-on-inverse on --color-bg-inverse >= 3 */
   /* @contrast --color-border-interactive-hover on --color-bg-page >= 3 */
+  /* @contrast --color-border-focus on --color-bg-inverse >= 3 */
   /* @contrast --color-text-secondary on --color-bg-component >= 4.5 */
   /* @contrast --color-text-secondary on --color-bg-surface-on-alt >= 4.5 */
   /* @contrast --color-text-primary on --color-bg-surface-on-alt >= 4.5 */

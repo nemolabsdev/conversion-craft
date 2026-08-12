@@ -29,7 +29,7 @@ if (!url) {
   console.error('usage: node tools/geometry-audit.mjs <url> [--viewports 375x812,1280x800] [--shots <dir>]')
   process.exit(2)
 }
-const vpArg = args.includes('--viewports') ? args[args.indexOf('--viewports') + 1] : '375x667,768x1024,1280x800'
+const vpArg = args.includes('--viewports') ? args[args.indexOf('--viewports') + 1] : '375x667,560x800,640x800,768x1024,1280x800'
 const shotsDir = args.includes('--shots') ? args[args.indexOf('--shots') + 1] : null
 // --assert "selector:property:expected" (repeatable) — computed-style regression
 // guards; catches silent CSS parse breakage (a stray */ once dropped the whole
