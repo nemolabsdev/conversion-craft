@@ -129,7 +129,7 @@
   --text-xs:   clamp(0.75rem, 0.75rem, 0.75rem);                    /* 12px static — caption/eyebrow/label, not body copy */
   --text-base: clamp(1rem, 0.9432rem + 0.2273vw, 1.125rem);         /* 16px → 18px, body floor never below 16px (R25) */
   --text-lg:   clamp(1.333rem, 1.1312rem + 0.8073vw, 1.777rem);     /* 21.3px → 28.4px */
-  --text-xl:   clamp(1.777rem, 1.5086rem + 1.0736vw, 2.3675rem);    /* 28.4px → 37.9px */
+  --text-xl:   clamp(1.333rem, 0.863rem + 1.8807vw, 2.3675rem);     /* 21.3px @400 → 37.9px @1280 — floor one rung below --text-2xl's so the H2:H3 step exists at the mobile anchor, not only at 1280 */
   --text-2xl:  clamp(1.777rem, 1.1502rem + 2.5068vw, 3.1556rem);    /* 28.4px @400 → 50.5px @1280 — floor one rung down so section headings are mobile-scale at the mobile floor */
   --text-3xl:  clamp(2.3675rem, 1.5311rem + 3.3455vw, 4.2075rem);   /* 37.9px @400 → 67.3px @1280 */
   --text-4xl:  clamp(4.2075rem, 3.5703rem + 2.5489vw, 5.6094rem);   /* 67.3px → 89.8px — H1 ceiling */
@@ -459,9 +459,10 @@
   --type-body-leading: var(--leading-base);
   --type-lead-size: var(--text-lg);
   --type-h3-size: var(--text-xl); /* one rung below H2 at every width */
+  --type-logo-size: clamp(1.5rem, 1.2727rem + 0.9091vw, 2rem);        /* 24px -> 32px — the wordmark's own step: between H3 and H2, colliding with neither */
+  --type-subhead-size: clamp(1.25rem, 1.0104rem + 0.958vw, 1.777rem); /* 20px -> 28.4px — hero subhead: above lead, below H3 */
   --type-h2-size: var(--text-2xl); /* 28.4px @mobile floor → 50.5px @1280 */
   --type-h1-size: var(--text-3xl); /* ON the ladder, one full rung above --type-h2-size at every width (37.9px @mobile floor -> 67.3px @1280). The 67.3px ceiling keeps the desktop hero CTA above the 800px fold; both fold budgets are enforced mechanically by geometry-audit's --fold-selector guard, not by comments. */
-                                       bottom of this file for why, and for the fold math */
   /* --type-hero-size (--text-5xl) was declared for a hero-scale display
      step above H1 and never reached for anywhere — the hero headline
      has always used --type-h1-size. Deleted along with --text-5xl

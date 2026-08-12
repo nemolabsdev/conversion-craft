@@ -403,15 +403,15 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   font-family: var(--font-family-display);
   font-optical-sizing: auto;
   font-variation-settings: 'SOFT' 20, 'WONK' 1;
-  font-size: var(--type-h3-size);
+  font-size: var(--type-logo-size);
   line-height: var(--leading-xl);
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--tracking-tight);
   color: var(--color-text-primary);
   transition: color var(--duration-instant) var(--ease-workhorse);
 }
-/* --color-accent-decorative is safe here specifically: --type-h3-size (min
-   37.9px) is well past the ≥24px large-text threshold, so the ≥3:1 floor
+/* --color-accent-decorative is safe here specifically: --type-logo-size (min
+   24px) sits exactly at the ≥24px large-text threshold, so the ≥3:1 floor
    applies, not ≥4.5:1 — it clears 3.41:1 on --color-bg-page. See the
    @contrast assertion in tokens.css. */
 .nav-logo:hover { color: var(--color-accent-decorative); }
@@ -716,7 +716,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
   font-family: var(--font-family-display);
   font-optical-sizing: auto;
   font-weight: var(--font-weight-medium);
-  font-size: var(--text-xl);
+  font-size: var(--type-subhead-size);
   line-height: var(--leading-heading);
   color: var(--color-text-secondary);
   margin-block-end: var(--space-4);
@@ -1200,7 +1200,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
 /* 46ch, not 70ch: Inter's ch unit is its digit advance, which is narrower
    than its average lowercase letter, so a 70ch cap was buying ~95 real
    characters per line at this size. */
-.table-footnote { color: var(--color-text-secondary); font-size: var(--text-xs); max-width: 46ch; }
+p.table-footnote { color: var(--color-text-secondary); font-size: var(--text-xs); max-width: 46ch; } /* p-qualified so this beats p.narrow-measure's 52ch on position at equal specificity */
 
 /* ---------------------------------------------------------------------- */
 /* Peer validation (testimonials)                                          */
@@ -1323,7 +1323,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
 
 /* Direct children only — never the price inside .price-block. */
 .pricing > .container > p { color: var(--color-text-secondary); margin-block-end: var(--space-4); }
-.pricing .cta-support { margin-block-start: var(--space-2); }
+.pricing .cta-support { margin-block-start: var(--space-3); } /* 12px — matches hero and final-cta */
 
 /* ---------------------------------------------------------------------- */
 /* Final CTA + risk reversal                                               */
@@ -1341,7 +1341,7 @@ main [id] { scroll-margin-top: var(--space-10); } /* anchor jumps clear the 97px
    height inside them, so the three guarantees read as one run-on block.
    Gap now clears the line height (48px), and the margin to the CTA below
    steps up with it so the list still groups against what follows. */
-.risk-list { display: flex; flex-direction: column; gap: var(--space-7); margin-block-end: var(--space-8); }
+.risk-list { display: flex; flex-direction: column; gap: var(--space-5); margin-block-end: var(--space-4); } /* 24px between items, 16px to the CTA — same copy-to-CTA coupling as hero/pricing; 48/64 read as one more list item (R9/R10) */
 .risk-list li {
   position: relative;
   padding-inline-start: calc(var(--space-4) + var(--space-3));
